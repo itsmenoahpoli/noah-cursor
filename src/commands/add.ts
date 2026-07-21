@@ -7,8 +7,11 @@ import type { AddOptions } from "../types/index.js";
 export function registerAddCommand(program: Command): void {
   program
     .command("add")
-    .description("Install assets from a GitHub registry repository")
-    .argument("<repository>", "GitHub repository URL or owner/repo")
+    .description("Install assets from Noah's official registry")
+    .argument(
+      "[repository]",
+      "Local path for development (default: bundled Noah registry)",
+    )
     .option("--skill <name>", "Install a skill by id")
     .option("--rule <name>", "Install a rule by id")
     .option("--prompt <name>", "Install a prompt by id")
@@ -19,8 +22,8 @@ export function registerAddCommand(program: Command): void {
     .option("--dry-run", "Show what would be installed without writing files", false)
     .option("-y, --yes", "Skip confirmation prompts", false)
     .option("-v, --verbose", "Verbose output", false)
-    .action(async (repository: string, opts: AddOptions & { dryRun?: boolean }) => {
-      const spinner = createSpinner("Fetching registry…");
+    .action(async (repository: string | undefined, opts: AddOptions & { dryRun?: boolean }) => {
+      const spinner = createSpinner("Loading registry…");
       try {
         spinner.start();
         const options: AddOptions = {

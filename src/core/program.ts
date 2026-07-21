@@ -15,10 +15,10 @@ export function createProgram(): Command {
   program
     .name(CLI_NAME)
     .description(
-      "Install reusable Cursor assets (Skills, Rules, Prompts, MCP, Presets) from GitHub registries",
+      "Install Noah's reusable Cursor assets (Skills, Rules, Prompts, MCP, Presets)",
     )
     .version(CLI_VERSION)
-    .option("--no-banner", "Hide the NOAH CURSOR CLI banner")
+    .option("--no-banner", "Hide the NOAH DEV CLI banner")
     .showHelpAfterError()
     .showSuggestionAfterError();
 

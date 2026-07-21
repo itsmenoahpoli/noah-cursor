@@ -25,6 +25,7 @@ import {
   listAllManifestAssets,
 } from "../utils/assets.js";
 import { displayRegistryUrl, pluralize } from "../utils/fs.js";
+import { preferLocalRegistry, resolveNoahRegistry } from "../utils/registry.js";
 
 function collectRequests(options: AddOptions): AssetRequest[] {
   const requests: AssetRequest[] = [];
@@ -216,10 +217,11 @@ export async function installFromSelections(
 }
 
 export async function addFromRegistry(
-  repository: string,
+  repository: string | undefined,
   options: AddOptions,
 ): Promise<InstallResult[]> {
-  const registry = await loadRegistry(repository, { verbose: options.verbose });
+  const source = resolveNoahRegistry(repository);
+  const registry = await loadRegistry(source, { verbose: options.verbose });
 
   try {
     const { requests, presets } = resolveInstallTargets(registry.manifest, options);
@@ -276,15 +278,8 @@ export async function searchRegistry(
   options: { verbose?: boolean } = {},
 ): Promise<SearchResult[]> {
   const metadata = await readMetadata();
-  const repo = repository ?? metadata?.registry;
-
-  if (!repo) {
-    throw new ValidationError(
-      "No registry specified. Pass a repository URL or install assets first.",
-    );
-  }
-
-  const registry = await loadRegistry(repo, options);
+  const source = resolveNoahRegistry(repository ?? metadata?.registry);
+  const registry = await loadRegistry(source, options);
 
   try {
     const needle = query.toLowerCase();
@@ -299,6 +294,30 @@ export async function searchRegistry(
         .toLowerCase();
       return haystack.includes(needle);
     });
+  } finally {
+    await registry.cleanup();
+  }
+}
+
+export async function listRegistryAssets(
+  repository?: string,
+  options: { verbose?: boolean } = {},
+): Promise<{
+  registry: string;
+  name: string;
+  version: string;
+  assets: SearchResult[];
+}> {
+  const source = resolveNoahRegistry(repository ?? (await preferLocalRegistry()));
+  const registry = await loadRegistry(source, options);
+
+  try {
+    return {
+      registry: displayRegistryUrl(registry.url),
+      name: registry.manifest.name,
+      version: registry.manifest.version,
+      assets: listAllManifestAssets(registry.manifest),
+    };
   } finally {
     await registry.cleanup();
   }
@@ -362,7 +381,8 @@ export async function updateAssets(
     }
   }
 
-  const registry = await loadRegistry(metadata.registry, { verbose: options.verbose });
+  const source = resolveNoahRegistry(metadata.registry);
+  const registry = await loadRegistry(source, { verbose: options.verbose });
 
   try {
     const selections: AssetRequest[] = [

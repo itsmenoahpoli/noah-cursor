@@ -5,17 +5,17 @@ production-quality open-source CLI called **Noah Cursor**.
 
 ## Vision
 
-Create an npm CLI that installs reusable Cursor assets (Skills, Rules,
-Prompts, MCP configurations, Presets) from any compatible GitHub
-repository into the current project.
+Create an npm CLI that installs Noah's reusable Cursor assets (Skills, Rules,
+Prompts, MCP configurations, Presets) from the official Noah registry
+(`https://github.com/itsmenoahpoli/noah-cursor`) into the current project.
 
 Example:
 
 ```bash
-npx noah-cursor add https://github.com/<owner>/registry --skill laravel-crud
-npx noah-cursor add https://github.com/<owner>/registry --rule laravel
-npx noah-cursor add https://github.com/<owner>/registry --preset laravel-enterprise
-npx noah-cursor add https://github.com/<owner>/registry --all
+npx noah-cursor add --skill laravel-crud
+npx noah-cursor add --rule laravel
+npx noah-cursor add --preset laravel-enterprise
+npx noah-cursor add --all
 ```
 
 ## Requirements
@@ -46,7 +46,7 @@ npx noah-cursor add https://github.com/<owner>/registry --all
 ### add
 
 ```bash
-noah-cursor add <repository>
+noah-cursor add [repository]
 
 --skill <name>
 --rule <name>
@@ -62,13 +62,14 @@ noah-cursor add <repository>
 
 Behavior:
 
-1.  Clone repository to a temporary directory.
-2.  Validate registry structure.
-3.  Read and validate `manifest.json`.
-4.  Validate requested assets.
-5.  Install assets into `.cursor/`.
-6.  Write `.cursor/noah.json`.
-7.  Clean up temporary files.
+1.  Resolve registry (defaults to the build-time bundled registry; reject third-party remotes).
+2.  Load bundled or local registry (no GitHub clone for the default path).
+3.  Validate registry structure.
+4.  Read and validate `manifest.json`.
+5.  Validate requested assets.
+6.  Install assets into `.cursor/`.
+7.  Write `.cursor/noah.json`.
+8.  Clean up temporary files (remote clones only).
 
 ## Registry Specification
 
@@ -79,7 +80,9 @@ Behavior:
     mcp/
     presets/
 
-Support any compatible GitHub repository.
+The official registry is **bundled into the npm package at build time**.
+Local paths (e.g. `.`) are allowed for development of this repo.
+GitHub clone/sign-in is not required for normal use.
 
 ## Installation Targets
 

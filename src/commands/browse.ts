@@ -6,6 +6,7 @@ import { loadRegistry } from "../services/registry-loader.js";
 import type { AssetRequest, AssetType, Manifest } from "../types/index.js";
 import { getManifestAssets } from "../utils/assets.js";
 import { displayRegistryUrl } from "../utils/fs.js";
+import { resolveNoahRegistry } from "../utils/registry.js";
 import { selectCategories, type BrowseCategory } from "../ui/categoryMenu.js";
 import { selectAssets } from "../ui/assetMenu.js";
 import { confirmInstallation } from "../ui/summary.js";
@@ -65,8 +66,11 @@ async function collectSelections(
 export function registerBrowseCommand(program: Command): void {
   program
     .command("browse")
-    .description("Interactively browse and install assets from a registry")
-    .argument("<repository>", "GitHub repository URL, owner/repo, or local path")
+    .description("Interactively browse and install assets from Noah's official registry")
+    .argument(
+      "[repository]",
+      "Local path for development (default: bundled Noah registry)",
+    )
     .option("--browse-skills", "Browse skills only", false)
     .option("--browse-rules", "Browse rules only", false)
     .option("--browse-prompts", "Browse prompts only", false)
@@ -76,13 +80,14 @@ export function registerBrowseCommand(program: Command): void {
     .option("--dry-run", "Show what would be installed without writing files", false)
     .option("-y, --yes", "Skip final confirmation", false)
     .option("-v, --verbose", "Verbose output", false)
-    .action(async (repository: string, opts: BrowseOptions) => {
+    .action(async (repository: string | undefined, opts: BrowseOptions) => {
       const progress = new ProgressDisplay();
 
       try {
-        progress.start("Cloning registry…");
-        const registry = await loadRegistry(repository, { verbose: opts.verbose });
-        progress.succeed("Cloning registry");
+        progress.start("Loading registry…");
+        const source = resolveNoahRegistry(repository);
+        const registry = await loadRegistry(source, { verbose: opts.verbose });
+        progress.succeed("Loading registry");
 
         progress.start("Reading manifest…");
         const { manifest } = registry;

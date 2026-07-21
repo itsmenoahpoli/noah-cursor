@@ -24,7 +24,7 @@ describe("banner", () => {
     expect(shouldShowBanner(["node", "noah-cursor", "--no-banner", "list"])).toBe(false);
   });
 
-  it("renders NOAH CURSOR CLI once per process", () => {
+  it("renders NOAH DEV CLI once per process", () => {
     const logs: string[] = [];
     const original = console.log;
     console.log = (...args: unknown[]) => {
@@ -35,8 +35,9 @@ describe("banner", () => {
       renderBanner(true);
       renderBanner();
       const joined = logs.join("\n");
-      expect(joined).toContain("NOAH CURSOR CLI");
-      expect(joined.split("NOAH CURSOR CLI").length - 1).toBe(1);
+      expect(joined).toContain("Noah's Skills, Rules, Prompts, MCP configs & Presets");
+      expect(joined).toContain("Disclaimer");
+      expect(joined.split("Noah's Skills, Rules, Prompts, MCP configs & Presets").length - 1).toBe(1);
     } finally {
       console.log = original;
     }

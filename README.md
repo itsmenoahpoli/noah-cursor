@@ -2,32 +2,32 @@
   <img src="assets/noah-cursor-banner.png" alt="Noah Cursor" width="100%" />
 </p>
 
-Install reusable Cursor assets — Skills, Rules, Prompts, MCP configs, and Presets — from any compatible GitHub registry into your project.
+Install Noah's reusable Cursor assets — Skills, Rules, Prompts, MCP configs, and Presets — into your project.
 
 ```bash
-npx noah-cursor add https://github.com/itsmenoahpoli/noah-cursor --skill test
+npx noah-cursor add --skill test
 ```
 
 ## Install
 
 ```bash
-# One-shot (recommended)
-npx noah-cursor add <repository> --skill <name>
+# One-shot (recommended) — uses the registry bundled in the package
+npx noah-cursor add --skill <name>
 
 # Or install globally
 npm install -g noah-cursor
 ```
 
-Requires **Node.js 20+** and **Git**.
+Requires **Node.js 20+**. The registry ships inside the package (no GitHub clone or sign-in).
 
 ## Commands
 
 | Command  | Description                             |
 | -------- | --------------------------------------- |
-| `add`    | Install assets from a registry          |
+| `add`    | Install assets from Noah's registry     |
 | `browse` | Interactively browse and install assets |
-| `search` | Search assets in a registry             |
-| `list`   | List installed assets                   |
+| `search` | Search assets in Noah's registry        |
+| `list`   | List all assets in Noah's registry      |
 | `remove` | Remove an installed asset               |
 | `update` | Re-fetch and update installed assets    |
 | `doctor` | Diagnose environment health             |
@@ -37,18 +37,18 @@ Requires **Node.js 20+** and **Git**.
 Interactive TUI for discovering assets without knowing their ids:
 
 ```bash
-noah-cursor browse <repository>
-noah-cursor browse <repository> --browse-skills
-noah-cursor browse <repository> --browse-rules
-noah-cursor browse <repository> --browse-prompts
-noah-cursor browse <repository> --browse-mcp
-noah-cursor browse <repository> --browse-presets
+noah-cursor browse
+noah-cursor browse --browse-skills
+noah-cursor browse --browse-rules
+noah-cursor browse --browse-prompts
+noah-cursor browse --browse-mcp
+noah-cursor browse --browse-presets
 ```
 
 Examples:
 
 ```bash
-npx noah-cursor browse https://github.com/itsmenoahpoli/noah-cursor
+npx noah-cursor browse
 npx noah-cursor browse . --browse-skills
 ```
 
@@ -57,7 +57,7 @@ Controls: ↑↓ navigate · Space select · A toggle all · I invert · Enter c
 ### add
 
 ```bash
-noah-cursor add <repository>
+noah-cursor add [repository]
 
   --skill <name>
   --rule <name>
@@ -71,24 +71,28 @@ noah-cursor add <repository>
   --verbose
 ```
 
+`[repository]` is optional. By default the CLI uses the **bundled** Noah registry (copied into the package at build time). Third-party GitHub registries are not supported. Use a local path (e.g. `.`) only while developing this repo.
+
 Examples:
 
 ```bash
-# From another project — install from this GitHub registry
-npx noah-cursor add https://github.com/itsmenoahpoli/noah-cursor --skill test
-npx noah-cursor add https://github.com/itsmenoahpoli/noah-cursor --rule test
-npx noah-cursor add https://github.com/itsmenoahpoli/noah-cursor --preset test
-npx noah-cursor add itsmenoahpoli/noah-cursor --all
+# Install from Noah's official registry
+npx noah-cursor add --skill test
+npx noah-cursor add --rule test
+npx noah-cursor add --preset test
+npx noah-cursor add --all
+npx noah-cursor add itsmenoahpoli/noah-cursor --skill commit-push
 
-# Local path while developing
+# Local path while developing this registry
 noah-cursor add . --skill test --dry-run
 ```
 
 ### search / list / remove / update / doctor
 
 ```bash
-noah-cursor search test --registry https://github.com/itsmenoahpoli/noah-cursor
+noah-cursor search test
 noah-cursor list
+noah-cursor list --installed
 noah-cursor remove skill test --yes
 noah-cursor update --yes
 noah-cursor doctor
@@ -113,7 +117,7 @@ presets/
 - **rule** `test`
 - **preset** `test` (installs both)
 
-Add your own assets under those folders and register them in `manifest.json`.
+Add curated Noah assets under those folders and register them in `manifest.json`.
 
 ### manifest.json
 
@@ -186,10 +190,12 @@ Assets are copied into your project:
 
 ```bash
 npm install
-npm run build
+npm run build   # compiles TypeScript and bundles registry → dist/registry
 npm test
 npm run dev -- doctor
 ```
+
+`npm run build` copies `manifest.json` plus `skills/`, `rules/`, `prompts/`, `mcp/`, and `presets/` into `dist/noah-registry/` so published installs never need to clone GitHub.
 
 ## License
 

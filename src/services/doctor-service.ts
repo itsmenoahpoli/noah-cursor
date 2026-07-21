@@ -91,7 +91,7 @@ export async function runDoctor(cwd = process.cwd()): Promise<DoctorCheck[]> {
     });
   }
 
-  // Git availability (needed for clone)
+  // Git availability (optional; registry ships bundled with the package)
   try {
     const { execa } = await import("execa");
     const result = await execa("git", ["--version"]);
@@ -103,8 +103,8 @@ export async function runDoctor(cwd = process.cwd()): Promise<DoctorCheck[]> {
   } catch {
     checks.push({
       name: "Git",
-      status: "fail",
-      message: "Git is required to clone registries",
+      status: "warn",
+      message: "Git not found (optional — registry is bundled with the package)",
     });
   }
 

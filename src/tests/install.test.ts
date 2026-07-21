@@ -3,7 +3,7 @@ import fs from "fs-extra";
 import { afterEach, describe, expect, it } from "vitest";
 import { installAsset } from "../installers/asset-installer.js";
 import { readManifest } from "../registry/validator.js";
-import { addFromRegistry, searchRegistry } from "../services/install-service.js";
+import { addFromRegistry, listRegistryAssets, searchRegistry } from "../services/install-service.js";
 import { readMetadata } from "../metadata/store.js";
 import { runDoctor } from "../services/doctor-service.js";
 import { createTestDir, REGISTRY_PATH, removeTestDir } from "./helpers.js";
@@ -83,6 +83,15 @@ describe("install flow (local registry)", () => {
     const results = await searchRegistry("test", REGISTRY_PATH);
     expect(results.length).toBeGreaterThan(0);
     expect(results.every((r) => JSON.stringify(r).toLowerCase().includes("test"))).toBe(true);
+  });
+
+  it("lists all assets from the local registry manifest", async () => {
+    await tempProject();
+    const listed = await listRegistryAssets(REGISTRY_PATH);
+    expect(listed.assets.some((a) => a.type === "skill" && a.id === "commit-push")).toBe(true);
+    expect(listed.assets.some((a) => a.type === "rule" && a.id === "laravel-api")).toBe(true);
+    expect(listed.assets.some((a) => a.type === "preset" && a.id === "noah-web-stack")).toBe(true);
+    expect(listed.assets.length).toBeGreaterThanOrEqual(10);
   });
 
   it("doctor reports checks", async () => {

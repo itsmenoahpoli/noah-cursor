@@ -1,6 +1,9 @@
+import path from "node:path";
+import fs from "fs-extra";
 import { afterEach, describe, expect, it } from "vitest";
 import {
   findInstalled,
+  listInstalledAssets,
   readMetadata,
   removeInstalledAsset,
   upsertInstalledAssets,
@@ -65,5 +68,32 @@ describe("metadata store", () => {
     const meta = await readMetadata(cwd);
     expect(meta?.installed).toHaveLength(1);
     expect(meta?.installed[0]?.id).toBe("b");
+  });
+
+  it("lists on-disk skills even when missing from metadata", async () => {
+    const cwd = await tempCwd();
+    await fs.ensureDir(path.join(cwd, ".cursor", "skills", "publish-npm"));
+    await fs.writeFile(
+      path.join(cwd, ".cursor", "skills", "publish-npm", "SKILL.md"),
+      "# publish-npm\n",
+    );
+    await upsertInstalledAssets(
+      "https://github.com/itsmenoahpoli/noah-cursor",
+      [{ type: "skill", id: "commit-push", version: "1.0.0", path: "skills/commit-push" }],
+      cwd,
+    );
+    await fs.ensureDir(path.join(cwd, ".cursor", "skills", "commit-push"));
+    await fs.writeFile(
+      path.join(cwd, ".cursor", "skills", "commit-push", "SKILL.md"),
+      "# commit-push\n",
+    );
+
+    const listed = await listInstalledAssets(cwd);
+    expect(listed.installed.map((a) => a.id).sort()).toEqual([
+      "commit-push",
+      "publish-npm",
+    ]);
+    expect(listed.installed.find((a) => a.id === "commit-push")?.version).toBe("1.0.0");
+    expect(listed.installed.find((a) => a.id === "publish-npm")?.version).toBe("local");
   });
 });

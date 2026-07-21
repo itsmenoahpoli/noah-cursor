@@ -6,9 +6,12 @@ import { searchRegistry } from "../services/install-service.js";
 export function registerSearchCommand(program: Command): void {
   program
     .command("search")
-    .description("Search assets in a registry")
+    .description("Search assets in Noah's official registry")
     .argument("<query>", "Search query")
-    .option("-r, --registry <url>", "Registry repository URL (defaults to last used)")
+    .option(
+      "-r, --registry <url>",
+      "Official registry URL or local path (defaults to official / last used)",
+    )
     .option("-v, --verbose", "Verbose output", false)
     .action(async (query: string, opts: { registry?: string; verbose?: boolean }) => {
       const spinner = createSpinner("Searching registry…");
