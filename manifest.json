@@ -9,6 +9,12 @@
       "version": "1.0.0",
       "description": "Sample skill for verifying noah-cursor installs",
       "tags": ["test", "sample"]
+    },
+    {
+      "id": "commit-push",
+      "version": "1.0.0",
+      "description": "Stage all changes, group by category, draft a linepush-style commit, commit, and push",
+      "tags": ["git", "commit", "push", "conventional-commits"]
     }
   ],
   "rules": [
