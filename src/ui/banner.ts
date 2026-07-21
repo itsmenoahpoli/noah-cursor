@@ -53,6 +53,12 @@ export function renderBanner(force = false): void {
   console.log();
   console.log(brandGradient.multiline(ascii));
   console.log(chalk.bold(brandGradient("  NOAH CURSOR CLI")));
+  console.log(
+    chalk.dim(
+      "  Disclaimer: Not limited to Cursor — works with any IDE that supports",
+    ),
+  );
+  console.log(chalk.dim("  skills, rules, prompts, MCP configs, and similar assets."));
   console.log(chalk.dim("  Package Manager for Cursor Assets"));
   console.log();
 }
