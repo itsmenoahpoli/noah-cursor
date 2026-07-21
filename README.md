@@ -3,7 +3,7 @@
 Install reusable Cursor assets — Skills, Rules, Prompts, MCP configs, and Presets — from any compatible GitHub registry into your project.
 
 ```bash
-npx noah-cursor add https://github.com/patrickpoli/noah-cursor --skill test
+npx noah-cursor add https://github.com/itsmenoahpoli/noah-cursor --skill test
 ```
 
 ## Install
@@ -50,10 +50,10 @@ Examples:
 
 ```bash
 # From another project — install from this GitHub registry
-npx noah-cursor add https://github.com/patrickpoli/noah-cursor --skill test
-npx noah-cursor add https://github.com/patrickpoli/noah-cursor --rule test
-npx noah-cursor add https://github.com/patrickpoli/noah-cursor --preset test
-npx noah-cursor add patrickpoli/noah-cursor --all
+npx noah-cursor add https://github.com/itsmenoahpoli/noah-cursor --skill test
+npx noah-cursor add https://github.com/itsmenoahpoli/noah-cursor --rule test
+npx noah-cursor add https://github.com/itsmenoahpoli/noah-cursor --preset test
+npx noah-cursor add itsmenoahpoli/noah-cursor --all
 
 # Local path while developing
 noah-cursor add . --skill test --dry-run
@@ -62,7 +62,7 @@ noah-cursor add . --skill test --dry-run
 ### search / list / remove / update / doctor
 
 ```bash
-noah-cursor search test --registry https://github.com/patrickpoli/noah-cursor
+noah-cursor search test --registry https://github.com/itsmenoahpoli/noah-cursor
 noah-cursor list
 noah-cursor remove skill test --yes
 noah-cursor update --yes
@@ -146,7 +146,7 @@ Assets are copied into your project:
 
 ```json
 {
-  "registry": "https://github.com/patrickpoli/noah-cursor",
+  "registry": "https://github.com/itsmenoahpoli/noah-cursor",
   "installed": [
     {
       "type": "skill",
