@@ -1,0 +1,35 @@
+{
+  "name": "noah-registry",
+  "version": "1.0.0",
+  "description": "Noah Cursor registry — add your skills, rules, prompts, MCP configs, and presets here",
+  "author": "Noah Poli",
+  "skills": [
+    {
+      "id": "test",
+      "version": "1.0.0",
+      "description": "Sample skill for verifying noah-cursor installs",
+      "tags": ["test", "sample"]
+    }
+  ],
+  "rules": [
+    {
+      "id": "test",
+      "version": "1.0.0",
+      "description": "Sample rule for verifying noah-cursor installs",
+      "tags": ["test", "sample"]
+    }
+  ],
+  "prompts": [],
+  "mcp": [],
+  "presets": [
+    {
+      "id": "test",
+      "version": "1.0.0",
+      "description": "Installs the sample test skill and rule",
+      "includes": {
+        "skills": ["test"],
+        "rules": ["test"]
+      }
+    }
+  ]
+}
