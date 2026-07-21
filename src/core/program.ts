@@ -7,6 +7,7 @@ import { registerListCommand } from "../commands/list.js";
 import { registerRemoveCommand } from "../commands/remove.js";
 import { registerUpdateCommand } from "../commands/update.js";
 import { registerDoctorCommand } from "../commands/doctor.js";
+import { renderBanner, shouldShowBanner } from "../ui/banner.js";
 
 export function createProgram(): Command {
   const program = new Command();
@@ -17,8 +18,33 @@ export function createProgram(): Command {
       "Install reusable Cursor assets (Skills, Rules, Prompts, MCP, Presets) from GitHub registries",
     )
     .version(CLI_VERSION)
+    .option("--no-banner", "Hide the NOAH CURSOR CLI banner")
     .showHelpAfterError()
     .showSuggestionAfterError();
+
+  // Show branding above help (`noah-cursor`, `noah-cursor --help`, `… help`)
+  program.configureHelp({
+    helpWidth: process.stdout.columns || 80,
+  });
+
+  program.addHelpText("beforeAll", () => {
+    // Banner for explicit --help / help command (empty argv is handled in index.ts)
+    if (shouldShowBanner()) {
+      renderBanner();
+    }
+    return "";
+  });
+
+  // Show branding before every subcommand action
+  program.hook("preAction", () => {
+    renderBanner();
+  });
+
+  // If Commander still routes to the root with no subcommand, show help (exit 0)
+  program.action(() => {
+    renderBanner();
+    program.outputHelp();
+  });
 
   registerAddCommand(program);
   registerBrowseCommand(program);

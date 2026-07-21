@@ -1,6 +1,6 @@
 {
   "name": "noah-registry",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Noah Cursor registry — add your skills, rules, prompts, MCP configs, and presets here",
   "author": "Noah Poli",
   "skills": [
@@ -23,6 +23,36 @@
       "version": "1.0.0",
       "description": "Sample rule for verifying noah-cursor installs",
       "tags": ["test", "sample"]
+    },
+    {
+      "id": "stack-architecture",
+      "version": "1.0.0",
+      "description": "When to use React SPA dashboards, Laravel APIs, and Next/Nuxt marketing sites",
+      "tags": ["architecture", "stack"]
+    },
+    {
+      "id": "react-spa-dashboard",
+      "version": "1.0.0",
+      "description": "React client-side SPA rules for dashboards consuming a Laravel API",
+      "tags": ["react", "spa", "dashboard", "typescript", "tanstack-query"]
+    },
+    {
+      "id": "laravel-api",
+      "version": "1.0.0",
+      "description": "Laravel API-only backend rules for headless SPA clients",
+      "tags": ["laravel", "php", "api", "sanctum"]
+    },
+    {
+      "id": "nextjs-marketing",
+      "version": "1.0.0",
+      "description": "Next.js App Router rules for marketing and branding websites",
+      "tags": ["nextjs", "marketing", "seo", "branding"]
+    },
+    {
+      "id": "nuxt-marketing",
+      "version": "1.0.0",
+      "description": "Nuxt 3+ rules for marketing and branding websites",
+      "tags": ["nuxt", "vue", "marketing", "seo", "branding"]
     }
   ],
   "prompts": [],
@@ -35,6 +65,20 @@
       "includes": {
         "skills": ["test"],
         "rules": ["test"]
+      }
+    },
+    {
+      "id": "noah-web-stack",
+      "version": "1.0.0",
+      "description": "Full Noah web stack rules: architecture, React SPA, Laravel API, Next.js and Nuxt marketing",
+      "includes": {
+        "rules": [
+          "stack-architecture",
+          "react-spa-dashboard",
+          "laravel-api",
+          "nextjs-marketing",
+          "nuxt-marketing"
+        ]
       }
     }
   ]

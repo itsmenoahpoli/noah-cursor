@@ -22,4 +22,12 @@ describe("CLI program", () => {
     const program = createProgram();
     expect(program.version()).toBe("1.0.0");
   });
+
+  it("has a default action for no-subcommand usage", () => {
+    const program = createProgram();
+    // Root action is registered so bare invocation is not treated as an error
+    expect(typeof (program as unknown as { _actionHandler?: unknown })._actionHandler).not.toBe(
+      "undefined",
+    );
+  });
 });

@@ -6,7 +6,6 @@ import { loadRegistry } from "../services/registry-loader.js";
 import type { AssetRequest, AssetType, Manifest } from "../types/index.js";
 import { getManifestAssets } from "../utils/assets.js";
 import { displayRegistryUrl } from "../utils/fs.js";
-import { renderBanner } from "../ui/banner.js";
 import { selectCategories, type BrowseCategory } from "../ui/categoryMenu.js";
 import { selectAssets } from "../ui/assetMenu.js";
 import { confirmInstallation } from "../ui/summary.js";
@@ -81,8 +80,6 @@ export function registerBrowseCommand(program: Command): void {
       const progress = new ProgressDisplay();
 
       try {
-        renderBanner();
-
         progress.start("Cloning registry…");
         const registry = await loadRegistry(repository, { verbose: opts.verbose });
         progress.succeed("Cloning registry");

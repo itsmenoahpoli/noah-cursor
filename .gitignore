@@ -6,8 +6,15 @@ coverage/
 .env
 .env.*
 !.env.example
-.cursor/noah.json
 .tmp/
 .test-tmp/
-.cursor/
 *.tgz
+
+# Local install metadata — keep project skills versioned
+.cursor/*
+!.cursor/skills/
+.cursor/skills/**
+!.cursor/skills/*/
+!.cursor/skills/*/SKILL.md
+!.cursor/skills/*/RULE.md
+!.cursor/skills/**/*.md
