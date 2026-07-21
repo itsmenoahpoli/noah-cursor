@@ -1,5 +1,4 @@
 import { confirm } from "@inquirer/prompts";
-import fs from "fs-extra";
 import { NotFoundError, ValidationError } from "../core/errors.js";
 import { logInfo, logSuccess, logVerbose, logWarn } from "../core/logger.js";
 import { installAsset, removeAssetFiles } from "../installers/asset-installer.js";
@@ -9,7 +8,8 @@ import {
   removeInstalledAsset,
   upsertInstalledAssets,
 } from "../metadata/store.js";
-import { cloneRegistry, loadLocalRegistry } from "../registry/cloner.js";
+import type { ClonedRegistry } from "../registry/cloner.js";
+import { loadRegistry } from "./registry-loader.js";
 import type {
   AddOptions,
   AssetRequest,
@@ -26,28 +26,6 @@ import {
 } from "../utils/assets.js";
 import { displayRegistryUrl, pluralize } from "../utils/fs.js";
 
-async function openRegistry(
-  repository: string,
-  options: { verbose?: boolean } = {},
-) {
-  if (repository.startsWith("file://")) {
-    return loadLocalRegistry(repository.replace(/^file:\/\//, ""));
-  }
-
-  const looksRemote =
-    repository.includes("github.com") ||
-    repository.startsWith("git@") ||
-    repository.startsWith("http://") ||
-    repository.startsWith("https://") ||
-    /^[\w.-]+\/[\w.-]+$/.test(repository);
-
-  if (!looksRemote && (await fs.pathExists(repository))) {
-    return loadLocalRegistry(repository);
-  }
-
-  return cloneRegistry(repository, options);
-}
-
 function collectRequests(options: AddOptions): AssetRequest[] {
   const requests: AssetRequest[] = [];
 
@@ -60,7 +38,7 @@ function collectRequests(options: AddOptions): AssetRequest[] {
   return requests;
 }
 
-function expandPreset(manifest: Manifest, presetId: string): AssetRequest[] {
+export function expandPreset(manifest: Manifest, presetId: string): AssetRequest[] {
   const preset = findAssetInManifest(manifest, "preset", presetId) as
     | PresetEntry
     | undefined;
@@ -139,11 +117,109 @@ function resolveInstallTargets(
   return { requests, presets };
 }
 
+export interface InstallSelectionsOptions {
+  force?: boolean;
+  dryRun?: boolean;
+  verbose?: boolean;
+  onStepStart?: (message: string) => void | Promise<void>;
+  onStepDone?: (message: string) => void | Promise<void>;
+}
+
+/**
+ * Install previously selected assets from an already-loaded registry.
+ * Does not clean up the registry — caller owns lifecycle.
+ */
+export async function installFromSelections(
+  registry: ClonedRegistry,
+  selections: AssetRequest[],
+  options: InstallSelectionsOptions = {},
+): Promise<InstallResult[]> {
+  if (selections.length === 0) {
+    throw new ValidationError("No assets selected for installation");
+  }
+
+  const requests: AssetRequest[] = [];
+  const presets: string[] = [];
+  const seen = new Set<string>();
+
+  for (const selection of selections) {
+    if (selection.type === "preset") {
+      presets.push(selection.id);
+      for (const expanded of expandPreset(registry.manifest, selection.id)) {
+        const key = `${expanded.type}:${expanded.id}`;
+        if (!seen.has(key)) {
+          seen.add(key);
+          requests.push(expanded);
+        }
+      }
+    } else {
+      const key = `${selection.type}:${selection.id}`;
+      if (!seen.has(key)) {
+        seen.add(key);
+        requests.push(selection);
+      }
+    }
+  }
+
+  const results: InstallResult[] = [];
+  const installedMeta = [];
+
+  for (const request of requests) {
+    const step = `Installing ${request.type}/${request.id}`;
+    await options.onStepStart?.(step);
+    const result = await installAsset(
+      registry.path,
+      registry.manifest,
+      request.type,
+      request.id,
+      {
+        force: options.force,
+        dryRun: options.dryRun,
+        verbose: options.verbose,
+      },
+    );
+    await options.onStepDone?.(step);
+    results.push(result);
+
+    if (!result.skipped) {
+      installedMeta.push({
+        type: result.type,
+        id: result.id,
+        version: result.version,
+        path: result.path,
+        installedAt: new Date().toISOString(),
+      });
+    } else {
+      logWarn(`Skipped ${result.type}/${result.id}: ${result.reason}`);
+    }
+  }
+
+  for (const presetId of presets) {
+    const preset = findAssetInManifest(registry.manifest, "preset", presetId);
+    if (preset && !options.dryRun) {
+      installedMeta.push({
+        type: "preset" as const,
+        id: presetId,
+        version: preset.version,
+        installedAt: new Date().toISOString(),
+      });
+    }
+  }
+
+  if (!options.dryRun && installedMeta.length > 0) {
+    await options.onStepStart?.("Updating noah.json");
+    await upsertInstalledAssets(displayRegistryUrl(registry.url), installedMeta);
+    await options.onStepDone?.("Updating noah.json");
+  }
+
+  return results;
+}
+
 export async function addFromRegistry(
   repository: string,
   options: AddOptions,
 ): Promise<InstallResult[]> {
-  const registry = await openRegistry(repository, { verbose: options.verbose });
+  const registry = await loadRegistry(repository, { verbose: options.verbose });
 
   try {
     const { requests, presets } = resolveInstallTargets(registry.manifest, options);
@@ -165,51 +241,16 @@ export async function addFromRegistry(
       }
     }
 
-    const results: InstallResult[] = [];
-    const installedMeta = [];
+    const selections: AssetRequest[] = [
+      ...requests,
+      ...presets.map((id) => ({ type: "preset" as const, id })),
+    ];
 
-    for (const request of requests) {
-      const result = await installAsset(
-        registry.path,
-        registry.manifest,
-        request.type,
-        request.id,
-        {
-          force: options.force,
-          dryRun: options.dryRun,
-          verbose: options.verbose,
-        },
-      );
-      results.push(result);
-
-      if (!result.skipped) {
-        installedMeta.push({
-          type: result.type,
-          id: result.id,
-          version: result.version,
-          path: result.path,
-          installedAt: new Date().toISOString(),
-        });
-      } else {
-        logWarn(`Skipped ${result.type}/${result.id}: ${result.reason}`);
-      }
-    }
-
-    for (const presetId of presets) {
-      const preset = findAssetInManifest(registry.manifest, "preset", presetId);
-      if (preset && !options.dryRun) {
-        installedMeta.push({
-          type: "preset" as const,
-          id: presetId,
-          version: preset.version,
-          installedAt: new Date().toISOString(),
-        });
-      }
-    }
-
-    if (!options.dryRun && installedMeta.length > 0) {
-      await upsertInstalledAssets(displayRegistryUrl(registry.url), installedMeta);
-    }
+    const results = await installFromSelections(registry, selections, {
+      force: options.force,
+      dryRun: options.dryRun,
+      verbose: options.verbose,
+    });
 
     const installed = results.filter((r) => !r.skipped);
     if (options.dryRun) {
@@ -243,7 +284,7 @@ export async function searchRegistry(
     );
   }
 
-  const registry = await openRegistry(repo, options);
+  const registry = await loadRegistry(repo, options);
 
   try {
     const needle = query.toLowerCase();
@@ -321,51 +362,19 @@ export async function updateAssets(
     }
   }
 
-  const registry = await openRegistry(metadata.registry, { verbose: options.verbose });
+  const registry = await loadRegistry(metadata.registry, { verbose: options.verbose });
 
   try {
-    const results: InstallResult[] = [];
-    const installedMeta = [];
+    const selections: AssetRequest[] = [
+      ...nonPresets.map((a) => ({ type: a.type, id: a.id })),
+      ...presets.map((a) => ({ type: "preset" as const, id: a.id })),
+    ];
 
-    for (const asset of nonPresets) {
-      const result = await installAsset(
-        registry.path,
-        registry.manifest,
-        asset.type,
-        asset.id,
-        {
-          force: true,
-          dryRun: options.dryRun,
-          verbose: options.verbose,
-        },
-      );
-      results.push(result);
-      if (!result.skipped) {
-        installedMeta.push({
-          type: result.type,
-          id: result.id,
-          version: result.version,
-          path: result.path,
-          installedAt: new Date().toISOString(),
-        });
-      }
-    }
-
-    for (const preset of presets) {
-      const entry = findAssetInManifest(registry.manifest, "preset", preset.id);
-      if (entry && !options.dryRun) {
-        installedMeta.push({
-          type: "preset" as const,
-          id: preset.id,
-          version: entry.version,
-          installedAt: new Date().toISOString(),
-        });
-      }
-    }
-
-    if (!options.dryRun && installedMeta.length > 0) {
-      await upsertInstalledAssets(metadata.registry, installedMeta);
-    }
+    const results = await installFromSelections(registry, selections, {
+      force: true,
+      dryRun: options.dryRun,
+      verbose: options.verbose,
+    });
 
     logSuccess(
       options.dryRun

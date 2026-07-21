@@ -1,6 +1,7 @@
 import { Command } from "commander";
 import { CLI_NAME, CLI_VERSION } from "../constants/index.js";
 import { registerAddCommand } from "../commands/add.js";
+import { registerBrowseCommand } from "../commands/browse.js";
 import { registerSearchCommand } from "../commands/search.js";
 import { registerListCommand } from "../commands/list.js";
 import { registerRemoveCommand } from "../commands/remove.js";
@@ -20,6 +21,7 @@ export function createProgram(): Command {
     .showSuggestionAfterError();
 
   registerAddCommand(program);
+  registerBrowseCommand(program);
   registerSearchCommand(program);
   registerListCommand(program);
   registerRemoveCommand(program);

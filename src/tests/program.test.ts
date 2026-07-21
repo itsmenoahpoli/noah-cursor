@@ -6,7 +6,15 @@ describe("CLI program", () => {
     const program = createProgram();
     const names = program.commands.map((c) => c.name());
     expect(names).toEqual(
-      expect.arrayContaining(["add", "search", "list", "remove", "update", "doctor"]),
+      expect.arrayContaining([
+        "add",
+        "browse",
+        "search",
+        "list",
+        "remove",
+        "update",
+        "doctor",
+      ]),
     );
   });
 

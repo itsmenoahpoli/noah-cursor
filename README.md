@@ -1,5 +1,9 @@
 # Noah Cursor
 
+<p align="center">
+  <img src="assets/noah-cursor-banner.png" alt="Noah Cursor" width="100%" />
+</p>
+
 Install reusable Cursor assets — Skills, Rules, Prompts, MCP configs, and Presets — from any compatible GitHub registry into your project.
 
 ```bash
@@ -23,11 +27,34 @@ Requires **Node.js 20+** and **Git**.
 | Command | Description |
 |---------|-------------|
 | `add` | Install assets from a registry |
+| `browse` | Interactively browse and install assets |
 | `search` | Search assets in a registry |
 | `list` | List installed assets |
 | `remove` | Remove an installed asset |
 | `update` | Re-fetch and update installed assets |
 | `doctor` | Diagnose environment health |
+
+### browse
+
+Interactive TUI for discovering assets without knowing their ids:
+
+```bash
+noah-cursor browse <repository>
+noah-cursor browse <repository> --browse-skills
+noah-cursor browse <repository> --browse-rules
+noah-cursor browse <repository> --browse-prompts
+noah-cursor browse <repository> --browse-mcp
+noah-cursor browse <repository> --browse-presets
+```
+
+Examples:
+
+```bash
+npx noah-cursor browse https://github.com/itsmenoahpoli/noah-cursor
+npx noah-cursor browse . --browse-skills
+```
+
+Controls: ↑↓ navigate · Space select · A toggle all · I invert · Enter confirm · Esc cancel
 
 ### add
 
