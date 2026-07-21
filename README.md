@@ -1,5 +1,3 @@
-# Noah Cursor
-
 <p align="center">
   <img src="assets/noah-cursor-banner.png" alt="Noah Cursor" width="100%" />
 </p>
@@ -24,15 +22,15 @@ Requires **Node.js 20+** and **Git**.
 
 ## Commands
 
-| Command | Description |
-|---------|-------------|
-| `add` | Install assets from a registry |
+| Command  | Description                             |
+| -------- | --------------------------------------- |
+| `add`    | Install assets from a registry          |
 | `browse` | Interactively browse and install assets |
-| `search` | Search assets in a registry |
-| `list` | List installed assets |
-| `remove` | Remove an installed asset |
-| `update` | Re-fetch and update installed assets |
-| `doctor` | Diagnose environment health |
+| `search` | Search assets in a registry             |
+| `list`   | List installed assets                   |
+| `remove` | Remove an installed asset               |
+| `update` | Re-fetch and update installed assets    |
+| `doctor` | Diagnose environment health             |
 
 ### browse
 
