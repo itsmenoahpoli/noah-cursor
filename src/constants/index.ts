@@ -1,5 +1,10 @@
+import { createRequire } from "node:module";
+
+const require = createRequire(import.meta.url);
+const pkg = require("../../package.json") as { version: string };
+
 export const CLI_NAME = "noah-cursor";
-export const CLI_VERSION = "1.0.0";
+export const CLI_VERSION = pkg.version;
 export const CURSOR_DIR = ".cursor";
 export const METADATA_FILE = "noah.json";
 export const MANIFEST_FILE = "manifest.json";

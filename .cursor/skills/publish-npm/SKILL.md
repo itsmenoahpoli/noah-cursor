@@ -1,9 +1,9 @@
 ---
 name: publish-npm
 description: >-
-  Runs /commit-push first, then publishes the noah-cursor package to npm.
-  Use when the user runs /publish-npm, asks to publish to npm, or release
-  the CLI package for this repository only.
+  Runs /commit-push first, always bumps the minor version, then publishes
+  noah-cursor to npm. Use when the user runs /publish-npm, asks to publish
+  to npm, or release the CLI package for this repository only.
 disable-model-invocation: true
 ---
 
@@ -23,7 +23,7 @@ Publish Progress:
 - [ ] 2. Verify package identity
 - [ ] 3. Confirm npm auth
 - [ ] 4. Preflight (build + test)
-- [ ] 5. Version decision
+- [ ] 5. Bump version (always minor)
 - [ ] 6. npm publish
 - [ ] 7. Verify + report
 ```
@@ -93,33 +93,29 @@ npm run typecheck
 
 Stop on any failure.
 
-### 5. Version decision
+### 5. Bump version (always minor)
 
-Read the current version from `package.json`.
+**Rule: always bump the minor version.** Do not ask the user. Do not use patch or major unless the user explicitly overrides in the current message.
 
-Ask the user which bump to apply unless they already specified one:
+```bash
+npm version minor
+```
 
-| Choice | Command |
-|--------|---------|
-| patch (bugfix / small) | `npm version patch` |
-| minor (features) | `npm version minor` |
-| major (breaking) | `npm version major` |
-| keep current | skip bump |
+Example: `1.0.0` → `1.1.0`, `1.1.0` → `1.2.0`.
 
-Notes:
-
-- Prefer `npm version <type>` so git gets a version commit + tag automatically.
-- Then push commits and tags:
+Then push the version commit and tag:
 
 ```bash
 git push
 git push --tags
 ```
 
+Notes:
+
+- `npm version minor` creates a version commit + git tag automatically.
 - Do **not** use `--force` tags/push unless the user explicitly asks.
 - Never publish secrets (`.env`, tokens, private keys).
-
-If the user wants to publish the **current** version without bumping, skip `npm version` and continue.
+- Do not skip the bump to “keep current” — every `/publish-npm` run ships a new minor.
 
 ### 6. npm publish
 
@@ -134,8 +130,8 @@ Do not use `--otp` unless the user provides a one-time password / 2FA code.
 If publish fails because the version already exists:
 
 1. Report the error
-2. Propose the next patch/minor bump
-3. Only bump + republish after the user confirms
+2. Run `npm version minor` again
+3. Push commits/tags, then retry `npm publish --access public`
 
 ### 7. Verify + report
 

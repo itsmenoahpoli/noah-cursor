@@ -18,9 +18,9 @@ describe("CLI program", () => {
     );
   });
 
-  it("exposes version", () => {
+  it("exposes version from package.json", () => {
     const program = createProgram();
-    expect(program.version()).toBe("1.0.0");
+    expect(program.version()).toMatch(/^\d+\.\d+\.\d+/);
   });
 
   it("has a default action for no-subcommand usage", () => {
