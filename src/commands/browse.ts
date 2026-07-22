@@ -66,11 +66,7 @@ async function collectSelections(
 export function registerBrowseCommand(program: Command): void {
   program
     .command("browse")
-    .description("Interactively browse and install assets from Noah's official registry")
-    .argument(
-      "[repository]",
-      "Local path for development (default: bundled Noah registry)",
-    )
+    .description("Interactively browse and install assets from Noah's registry")
     .option("--browse-skills", "Browse skills only", false)
     .option("--browse-rules", "Browse rules only", false)
     .option("--browse-prompts", "Browse prompts only", false)
@@ -80,12 +76,12 @@ export function registerBrowseCommand(program: Command): void {
     .option("--dry-run", "Show what would be installed without writing files", false)
     .option("-y, --yes", "Skip final confirmation", false)
     .option("-v, --verbose", "Verbose output", false)
-    .action(async (repository: string | undefined, opts: BrowseOptions) => {
+    .action(async (opts: BrowseOptions) => {
       const progress = new ProgressDisplay();
 
       try {
         progress.start("Loading registry…");
-        const source = resolveNoahRegistry(repository);
+        const source = resolveNoahRegistry();
         const registry = await loadRegistry(source, { verbose: opts.verbose });
         progress.succeed("Loading registry");
 

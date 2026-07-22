@@ -7,11 +7,7 @@ import type { AddOptions } from "../types/index.js";
 export function registerAddCommand(program: Command): void {
   program
     .command("add")
-    .description("Install assets from Noah's official registry")
-    .argument(
-      "[repository]",
-      "Local path for development (default: bundled Noah registry)",
-    )
+    .description("Install assets from Noah's registry")
     .option("--skill <name>", "Install a skill by id")
     .option("--rule <name>", "Install a rule by id")
     .option("--prompt <name>", "Install a prompt by id")
@@ -22,7 +18,7 @@ export function registerAddCommand(program: Command): void {
     .option("--dry-run", "Show what would be installed without writing files", false)
     .option("-y, --yes", "Skip confirmation prompts", false)
     .option("-v, --verbose", "Verbose output", false)
-    .action(async (repository: string | undefined, opts: AddOptions & { dryRun?: boolean }) => {
+    .action(async (opts: AddOptions & { dryRun?: boolean }) => {
       const spinner = createSpinner("Loading registry…");
       try {
         spinner.start();
@@ -40,7 +36,7 @@ export function registerAddCommand(program: Command): void {
         };
 
         spinner.text = "Validating and installing assets…";
-        const results = await addFromRegistry(repository, options);
+        const results = await addFromRegistry(undefined, options);
         spinner.stop();
 
         if (results.length > 0) {

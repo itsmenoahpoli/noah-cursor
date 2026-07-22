@@ -11,13 +11,9 @@ export function registerListCommand(program: Command): void {
   program
     .command("list")
     .description("List all Skills, Rules, Prompts, MCP configs, and Presets in Noah's registry")
-    .argument(
-      "[repository]",
-      "Local path for development (default: local checkout or bundled registry)",
-    )
     .option("--installed", "List locally installed assets only", false)
     .option("-v, --verbose", "Verbose output", false)
-    .action(async (repository: string | undefined, opts: { installed?: boolean; verbose?: boolean }) => {
+    .action(async (opts: { installed?: boolean; verbose?: boolean }) => {
       if (opts.installed) {
         try {
           const listed = await listInstalledAssets();
@@ -50,7 +46,7 @@ export function registerListCommand(program: Command): void {
       const spinner = createSpinner("Loading registry…");
       try {
         spinner.start();
-        const listed = await listRegistryAssets(repository, { verbose: opts.verbose });
+        const listed = await listRegistryAssets(undefined, { verbose: opts.verbose });
         spinner.stop();
 
         if (listed.assets.length === 0) {

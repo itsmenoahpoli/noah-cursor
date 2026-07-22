@@ -45,11 +45,9 @@ noah-cursor browse --browse-mcp
 noah-cursor browse --browse-presets
 ```
 
-Examples:
-
 ```bash
 npx noah-cursor browse
-npx noah-cursor browse . --browse-skills
+npx noah-cursor browse --browse-skills
 ```
 
 Controls: ↑↓ navigate · Space select · A toggle all · I invert · Enter confirm · Esc cancel
@@ -57,7 +55,7 @@ Controls: ↑↓ navigate · Space select · A toggle all · I invert · Enter c
 ### add
 
 ```bash
-noah-cursor add [repository]
+noah-cursor add
 
   --skill <name>
   --rule <name>
@@ -71,19 +69,15 @@ noah-cursor add [repository]
   --verbose
 ```
 
-`[repository]` is optional. By default the CLI uses the **bundled** Noah registry (copied into the package at build time). Third-party GitHub registries are not supported. Use a local path (e.g. `.`) only while developing this repo.
+Always installs from **Noah's bundled registry** (no other registries).
 
 Examples:
 
 ```bash
-# Install from Noah's official registry
 npx noah-cursor add --skill test
 npx noah-cursor add --rule test
 npx noah-cursor add --all
-npx noah-cursor add itsmenoahpoli/noah-cursor --skill commit-push
-
-# Local path while developing this registry
-noah-cursor add . --skill test --dry-run
+npx noah-cursor add --skill commit-push
 ```
 
 ### search / list / remove / update / doctor

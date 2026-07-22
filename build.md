@@ -46,7 +46,7 @@ npx noah-cursor add --all
 ### add
 
 ```bash
-noah-cursor add [repository]
+noah-cursor add
 
 --skill <name>
 --rule <name>
@@ -62,14 +62,12 @@ noah-cursor add [repository]
 
 Behavior:
 
-1.  Resolve registry (defaults to the build-time bundled registry; reject third-party remotes).
-2.  Load bundled or local registry (no GitHub clone for the default path).
-3.  Validate registry structure.
-4.  Read and validate `manifest.json`.
-5.  Validate requested assets.
-6.  Install assets into `.cursor/`.
-7.  Write `.cursor/noah.json`.
-8.  Clean up temporary files (remote clones only).
+1.  Load Noah's build-time bundled registry only (no user-selected remotes).
+2.  Validate registry structure.
+3.  Read and validate `manifest.json`.
+4.  Validate requested assets.
+5.  Install assets into `.cursor/`.
+6.  Write `.cursor/noah.json`.
 
 ## Registry Specification
 

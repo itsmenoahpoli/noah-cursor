@@ -277,8 +277,7 @@ export async function searchRegistry(
   repository?: string,
   options: { verbose?: boolean } = {},
 ): Promise<SearchResult[]> {
-  const metadata = await readMetadata();
-  const source = resolveNoahRegistry(repository ?? metadata?.registry);
+  const source = resolveNoahRegistry(repository);
   const registry = await loadRegistry(source, options);
 
   try {
