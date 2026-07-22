@@ -39,6 +39,12 @@
       "version": "1.0.0",
       "description": "Run bundled node-doctor (Knip + hygiene), fix findings, verify features still work",
       "tags": ["node", "knip", "doctor", "qa", "cli"]
+    },
+    {
+      "id": "generate-readme",
+      "version": "1.0.0",
+      "description": "Generate a project README with stack, deps, prerequisites, and setup guide",
+      "tags": ["docs", "readme", "documentation", "setup"]
     }
   ],
   "rules": [

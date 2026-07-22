@@ -112,6 +112,7 @@ presets/
 - **skill** `larastan-fix` — run Larastan on Laravel, fix findings, verify no regressions
 - **skill** `nestjs-knip-fix` — run Knip on NestJS, fix unused code/deps, verify no regressions
 - **skill** `node-doctor-fix` — bundled node-doctor (Knip + package hygiene) for generic Node
+- **skill** `generate-readme` — generate project README (stack, deps, setup guide)
 - **rule** `test`
 
 Add curated Noah assets under those folders and register them in `manifest.json`. Presets are supported by the CLI but none are published in this registry yet.
