@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/itsmenoahpoli/noah-cursor/main/assets/noah-cursor-banner.png" alt="Noah Cursor" width="100%" />
+  <img src="https://cdn.jsdelivr.net/npm/noah-cursor@latest/assets/noah-cursor-banner.png" alt="Noah Cursor" width="100%" />
 </p>
 
 Install Noah's reusable Cursor assets — Skills, Rules, Prompts, MCP configs, and Presets — into your project.
