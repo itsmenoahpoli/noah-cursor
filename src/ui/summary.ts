@@ -3,7 +3,7 @@ import chalk from "chalk";
 import { confirm } from "@inquirer/prompts";
 import type { AssetRequest, AssetType } from "../types/index.js";
 import { humanizeId } from "./format.js";
-import { displayRegistryUrl } from "../utils/fs.js";
+import { toPublicRegistryLabel } from "../utils/registry.js";
 import { isPromptExit } from "./prompt-errors.js";
 
 const SECTION_LABELS: Record<AssetType, string> = {
@@ -24,14 +24,14 @@ function groupSelections(selections: AssetRequest[]): Partial<Record<AssetType, 
   return groups;
 }
 
-export function renderSummary(registryUrl: string, selections: AssetRequest[]): void {
+export function renderSummary(_registryUrl: string, selections: AssetRequest[]): void {
   const groups = groupSelections(selections);
   const lines: string[] = [];
 
   lines.push(chalk.bold("Installation Summary"));
   lines.push("");
   lines.push(chalk.dim("Registry"));
-  lines.push(`  ${displayRegistryUrl(registryUrl)}`);
+  lines.push(`  ${toPublicRegistryLabel()}`);
   lines.push("");
 
   for (const type of ["skill", "rule", "prompt", "mcp", "preset"] as const) {

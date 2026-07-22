@@ -7,6 +7,7 @@ import {
   OFFICIAL_REGISTRY,
   OFFICIAL_REGISTRY_OWNER,
   OFFICIAL_REGISTRY_REPO,
+  PUBLIC_REGISTRY_LABEL,
   REGISTRY_REQUIRED_DIRS,
 } from "../constants/index.js";
 import { RegistryError, ValidationError } from "../core/errors.js";
@@ -122,4 +123,36 @@ export async function preferLocalRegistry(cwd = process.cwd()): Promise<string |
     return cwd;
   }
   return undefined;
+}
+
+function isPrivatePath(url: string): boolean {
+  const value = url.trim();
+  return (
+    value.startsWith("file:") ||
+    value.startsWith(".") ||
+    value.startsWith("/") ||
+    path.isAbsolute(value) ||
+    value === BUNDLED_REGISTRY
+  );
+}
+
+/**
+ * User-facing registry label. Never exposes local directories or file:// URLs.
+ */
+export function toPublicRegistryLabel(_url?: string): string {
+  return PUBLIC_REGISTRY_LABEL;
+}
+
+/**
+ * Canonical URL stored in `.cursor/noah.json`. Never persists local paths.
+ */
+export function toStoredRegistryUrl(url: string): string {
+  const trimmed = url.trim();
+  if (!trimmed || isPrivatePath(trimmed) || isOfficialRegistryUrl(trimmed)) {
+    return OFFICIAL_REGISTRY;
+  }
+  if (looksLikeGitHubRemote(trimmed) && isOfficialRegistryUrl(displayRegistryUrl(normalizeGitHubUrl(trimmed)))) {
+    return OFFICIAL_REGISTRY;
+  }
+  return OFFICIAL_REGISTRY;
 }

@@ -24,8 +24,13 @@ import {
   getManifestAssets,
   listAllManifestAssets,
 } from "../utils/assets.js";
-import { displayRegistryUrl, pluralize } from "../utils/fs.js";
-import { preferLocalRegistry, resolveNoahRegistry } from "../utils/registry.js";
+import { pluralize } from "../utils/fs.js";
+import {
+  preferLocalRegistry,
+  resolveNoahRegistry,
+  toPublicRegistryLabel,
+  toStoredRegistryUrl,
+} from "../utils/registry.js";
 
 function collectRequests(options: AddOptions): AssetRequest[] {
   const requests: AssetRequest[] = [];
@@ -209,7 +214,7 @@ export async function installFromSelections(
 
   if (!options.dryRun && installedMeta.length > 0) {
     await options.onStepStart?.("Updating noah.json");
-    await upsertInstalledAssets(displayRegistryUrl(registry.url), installedMeta);
+    await upsertInstalledAssets(toStoredRegistryUrl(registry.url), installedMeta);
     await options.onStepDone?.("Updating noah.json");
   }
 
@@ -234,7 +239,7 @@ export async function addFromRegistry(
 
     if (!options.yes && !options.dryRun && requests.length > 5) {
       const ok = await confirm({
-        message: `Install ${requests.length} assets from ${displayRegistryUrl(registry.url)}?`,
+        message: `Install ${requests.length} assets from ${toPublicRegistryLabel()}?`,
         default: true,
       });
       if (!ok) {
@@ -262,7 +267,7 @@ export async function addFromRegistry(
     } else {
       logSuccess(
         `Installed ${installed.length} ${pluralize(installed.length, "asset")} ` +
-          `from ${displayRegistryUrl(registry.url)}`,
+          `from ${toPublicRegistryLabel()}`,
       );
     }
 
@@ -312,7 +317,7 @@ export async function listRegistryAssets(
 
   try {
     return {
-      registry: displayRegistryUrl(registry.url),
+      registry: toPublicRegistryLabel(),
       name: registry.manifest.name,
       version: registry.manifest.version,
       assets: listAllManifestAssets(registry.manifest),
@@ -371,7 +376,7 @@ export async function updateAssets(
 
   if (!options.yes && !options.dryRun) {
     const ok = await confirm({
-      message: `Update ${nonPresets.length} ${pluralize(nonPresets.length, "asset")} from ${metadata.registry}?`,
+      message: `Update ${nonPresets.length} ${pluralize(nonPresets.length, "asset")} from ${toPublicRegistryLabel()}?`,
       default: true,
     });
     if (!ok) {
@@ -380,7 +385,7 @@ export async function updateAssets(
     }
   }
 
-  const source = resolveNoahRegistry(metadata.registry);
+  const source = resolveNoahRegistry(toStoredRegistryUrl(metadata.registry));
   const registry = await loadRegistry(source, { verbose: options.verbose });
 
   try {

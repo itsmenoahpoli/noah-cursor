@@ -1,7 +1,12 @@
 import { describe, expect, it } from "vitest";
 import { BUNDLED_REGISTRY, OFFICIAL_REGISTRY } from "../constants/index.js";
 import { ValidationError } from "../core/errors.js";
-import { getBundledRegistryPath, resolveNoahRegistry } from "../utils/registry.js";
+import {
+  getBundledRegistryPath,
+  resolveNoahRegistry,
+  toPublicRegistryLabel,
+  toStoredRegistryUrl,
+} from "../utils/registry.js";
 import { loadBundledRegistry } from "../services/registry-loader.js";
 import { listAllManifestAssets } from "../utils/assets.js";
 
@@ -37,6 +42,20 @@ describe("resolveNoahRegistry", () => {
     expect(() =>
       resolveNoahRegistry("https://github.com/someone/other-registry"),
     ).toThrow(/official registry/);
+  });
+});
+
+describe("registry privacy helpers", () => {
+  it("never exposes local paths in the public label", () => {
+    expect(toPublicRegistryLabel("file:///Users/me/secret")).toBe("Noah registry");
+    expect(toPublicRegistryLabel("/Users/me/secret")).toBe("Noah registry");
+    expect(toPublicRegistryLabel(OFFICIAL_REGISTRY)).toBe("Noah registry");
+  });
+
+  it("stores the official URL instead of local paths", () => {
+    expect(toStoredRegistryUrl("file:///Users/me/secret")).toBe(OFFICIAL_REGISTRY);
+    expect(toStoredRegistryUrl(".")).toBe(OFFICIAL_REGISTRY);
+    expect(toStoredRegistryUrl(OFFICIAL_REGISTRY)).toBe(OFFICIAL_REGISTRY);
   });
 });
 

@@ -5,7 +5,6 @@ import { installFromSelections } from "../services/install-service.js";
 import { loadRegistry } from "../services/registry-loader.js";
 import type { AssetRequest, AssetType, Manifest } from "../types/index.js";
 import { getManifestAssets } from "../utils/assets.js";
-import { displayRegistryUrl } from "../utils/fs.js";
 import { resolveNoahRegistry } from "../utils/registry.js";
 import { selectCategories, type BrowseCategory } from "../ui/categoryMenu.js";
 import { selectAssets } from "../ui/assetMenu.js";
@@ -152,7 +151,7 @@ export function registerBrowseCommand(program: Command): void {
           console.log();
           console.log(
             chalk.green(
-              `${opts.dryRun ? "Planned" : "Installed"} ${installed.length} asset(s) from ${displayRegistryUrl(registry.url)}`,
+              `${opts.dryRun ? "Planned" : "Installed"} ${installed.length} asset(s)`,
             ),
           );
         } finally {

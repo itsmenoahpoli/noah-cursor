@@ -23,18 +23,11 @@ export function registerListCommand(program: Command): void {
           }
 
           logTitle(`Installed assets (${listed.installed.length})`);
-          if (listed.registry) {
-            console.log(chalk.dim(`  Registry: ${listed.registry}`));
-          }
-          if (listed.updatedAt) {
-            console.log(chalk.dim(`  Updated:  ${listed.updatedAt}`));
-          }
           console.log();
 
           for (const asset of listed.installed) {
-            const pathInfo = asset.path ? chalk.dim(` → ${asset.path}`) : "";
             console.log(
-              `  ${chalk.cyan(asset.type.padEnd(7))} ${chalk.bold(asset.id)}@${asset.version}${pathInfo}`,
+              `  ${chalk.cyan(asset.type.padEnd(7))} ${chalk.bold(asset.id)}@${asset.version}`,
             );
           }
         } catch (error) {
@@ -55,8 +48,6 @@ export function registerListCommand(program: Command): void {
         }
 
         logTitle(`Registry assets (${listed.assets.length})`);
-        console.log(chalk.dim(`  ${listed.name}@${listed.version}`));
-        console.log(chalk.dim(`  ${listed.registry}`));
         console.log();
 
         for (const type of TYPE_ORDER) {

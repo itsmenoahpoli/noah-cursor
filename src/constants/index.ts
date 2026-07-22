@@ -14,6 +14,9 @@ export const OFFICIAL_REGISTRY_OWNER = "itsmenoahpoli";
 export const OFFICIAL_REGISTRY_REPO = "noah-cursor";
 export const OFFICIAL_REGISTRY = `https://github.com/${OFFICIAL_REGISTRY_OWNER}/${OFFICIAL_REGISTRY_REPO}`;
 
+/** User-facing registry name — never expose local paths or internals. */
+export const PUBLIC_REGISTRY_LABEL = "Noah registry";
+
 /** Sentinel source: load the registry bundled into this package at build time. */
 export const BUNDLED_REGISTRY = "bundled:noah-cursor";
 
