@@ -1,6 +1,6 @@
 {
   "name": "noah-cursor",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Install Noah's reusable Cursor assets (Skills, Rules, Prompts, MCP configs, Presets)",
   "type": "module",
   "bin": {
