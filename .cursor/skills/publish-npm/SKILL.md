@@ -1,7 +1,7 @@
 ---
 name: publish-npm
 description: >-
-  Runs /commit-push first, always bumps the minor version, then publishes
+  Runs /commit-push first, always bumps the patch version, then publishes
   noah-cursor to npm. Use when the user runs /publish-npm, asks to publish
   to npm, or release the CLI package for this repository only.
 disable-model-invocation: true
@@ -23,7 +23,7 @@ Publish Progress:
 - [ ] 2. Verify package identity
 - [ ] 3. Confirm npm auth
 - [ ] 4. Preflight (build + test)
-- [ ] 5. Bump version (always minor)
+- [ ] 5. Bump version (always patch)
 - [ ] 6. npm publish
 - [ ] 7. Verify + report
 ```
@@ -93,15 +93,15 @@ npm run typecheck
 
 Stop on any failure.
 
-### 5. Bump version (always minor)
+### 5. Bump version (always patch)
 
-**Rule: always bump the minor version.** Do not ask the user. Do not use patch or major unless the user explicitly overrides in the current message.
+**Rule: always bump the patch version.** Do not ask the user. Do not use minor or major unless the user explicitly overrides in the current message.
 
 ```bash
-npm version minor
+npm version patch
 ```
 
-Example: `1.0.0` → `1.1.0`, `1.1.0` → `1.2.0`.
+Example: `1.0.0` → `1.0.1`, `1.0.1` → `1.0.2`.
 
 Then push the version commit and tag:
 
@@ -112,10 +112,10 @@ git push --tags
 
 Notes:
 
-- `npm version minor` creates a version commit + git tag automatically.
+- `npm version patch` creates a version commit + git tag automatically.
 - Do **not** use `--force` tags/push unless the user explicitly asks.
 - Never publish secrets (`.env`, tokens, private keys).
-- Do not skip the bump to “keep current” — every `/publish-npm` run ships a new minor.
+- Do not skip the bump to “keep current” — every `/publish-npm` run ships a new patch.
 
 ### 6. npm publish
 
@@ -130,7 +130,7 @@ Do not use `--otp` unless the user provides a one-time password / 2FA code.
 If publish fails because the version already exists:
 
 1. Report the error
-2. Run `npm version minor` again
+2. Run `npm version patch` again
 3. Push commits/tags, then retry `npm publish --access public`
 
 ### 7. Verify + report
