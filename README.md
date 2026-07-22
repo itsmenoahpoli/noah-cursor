@@ -79,7 +79,6 @@ Examples:
 # Install from Noah's official registry
 npx noah-cursor add --skill test
 npx noah-cursor add --rule test
-npx noah-cursor add --preset test
 npx noah-cursor add --all
 npx noah-cursor add itsmenoahpoli/noah-cursor --skill commit-push
 
@@ -114,10 +113,14 @@ presets/
 ### Starter assets
 
 - **skill** `test`
+- **skill** `commit-push`
+- **skill** `react-doctor-fix` — run react-doctor, fix findings, verify no regressions
+- **skill** `larastan-fix` — run Larastan on Laravel, fix findings, verify no regressions
+- **skill** `nestjs-knip-fix` — run Knip on NestJS, fix unused code/deps, verify no regressions
+- **skill** `node-doctor-fix` — bundled node-doctor (Knip + package hygiene) for generic Node
 - **rule** `test`
-- **preset** `test` (installs both)
 
-Add curated Noah assets under those folders and register them in `manifest.json`.
+Add curated Noah assets under those folders and register them in `manifest.json`. Presets are supported by the CLI but none are published in this registry yet.
 
 ### manifest.json
 
@@ -143,16 +146,7 @@ Add curated Noah assets under those folders and register them in `manifest.json`
   ],
   "prompts": [],
   "mcp": [],
-  "presets": [
-    {
-      "id": "test",
-      "version": "1.0.0",
-      "includes": {
-        "skills": ["test"],
-        "rules": ["test"]
-      }
-    }
-  ]
+  "presets": []
 }
 ```
 

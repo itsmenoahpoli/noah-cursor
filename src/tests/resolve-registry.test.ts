@@ -46,15 +46,15 @@ describe("bundled registry", () => {
     expect(bundled.length).toBeGreaterThan(0);
   });
 
-  it("loads skills, rules, and presets without cloning", async () => {
+  it("loads skills and rules without cloning", async () => {
     const registry = await loadBundledRegistry();
     try {
       expect(registry.url).toBe(OFFICIAL_REGISTRY);
       const assets = listAllManifestAssets(registry.manifest);
       expect(assets.some((a) => a.type === "skill")).toBe(true);
       expect(assets.some((a) => a.type === "rule")).toBe(true);
-      expect(assets.some((a) => a.type === "preset")).toBe(true);
-      expect(assets.length).toBeGreaterThanOrEqual(10);
+      expect(assets.every((a) => a.type !== "preset")).toBe(true);
+      expect(assets.length).toBeGreaterThanOrEqual(8);
     } finally {
       await registry.cleanup();
     }

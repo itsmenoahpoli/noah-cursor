@@ -50,10 +50,11 @@ describe("install flow (local registry)", () => {
     expect(second.skipped).toBe(true);
   });
 
-  it("adds a preset via addFromRegistry", async () => {
+  it("adds a skill and rule via addFromRegistry", async () => {
     await tempProject();
     const results = await addFromRegistry(REGISTRY_PATH, {
-      preset: "test",
+      skill: "test",
+      rule: "test",
       yes: true,
     });
 
@@ -63,7 +64,8 @@ describe("install flow (local registry)", () => {
     expect(await fs.pathExists(".cursor/rules/test")).toBe(true);
 
     const meta = await readMetadata();
-    expect(meta?.installed.some((a) => a.type === "preset" && a.id === "test")).toBe(true);
+    expect(meta?.installed.some((a) => a.type === "skill" && a.id === "test")).toBe(true);
+    expect(meta?.installed.some((a) => a.type === "rule" && a.id === "test")).toBe(true);
   });
 
   it("supports dry-run without writing files", async () => {
@@ -90,8 +92,8 @@ describe("install flow (local registry)", () => {
     const listed = await listRegistryAssets(REGISTRY_PATH);
     expect(listed.assets.some((a) => a.type === "skill" && a.id === "commit-push")).toBe(true);
     expect(listed.assets.some((a) => a.type === "rule" && a.id === "laravel-api")).toBe(true);
-    expect(listed.assets.some((a) => a.type === "preset" && a.id === "noah-web-stack")).toBe(true);
-    expect(listed.assets.length).toBeGreaterThanOrEqual(10);
+    expect(listed.assets.every((a) => a.type !== "preset")).toBe(true);
+    expect(listed.assets.length).toBeGreaterThanOrEqual(8);
   });
 
   it("doctor reports checks", async () => {

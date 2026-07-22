@@ -1,0 +1,29 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "entry": [
+    "src/main.ts",
+    "src/main.js",
+    "apps/**/src/main.ts",
+    "src/**/*.module.ts",
+    "apps/**/*.module.ts",
+    "libs/**/src/index.ts",
+    "test/**/*.ts",
+    "test/**/*.js"
+  ],
+  "project": [
+    "src/**/*.{ts,js}",
+    "apps/**/*.{ts,js}",
+    "libs/**/*.{ts,js}",
+    "test/**/*.{ts,js}"
+  ],
+  "ignore": [
+    "**/*.spec.ts",
+    "**/*.e2e-spec.ts",
+    "dist/**",
+    "coverage/**"
+  ],
+  "ignoreDependencies": [
+    "@nestjs/schematics",
+    "@nestjs/testing"
+  ]
+}

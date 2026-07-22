@@ -15,6 +15,30 @@
       "version": "1.0.0",
       "description": "Stage all changes, group by category, draft a linepush-style commit, commit, and push",
       "tags": ["git", "commit", "push", "conventional-commits"]
+    },
+    {
+      "id": "react-doctor-fix",
+      "version": "1.0.0",
+      "description": "Run react-doctor, fix all findings, and verify features still work",
+      "tags": ["react", "react-doctor", "lint", "refactor", "qa"]
+    },
+    {
+      "id": "larastan-fix",
+      "version": "1.0.0",
+      "description": "Run Larastan on Laravel, fix all findings, and verify features still work",
+      "tags": ["laravel", "php", "larastan", "phpstan", "qa"]
+    },
+    {
+      "id": "nestjs-knip-fix",
+      "version": "1.0.0",
+      "description": "Run Knip on NestJS, fix unused code/deps, and verify features still work",
+      "tags": ["nestjs", "knip", "node", "typescript", "qa"]
+    },
+    {
+      "id": "node-doctor-fix",
+      "version": "1.0.0",
+      "description": "Run bundled node-doctor (Knip + hygiene), fix findings, verify features still work",
+      "tags": ["node", "knip", "doctor", "qa", "cli"]
     }
   ],
   "rules": [
@@ -57,29 +81,5 @@
   ],
   "prompts": [],
   "mcp": [],
-  "presets": [
-    {
-      "id": "test",
-      "version": "1.0.0",
-      "description": "Installs the sample test skill and rule",
-      "includes": {
-        "skills": ["test"],
-        "rules": ["test"]
-      }
-    },
-    {
-      "id": "noah-web-stack",
-      "version": "1.0.0",
-      "description": "Full Noah web stack rules: architecture, React SPA, Laravel API, Next.js and Nuxt marketing",
-      "includes": {
-        "rules": [
-          "stack-architecture",
-          "react-spa-dashboard",
-          "laravel-api",
-          "nextjs-marketing",
-          "nuxt-marketing"
-        ]
-      }
-    }
-  ]
+  "presets": []
 }
