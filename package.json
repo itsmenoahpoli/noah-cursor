@@ -1,6 +1,6 @@
 {
   "name": "noah-cursor",
-  "version": "1.5.7",
+  "version": "1.5.8",
   "description": "The CLI for shipping Cursor setups — install battle-tested Skills, Rules, Prompts, MCP configs, and Presets",
   "type": "module",
   "bin": {
