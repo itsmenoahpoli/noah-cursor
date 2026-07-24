@@ -54,7 +54,7 @@ Built for people who live in the terminal and want Cursor to feel like a product
 ## Demo
 
 <p align="center">
-  <img src="https://cdn.jsdelivr.net/gh/itsmenoahpoli/noah-cursor@main/demos/noah-cursor.gif" alt="Noah Cursor CLI demo" width="100%" />
+  <img src="assets/noah-cursor-demo.gif" alt="Noah Cursor CLI demo" width="100%" />
 </p>
 
 ## Quick start
