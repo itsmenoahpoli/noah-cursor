@@ -12,7 +12,7 @@
   <a href="https://www.npmjs.com/package/noah-cursor"><img src="https://img.shields.io/npm/dm/noah-cursor.svg" alt="npm downloads" /></a>
   <a href="LICENSE"><img src="https://img.shields.io/npm/l/noah-cursor.svg" alt="license" /></a>
   <img src="https://img.shields.io/node/v/noah-cursor.svg" alt="node" />
-  <a href="https://www.buymeacoffee.com/itsmenoahpoli"><img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-FFDD00?style=flat&logo=buymeacoffee&logoColor=black" alt="Buy Me a Coffee" /></a>
+  <a href="https://www.buymeacoffee.com/klnaufr"><img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-FFDD00?style=flat&logo=buymeacoffee&logoColor=black" alt="Buy Me a Coffee" /></a>
 </p>
 
 ```bash
@@ -251,13 +251,13 @@ Whether it's a Skill you want added, a Rule for your stack, a bug report, or an 
 If Noah Cursor saves you time, consider buying me a coffee — it helps keep the CLI and registry maintained.
 
 <p align="center">
-  <a href="https://www.buymeacoffee.com/itsmenoahpoli">
+  <a href="https://www.buymeacoffee.com/klnaufr">
     <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="50" />
   </a>
 </p>
 
 <p align="center">
-  <a href="https://www.buymeacoffee.com/itsmenoahpoli">
+  <a href="https://www.buymeacoffee.com/klnaufr">
     <img src="https://cdn.jsdelivr.net/npm/noah-cursor@latest/assets/qr-code.png" alt="Buy Me a Coffee QR code" width="220" />
   </a>
   <br />
