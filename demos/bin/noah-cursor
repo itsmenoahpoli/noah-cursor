@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+exec node "/Users/patrickpoli/Desktop/Projects/Noah Cursor/noah-cursor/dist/index.js" "$@"
