@@ -1,6 +1,6 @@
 {
   "package": "noah-cursor",
-  "latest": "1.5.7",
+  "latest": "1.5.8",
   "minVersion": "1.5.7",
   "npmUrl": "https://www.npmjs.com/package/noah-cursor",
   "disclaimer": {
@@ -20,6 +20,20 @@
     ]
   },
   "releases": [
+    {
+      "version": "1.5.8",
+      "date": "2026-07-24",
+      "tag": "v1.5.8",
+      "title": "Docs site + multi-IDE",
+      "summary": "Public GitHub Pages documentation and multi-IDE install support land with this patch.",
+      "notes": [
+        "Ship GitHub Pages docs: How, Skills & Rules, Commands, and Releases",
+        "Add Skills & Rules catalog with detail modals and stack badges",
+        "Track releases in docs/releases.json from 1.5.7 (first public) onward",
+        "Sync Pages docs automatically on /publish-npm via sync-docs-release",
+        "Multi-IDE installs with --ide (Cursor default; Windsurf, Claude Code, and more)"
+      ]
+    },
     {
       "version": "1.5.7",
       "date": "2026-07-24",
