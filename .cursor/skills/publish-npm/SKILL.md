@@ -134,6 +134,8 @@ node -p "require('./package.json').version"
 
 2. Draft release notes from commits since the previous tag (title, 1-line summary, 2–6 bullet notes). Be accurate; do not invent features.
 
+   **CLI-only notes (required):** Release entries are for `noah-cursor` CLI users. Include only changes that affect the installable CLI, registry assets, commands, IDE support, or package behavior. **Do not** list GitHub Pages / `docs/` site-only work (layout, toasts, modal UX, marketing copy, Pages deploy tweaks, etc.) — users do not need those in Releases. Still sync version metadata on the Pages site; just keep the written notes CLI-focused. If a patch is docs-site-only, keep notes minimal and package-facing (e.g. metadata), never site UX bullets.
+
 3. Run the sync script with those notes (preferred):
 
 ```bash
@@ -144,7 +146,7 @@ node scripts/sync-docs-release.mjs \
   --note "Second concrete change"
 ```
 
-If you have no crafted notes yet, running without `--note` will scaffold from `git log` — then **edit** `docs/releases.json` so notes are clear and user-facing.
+If you have no crafted notes yet, running without `--note` will scaffold from `git log` — then **edit** `docs/releases.json` so notes are clear, user-facing, and CLI-only (strip any Pages/site-only lines from the scaffold).
 
 What the script updates:
 
@@ -157,6 +159,7 @@ Rules:
 - Keep the disclaimer block intact
 - Do not remove older public releases (`>= 1.5.7`) unless the user asks
 - For a special label (rare), pass `--label "First public" --label-tone public`
+- Never put GitHub Pages site-only changes into `notes` / `summary` / `title`
 
 ### 7. Commit + push docs (triggers Pages deploy)
 
