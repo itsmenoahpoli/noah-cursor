@@ -54,7 +54,7 @@ Built for people who live in the terminal and want Cursor to feel like a product
 ## Demo
 
 <p align="center">
-  <img src="assets/noah-cursor-demo.gif" alt="Noah Cursor CLI demo" width="100%" />
+  <img src="https://cdn.jsdelivr.net/npm/noah-cursor@latest/assets/noah-cursor-demo.gif" alt="Noah Cursor CLI demo" width="100%" />
 </p>
 
 ## Quick start
@@ -92,24 +92,24 @@ npx noah-cursor add --rule laravel-api --rule react-spa-dashboard
 
 ### Skills — agent workflows you can reuse
 
-| Skill | What it does |
-| ----- | ------------ |
-| <img src="https://skillicons.dev/icons?i=git" alt="Git" width="20" height="20" /> `commit-push` | Stage, group by category, draft a clean commit, push |
-| <img src="https://skillicons.dev/icons?i=md" alt="Docs" width="20" height="20" /> `generate-readme` | Generate README with stack, deps, prerequisites, setup |
-| <img src="https://skillicons.dev/icons?i=react" alt="React" width="20" height="20" /> `react-doctor-fix` | Run react-doctor, fix findings, verify no regressions |
-| <img src="https://skillicons.dev/icons?i=laravel" alt="Laravel" width="20" height="20" /> `larastan-fix` | Run Larastan on Laravel, fix, verify |
-| <img src="https://skillicons.dev/icons?i=nestjs" alt="NestJS" width="20" height="20" /> `nestjs-knip-fix` | Knip on NestJS — unused code/deps out, features intact |
-| <img src="https://skillicons.dev/icons?i=nodejs" alt="Node.js" width="20" height="20" /> `node-doctor-fix` | Bundled node-doctor (Knip + hygiene) for generic Node |
+| Skill | Stack | What it does |
+| ----- | ----- | ------------ |
+| `commit-push` | Git | Stage, group by category, draft a clean commit, push |
+| `generate-readme` | Docs | Generate README with stack, deps, prerequisites, setup |
+| `react-doctor-fix` | React | Run react-doctor, fix findings, verify no regressions |
+| `larastan-fix` | Laravel | Run Larastan on Laravel, fix, verify |
+| `nestjs-knip-fix` | NestJS | Knip on NestJS — unused code/deps out, features intact |
+| `node-doctor-fix` | Node.js | Bundled node-doctor (Knip + hygiene) for generic Node |
 
 ### Rules — stack guidance baked into Cursor
 
-| Rule | For |
-| ---- | --- |
-| <img src="https://skillicons.dev/icons?i=react,laravel,nextjs,nuxtjs" alt="Stacks" height="20" /> `stack-architecture` | Choosing React SPA vs Laravel API vs Next/Nuxt marketing |
-| <img src="https://skillicons.dev/icons?i=react" alt="React" width="20" height="20" /> `react-spa-dashboard` | React + TypeScript + TanStack Query dashboards |
-| <img src="https://skillicons.dev/icons?i=laravel" alt="Laravel" width="20" height="20" /> `laravel-api` | Headless Laravel APIs (Sanctum-ready) |
-| <img src="https://skillicons.dev/icons?i=nextjs" alt="Next.js" width="20" height="20" /> `nextjs-marketing` | Next.js App Router marketing / branding sites |
-| <img src="https://skillicons.dev/icons?i=nuxtjs" alt="Nuxt" width="20" height="20" /> `nuxt-marketing` | Nuxt 3+ marketing / branding sites |
+| Rule | Stack | For |
+| ---- | ----- | --- |
+| `stack-architecture` | Multi | Choosing React SPA vs Laravel API vs Next/Nuxt marketing |
+| `react-spa-dashboard` | React | React + TypeScript + TanStack Query dashboards |
+| `laravel-api` | Laravel | Headless Laravel APIs (Sanctum-ready) |
+| `nextjs-marketing` | Next.js | Next.js App Router marketing / branding sites |
+| `nuxt-marketing` | Nuxt | Nuxt 3+ marketing / branding sites |
 
 Prompts, MCP configs, and Presets are supported by the CLI — more shipping soon.
 
@@ -258,7 +258,7 @@ If Noah Cursor saves you time, consider buying me a coffee — it helps keep the
 
 <p align="center">
   <a href="https://www.buymeacoffee.com/itsmenoahpoli">
-    <img src="assets/qr-code.png" alt="Buy Me a Coffee QR code" width="220" />
+    <img src="https://cdn.jsdelivr.net/npm/noah-cursor@latest/assets/qr-code.png" alt="Buy Me a Coffee QR code" width="220" />
   </a>
   <br />
   <sub>Scan to support on Buy Me a Coffee</sub>
