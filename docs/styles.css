@@ -842,6 +842,7 @@ html.lenis body {
   display: flex;
   flex-direction: column;
   max-height: min(85vh, 40rem);
+  overflow: hidden;
   opacity: 0;
   transform: translateY(8px);
   transition: opacity 0.3s var(--ease) 0.04s, transform 0.34s var(--ease) 0.04s;
@@ -899,9 +900,13 @@ html.lenis body {
 }
 
 .asset-dialog-body {
+  flex: 1 1 auto;
+  min-height: 0;
   padding: 1.15rem 1.35rem;
   overflow-y: auto;
+  overscroll-behavior: contain;
   color: var(--ink-soft);
+  -webkit-overflow-scrolling: touch;
 }
 
 .asset-dialog-body p {
@@ -945,11 +950,46 @@ html.lenis body {
 .asset-dialog-foot {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-end;
+  justify-content: space-between;
   gap: 0.75rem;
   align-items: center;
   padding: 1rem 1.35rem 1.25rem;
   border-top: 1px solid var(--line);
+  flex-shrink: 0;
+}
+
+.asset-dialog-foot .btn-ghost {
+  margin-right: auto;
+}
+
+.asset-dialog-foot .btn-ghost,
+.asset-dialog-foot .btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0.7rem 1.05rem;
+  margin: 0;
+  box-sizing: border-box;
+  border-radius: 8px;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+.asset-dialog-foot .btn-ghost {
+  border: 1.5px solid var(--line);
+  background: transparent;
+  color: var(--ink-soft);
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+
+.asset-dialog-foot .btn-ghost:hover {
+  color: var(--g3);
+  border-color: rgba(125, 211, 252, 0.35);
 }
 
 .asset-dialog-foot .btn-primary {
@@ -958,6 +998,117 @@ html.lenis body {
 
 .asset-dialog-foot .btn-primary .cmd {
   font-size: 0.8rem;
+}
+
+html.modal-open,
+html.modal-open body {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+html.modal-open body {
+  touch-action: none;
+}
+
+html.modal-open .asset-dialog,
+html.modal-open .asset-dialog * {
+  touch-action: pan-y;
+}
+
+/* react-toastify–style colored toasts (top-right)
+   Uses popover so it shares the top layer with <dialog showModal()> —
+   plain z-index cannot paint above the modal top layer. */
+.toast-container,
+.toast-container:popover-open {
+  position: fixed;
+  inset: auto;
+  top: 1rem;
+  right: 1rem;
+  left: auto;
+  bottom: auto;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  overflow: visible;
+  z-index: 2147483647;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  width: min(22rem, calc(100vw - 2rem));
+  pointer-events: none;
+}
+
+.toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  padding: 0.85rem 0.95rem;
+  border-radius: 6px;
+  color: #fff;
+  font-family: var(--sans);
+  font-size: 0.92rem;
+  line-height: 1.35;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.28);
+  opacity: 0;
+  transform: translateX(110%);
+  transition: transform 0.35s cubic-bezier(0.21, 1.02, 0.73, 1), opacity 0.25s ease;
+}
+
+.toast.is-in {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.toast.is-out {
+  opacity: 0;
+  transform: translateX(110%);
+}
+
+.toast--success {
+  background: #07bc0c;
+}
+
+.toast--error {
+  background: #e74c3c;
+}
+
+.toast--info {
+  background: #3498db;
+}
+
+.toast--warning {
+  background: #f1c40f;
+  color: #1a1a1a;
+}
+
+.toast-icon {
+  flex-shrink: 0;
+  width: 1.15rem;
+  height: 1.15rem;
+  margin-top: 0.05rem;
+}
+
+.toast-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.toast-close {
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  opacity: 0.75;
+  cursor: pointer;
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: 0 0.1rem;
+}
+
+.toast-close:hover {
+  opacity: 1;
 }
 
 @media (max-width: 640px) {

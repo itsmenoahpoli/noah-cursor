@@ -41,6 +41,7 @@
   "engines": {
     "node": ">=20"
   },
+  "homepage": "https://itsmenoahpoli.github.io/noah-cursor/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/itsmenoahpoli/noah-cursor.git"
@@ -48,7 +49,6 @@
   "bugs": {
     "url": "https://github.com/itsmenoahpoli/noah-cursor/issues"
   },
-  "homepage": "https://www.npmjs.com/package/noah-cursor",
   "dependencies": {
     "@inquirer/core": "11.2.1",
     "@inquirer/prompts": "^7.5.0",

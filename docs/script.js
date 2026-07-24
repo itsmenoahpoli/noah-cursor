@@ -9,14 +9,75 @@ if (copyBtn) {
       await navigator.clipboard.writeText(command);
       copyBtn.classList.add("copied");
       if (label) label.textContent = "Copied";
+      toast("Copied to clipboard", { type: "success" });
       window.setTimeout(() => {
         copyBtn.classList.remove("copied");
         if (label) label.textContent = "Copy";
       }, 1600);
     } catch {
       if (label) label.textContent = "Select & copy";
+      toast("Could not copy — select and copy manually", { type: "error" });
     }
   });
+}
+
+function ensureToastContainer() {
+  let container = document.getElementById("toast-container");
+  if (!container) {
+    container = document.createElement("div");
+    container.id = "toast-container";
+    container.className = "toast-container";
+    container.setAttribute("popover", "manual");
+    container.setAttribute("aria-live", "polite");
+    container.setAttribute("aria-relevant", "additions");
+    document.body.appendChild(container);
+  }
+  // Native <dialog showModal()> uses the top layer; popover joins it so toasts sit above.
+  // Re-show so this entry is the newest top-layer item (above an already-open modal).
+  if (typeof container.showPopover === "function") {
+    try {
+      if (container.matches(":popover-open")) container.hidePopover();
+      container.showPopover();
+    } catch {
+      /* ignore if unsupported */
+    }
+  }
+  return container;
+}
+
+function toastIcon(type) {
+  if (type === "success") {
+    return `<svg class="toast-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><path d="M8 12.5l2.5 2.5L16 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  }
+  if (type === "error") {
+    return `<svg class="toast-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><path d="M15 9l-6 6M9 9l6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
+  }
+  return `<svg class="toast-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><path d="M12 8v5M12 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
+}
+
+function toast(message, { type = "success", duration = 2800 } = {}) {
+  const container = ensureToastContainer();
+  const el = document.createElement("div");
+  el.className = `toast toast--${type}`;
+  el.setAttribute("role", "status");
+  el.innerHTML = `
+    ${toastIcon(type)}
+    <div class="toast-body">${escapeHtml(message)}</div>
+    <button type="button" class="toast-close" aria-label="Dismiss">×</button>
+  `;
+
+  const remove = () => {
+    el.classList.remove("is-in");
+    el.classList.add("is-out");
+    window.setTimeout(() => el.remove(), 280);
+  };
+
+  el.querySelector(".toast-close")?.addEventListener("click", remove);
+  container.appendChild(el);
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => el.classList.add("is-in"));
+  });
+  window.setTimeout(remove, duration);
 }
 
 const HEADER_OFFSET = 88;
@@ -392,13 +453,32 @@ function setupAssetDialog() {
     try {
       await navigator.clipboard.writeText(cmd);
       if (label) label.textContent = "Copied";
+      toast("Copied to clipboard", { type: "success" });
       window.setTimeout(() => {
         if (label) label.textContent = "Copy";
       }, 1400);
     } catch {
       if (label) label.textContent = "Select & copy";
+      toast("Could not copy — select and copy manually", { type: "error" });
     }
   });
+}
+
+function lockPageScroll() {
+  if (document.documentElement.classList.contains("modal-open")) return;
+  document.documentElement.classList.add("modal-open");
+  document.body.classList.add("modal-open");
+  if (window.lenis && typeof window.lenis.stop === "function") {
+    window.lenis.stop();
+  }
+}
+
+function unlockPageScroll() {
+  document.documentElement.classList.remove("modal-open");
+  document.body.classList.remove("modal-open");
+  if (window.lenis && typeof window.lenis.start === "function") {
+    window.lenis.start();
+  }
 }
 
 function closeAssetDialog() {
@@ -416,6 +496,7 @@ function closeAssetDialog() {
     dialog.classList.remove("is-closing");
     if (typeof dialog.close === "function") dialog.close();
     else dialog.removeAttribute("open");
+    unlockPageScroll();
     if (window.location.hash.startsWith("#asset-")) {
       history.replaceState(null, "", window.location.pathname + window.location.search);
     }
@@ -472,6 +553,7 @@ function openAssetDialog(asset, kind) {
   history.replaceState(null, "", `#asset-${kind}-${asset.id}`);
 
   dialog.classList.remove("is-closing", "is-open");
+  lockPageScroll();
   if (typeof dialog.showModal === "function") dialog.showModal();
   else dialog.setAttribute("open", "");
 
