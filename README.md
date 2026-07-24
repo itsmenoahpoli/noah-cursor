@@ -8,6 +8,12 @@ Install Noah's reusable Cursor assets — Skills, Rules, Prompts, MCP configs, a
 npx noah-cursor add --skill test
 ```
 
+## Demo
+
+<p align="center">
+  <img src="https://cdn.jsdelivr.net/gh/itsmenoahpoli/noah-cursor@main/demos/noah-cursor.gif" alt="Noah Cursor CLI demo" width="100%" />
+</p>
+
 ## Install
 
 ```bash
