@@ -1,0 +1,42 @@
+{
+  "package": "noah-cursor",
+  "latest": "1.5.7",
+  "minVersion": "1.5.7",
+  "npmUrl": "https://www.npmjs.com/package/noah-cursor",
+  "disclaimer": {
+    "id": "disclaimer",
+    "label": "Disclaimer",
+    "title": "Still in development",
+    "body": "Noah Cursor is an early, actively developed CLI. Features, registry assets, and IDE support will keep expanding over time. Expect iteration — APIs, commands, and packaged Skills/Rules may change as the tool matures. Feedback is welcome while it grows."
+  },
+  "roadmap": {
+    "id": "roadmap",
+    "title": "Growing next",
+    "summary": "Planned direction as the project continues — not a hard schedule.",
+    "items": [
+      "More Skills, Rules, Prompts, MCP configs, and Presets in the registry",
+      "Deeper IDE coverage and smoother browse/add UX",
+      "Clearer docs and release notes as each version ships"
+    ]
+  },
+  "releases": [
+    {
+      "version": "1.5.7",
+      "date": "2026-07-24",
+      "tag": "v1.5.7",
+      "title": "First public release",
+      "summary": "The first version decided for public use — the starting line for Noah Cursor as a product people can install and trust.",
+      "labels": [
+        {
+          "text": "First public",
+          "tone": "public"
+        }
+      ],
+      "notes": [
+        "Designated as the first public version for general use",
+        "Point Buy Me a Coffee links to the klnaufr support page",
+        "Package bump for npm distribution"
+      ]
+    }
+  ]
+}

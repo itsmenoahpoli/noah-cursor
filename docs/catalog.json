@@ -1,0 +1,182 @@
+{
+  "skills": [
+    {
+      "id": "commit-push",
+      "stack": "Git",
+      "version": "1.0.0",
+      "summary": "Stage, group by category, draft a clean commit, push",
+      "description": "Stages all changes, groups files by category, drafts a linepush-style conventional commit message, commits, and pushes. Built for a clean, reviewable history without hand-writing commit bodies every time.",
+      "whenToUse": "Use when you want to commit and push the current working tree, or need an AI-drafted conventional commit from staged/unstaged changes.",
+      "highlights": [
+        "Inspects status, diffs, and recent history before writing the message",
+        "Stages everything, then categorizes the changeset",
+        "Drafts a linepush-style conventional commit",
+        "Commits and pushes to the tracked remote branch"
+      ],
+      "tags": ["git", "commit", "push", "conventional-commits"],
+      "install": "npx noah-cursor add --skill commit-push"
+    },
+    {
+      "id": "generate-readme",
+      "stack": "Docs",
+      "version": "1.0.0",
+      "summary": "Generate README with stack, deps, prerequisites, setup",
+      "description": "Generates or rewrites a project README from the real codebase — title, description, tech stack, dependencies, prerequisites, installation, and setup. Prefers accuracy over marketing filler and does not invent APIs or env vars that are not in the repo.",
+      "whenToUse": "Use when you need a project README, setup docs, or a rewrite of README.md grounded in actual config and scripts.",
+      "highlights": [
+        "Infers stack from package manifests and framework configs",
+        "Collects scripts, engines, and .env.example names (never secrets)",
+        "Preserves intentional extras like badges when rewriting",
+        "Sanity-checks commands before finishing"
+      ],
+      "tags": ["docs", "readme", "documentation", "setup"],
+      "install": "npx noah-cursor add --skill generate-readme"
+    },
+    {
+      "id": "react-doctor-fix",
+      "stack": "React",
+      "version": "1.0.0",
+      "summary": "Run react-doctor, fix findings, verify no regressions",
+      "description": "Runs React Doctor, constructs fixes for all findings, and verifies that implementations and features still work. Prefers root-cause fixes over mass-suppressions, and re-checks after each batch of edits.",
+      "whenToUse": "Use on React / Next / Vite / Remix / Expo apps when you want a full react-doctor clean-up without regressions.",
+      "highlights": [
+        "Confirms the project is a React-family app",
+        "Baseline verbose + JSON scan",
+        "Fixes findings in prioritized batches",
+        "Re-scans and runs project verification until clean"
+      ],
+      "tags": ["react", "react-doctor", "lint", "refactor", "qa"],
+      "install": "npx noah-cursor add --skill react-doctor-fix"
+    },
+    {
+      "id": "larastan-fix",
+      "stack": "Laravel",
+      "version": "1.0.0",
+      "summary": "Run Larastan on Laravel, fix, verify",
+      "description": "Runs Larastan (PHPStan for Laravel), fixes all findings, and verifies features still work. Does not mass-ignore or regenerate baselines to “pass” — prefers root-cause static analysis fixes.",
+      "whenToUse": "Use on Laravel apps when you want Larastan/PHPStan errors cleaned up without breaking behavior.",
+      "highlights": [
+        "Confirms Laravel + Larastan availability",
+        "Baseline analyse then triage by priority",
+        "Fix in explain → edit → verify batches",
+        "Re-analyse until clean and report leftovers if any"
+      ],
+      "tags": ["laravel", "php", "larastan", "phpstan", "qa"],
+      "install": "npx noah-cursor add --skill larastan-fix"
+    },
+    {
+      "id": "nestjs-knip-fix",
+      "stack": "NestJS",
+      "version": "1.0.0",
+      "summary": "Knip on NestJS — unused code/deps out, features intact",
+      "description": "Runs Knip on NestJS projects, fixes unused files, exports, and dependencies, then verifies features still work. Nest-aware config and no mass-ignore shortcuts.",
+      "whenToUse": "Use on NestJS apps to clean unused code and dependencies without breaking modules or features.",
+      "highlights": [
+        "Confirms NestJS project shape",
+        "Ensures Nest-aware Knip config",
+        "Baseline scan and prioritized triage",
+        "Re-scan until clean with verification between batches"
+      ],
+      "tags": ["nestjs", "knip", "node", "typescript", "qa"],
+      "install": "npx noah-cursor add --skill nestjs-knip-fix"
+    },
+    {
+      "id": "node-doctor-fix",
+      "stack": "Node.js",
+      "version": "1.0.0",
+      "summary": "Bundled node-doctor (Knip + hygiene) for generic Node",
+      "description": "Runs the bundled node-doctor tool (Knip + package hygiene) on generic Node.js libraries, CLIs, or services. Fixes unused exports/deps and checks bin/main/exports/scripts/engines — then verifies nothing broke.",
+      "whenToUse": "Use for generic Node packages. Prefer nestjs-knip-fix for Nest and react-doctor-fix for React-first apps.",
+      "highlights": [
+        "Routes Nest/React apps to the right specialist skill",
+        "Knip via bundled node-doctor config when needed",
+        "Package hygiene checks for entrypoints and engines",
+        "Batch fixes with re-scan and final verification"
+      ],
+      "tags": ["node", "knip", "doctor", "qa", "cli"],
+      "install": "npx noah-cursor add --skill node-doctor-fix"
+    }
+  ],
+  "rules": [
+    {
+      "id": "stack-architecture",
+      "stack": "Multi",
+      "version": "1.0.0",
+      "summary": "Choosing React SPA vs Laravel API vs Next/Nuxt marketing",
+      "description": "Guidance for when to use React SPA dashboards, Laravel API-only backends, and Next.js or Nuxt marketing sites. Keeps product surfaces in the right stack instead of mixing concerns.",
+      "whenToUse": "Use when choosing or mixing frontends and backends, or deciding which specialized rule to apply.",
+      "highlights": [
+        "Dashboard/admin → React client SPA",
+        "Backend API → Laravel API-only",
+        "Marketing/content → Next.js or Nuxt",
+        "Clear boundaries between SEO sites and authenticated SPAs"
+      ],
+      "tags": ["architecture", "stack"],
+      "install": "npx noah-cursor add --rule stack-architecture"
+    },
+    {
+      "id": "react-spa-dashboard",
+      "stack": "React",
+      "version": "1.0.0",
+      "summary": "React + TypeScript + TanStack Query dashboards",
+      "description": "Rules for client-side SPA dashboards (Vite + React + TypeScript) that talk to a Laravel API. No App Router, SSR, or RSC — feature folders, typed clients, and composition-first components.",
+      "whenToUse": "Use for authenticated dashboard/admin SPAs consuming a separate Laravel API.",
+      "highlights": [
+        "Browser SPA only — no Next App Router here",
+        "Feature-oriented folder structure",
+        "Strict TypeScript and focused components",
+        "Typed API client toward Laravel JSON endpoints"
+      ],
+      "tags": ["react", "spa", "dashboard", "typescript", "tanstack-query"],
+      "install": "npx noah-cursor add --rule react-spa-dashboard"
+    },
+    {
+      "id": "laravel-api",
+      "stack": "Laravel",
+      "version": "1.0.0",
+      "summary": "Headless Laravel APIs (Sanctum-ready)",
+      "description": "Laravel API-only backend rules for headless SPA clients. Prefer JSON APIs, Form Requests, API Resources, and Sanctum — not Blade/Livewire/Inertia unless explicitly requested.",
+      "whenToUse": "Use when Laravel is the API backend for a React SPA or other JSON clients.",
+      "highlights": [
+        "REST/JSON first; thin controllers",
+        "Form Requests + API Resources",
+        "Sanctum for SPA or token auth",
+        "Consistent error JSON shapes"
+      ],
+      "tags": ["laravel", "php", "api", "sanctum"],
+      "install": "npx noah-cursor add --rule laravel-api"
+    },
+    {
+      "id": "nextjs-marketing",
+      "stack": "Next.js",
+      "version": "1.0.0",
+      "summary": "Next.js App Router marketing / branding sites",
+      "description": "Next.js App Router rules for marketing and branding websites. Optimize for SEO, performance, and content-driven pages — not authenticated SPA dashboards.",
+      "whenToUse": "Use for landings, brand sites, blogs, and campaigns on Next.js.",
+      "highlights": [
+        "Server Components by default",
+        "metadata / generateMetadata per page",
+        "Semantic HTML and strong SEO defaults",
+        "Keep client bundles lean on marketing pages"
+      ],
+      "tags": ["nextjs", "marketing", "seo", "branding"],
+      "install": "npx noah-cursor add --rule nextjs-marketing"
+    },
+    {
+      "id": "nuxt-marketing",
+      "stack": "Nuxt",
+      "version": "1.0.0",
+      "summary": "Nuxt 3+ marketing / branding sites",
+      "description": "Nuxt 3+ rules for marketing and branding websites. Composition API, file-based routing, SEO utilities, and content-first rendering — not authenticated SPA dashboards unless explicitly chosen.",
+      "whenToUse": "Use for Nuxt marketing, landings, and content-heavy brand sites.",
+      "highlights": [
+        "Vue 3 Composition API with script setup",
+        "useSeoMeta / useHead on public pages",
+        "SSG/SSR-friendly data fetching",
+        "Runtime config for env — never hardcode secrets"
+      ],
+      "tags": ["nuxt", "vue", "marketing", "seo", "branding"],
+      "install": "npx noah-cursor add --rule nuxt-marketing"
+    }
+  ]
+}

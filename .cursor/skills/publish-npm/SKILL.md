@@ -1,9 +1,10 @@
 ---
 name: publish-npm
 description: >-
-  Runs /commit-push first, always bumps the patch version, then publishes
-  noah-cursor to npm. Use when the user runs /publish-npm, asks to publish
-  to npm, or release the CLI package for this repository only.
+  Runs /commit-push first, always bumps the patch version, updates GitHub Pages
+  docs (releases + site metadata), then publishes noah-cursor to npm. Use when
+  the user runs /publish-npm, /publish, asks to publish to npm, or release the
+  CLI package for this repository only.
 disable-model-invocation: true
 ---
 
@@ -11,7 +12,9 @@ disable-model-invocation: true
 
 Project-only release skill for **noah-cursor**.
 
-Always run **`/commit-push` first**, then publish to the npm registry.
+Always run **`/commit-push` first**, then bump, **update GitHub Pages documentation**, publish to npm.
+
+GitHub Pages is the public docs site for this CLI (`docs/` → Actions deploy). Every publish must sync version notes there.
 
 ## Workflow
 
@@ -24,8 +27,10 @@ Publish Progress:
 - [ ] 3. Confirm npm auth
 - [ ] 4. Preflight (build + test)
 - [ ] 5. Bump version (always patch)
-- [ ] 6. npm publish
-- [ ] 7. Verify + report
+- [ ] 6. Update GitHub Pages docs
+- [ ] 7. Commit + push docs (triggers Pages deploy)
+- [ ] 8. npm publish
+- [ ] 9. Verify + report
 ```
 
 ### 1. Run /commit-push first (required)
@@ -117,7 +122,69 @@ Notes:
 - Never publish secrets (`.env`, tokens, private keys).
 - Do not skip the bump to “keep current” — every `/publish-npm` run ships a new patch.
 
-### 6. npm publish
+### 6. Update GitHub Pages docs (required)
+
+After the version bump, sync the public docs site so Releases and metadata match npm.
+
+1. Read the new version:
+
+```bash
+node -p "require('./package.json').version"
+```
+
+2. Draft release notes from commits since the previous tag (title, 1-line summary, 2–6 bullet notes). Be accurate; do not invent features.
+
+3. Run the sync script with those notes (preferred):
+
+```bash
+node scripts/sync-docs-release.mjs \
+  --title "Short release title" \
+  --summary "One-line summary of this release." \
+  --note "First concrete change" \
+  --note "Second concrete change"
+```
+
+If you have no crafted notes yet, running without `--note` will scaffold from `git log` — then **edit** `docs/releases.json` so notes are clear and user-facing.
+
+What the script updates:
+
+- `docs/releases.json` — prepends the new version; sets `latest`
+- `docs/index.html` — `softwareVersion` in JSON-LD
+
+Rules:
+
+- Only versions `>= minVersion` (`1.5.7`) appear on the Releases page — do not lower `minVersion`
+- Keep the disclaimer block intact
+- Do not remove older public releases (`>= 1.5.7`) unless the user asks
+- For a special label (rare), pass `--label "First public" --label-tone public`
+
+### 7. Commit + push docs (triggers Pages deploy)
+
+Stage and commit the docs sync, then push to `main` so `.github/workflows/pages.yml` deploys `docs/`:
+
+```bash
+git add docs/releases.json docs/index.html
+git status --short
+git commit -m "$(cat <<'EOF'
+docs(releases): sync GitHub Pages notes for vX.Y.Z
+
+EOF
+)"
+git push
+```
+
+Replace `X.Y.Z` with the real version.
+
+If there are no docs diffs (already synced), say so and continue.
+
+Confirm the Pages workflow path still covers docs:
+
+- Workflow: `.github/workflows/pages.yml`
+- Deploys folder: `docs/`
+- Public site: `https://itsmenoahpoli.github.io/noah-cursor/`
+- Releases page: `https://itsmenoahpoli.github.io/noah-cursor/releases.html`
+
+### 8. npm publish
 
 Publish the public package:
 
@@ -131,9 +198,10 @@ If publish fails because the version already exists:
 
 1. Report the error
 2. Run `npm version patch` again
-3. Push commits/tags, then retry `npm publish --access public`
+3. Re-run **steps 6–7** for the new version
+4. Push commits/tags, then retry `npm publish --access public`
 
-### 7. Verify + report
+### 9. Verify + report
 
 ```bash
 npm view noah-cursor version
@@ -144,6 +212,8 @@ Report:
 
 - Published version (`noah-cursor@x.y.z`)
 - npm package URL: `https://www.npmjs.com/package/noah-cursor`
+- GitHub Pages docs URL: `https://itsmenoahpoli.github.io/noah-cursor/`
+- Releases notes URL: `https://itsmenoahpoli.github.io/noah-cursor/releases.html`
 - Git commit/tag pushed
 - Install command: `npx noah-cursor`
 
@@ -151,6 +221,7 @@ Report:
 
 - This skill is **project-only** (lives in `.cursor/skills/`). Do not copy it into the distributable `skills/` registry unless the user asks.
 - Always commit-push before publish
+- Always update GitHub Pages docs for the new version before finishing
 - Never update git config
 - Never `--force` publish overwrites / never unpublish unless explicitly requested
 - Never skip `prepublishOnly` / tests unless the user explicitly asks

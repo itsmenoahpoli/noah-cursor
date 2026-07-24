@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Commands — Noah Cursor</title>
+    <meta
+      name="description"
+      content="Noah Cursor CLI reference: browse, add, search, list, remove, update, doctor — flags and examples for Cursor and other IDEs."
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#121212" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="canonical" href="https://itsmenoahpoli.github.io/noah-cursor/commands.html" />
+    <link rel="icon" href="assets/me.jpeg" type="image/jpeg" />
+    <link rel="icon" href="assets/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" sizes="180x180" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Noah Cursor" />
+    <meta property="og:url" content="https://itsmenoahpoli.github.io/noah-cursor/commands.html" />
+    <meta property="og:title" content="Commands — Noah Cursor" />
+    <meta
+      property="og:description"
+      content="Full CLI reference for browse, add, search, list, remove, update, and doctor."
+    />
+    <meta
+      property="og:image"
+      content="https://itsmenoahpoli.github.io/noah-cursor/assets/noah-cursor-banner.png"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Syne:wght@600;700;800&family=Source+Sans+3:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.3.25/dist/lenis.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-header-inner">
+        <a class="brand-mark" href="./" aria-label="NOAH DEV CLI home">
+          <img
+            src="assets/noah-dev-cli-logo.png?v=6"
+            alt="NOAH DEV CLI"
+            width="648"
+            height="124"
+            decoding="async"
+          />
+        </a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="how.html">How it works</a>
+          <a href="skills.html">Skills &amp; Rules</a>
+          <a href="commands.html" aria-current="page">Commands</a>
+          <a href="releases.html">Releases</a>
+          <a href="https://www.npmjs.com/package/noah-cursor" target="_blank" rel="noopener">npm</a>
+          <a
+            class="btn-coffee"
+            href="https://www.buymeacoffee.com/klnaufr"
+            target="_blank"
+            rel="noopener"
+          >
+            <img
+              src="assets/bmc-button.png"
+              alt="Buy me a coffee"
+              width="217"
+              height="60"
+              decoding="async"
+            />
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="top">
+      <header class="page-hero">
+        <p class="eyebrow">Docs</p>
+        <h1>Commands</h1>
+        <p class="lede">
+          CLI reference for managing the registry. Default IDE is Cursor
+          (<code>(--ide cursor)</code>. Pass <code>--ide</code> for Windsurf, Claude Code, and others.
+        </p>
+      </header>
+
+      <div class="doc-layout">
+        <aside class="doc-toc" aria-label="On this page">
+          <h2>On this page</h2>
+          <ol>
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#browse">browse</a></li>
+            <li><a href="#add">add</a></li>
+            <li><a href="#manage">search · list · remove · update · doctor</a></li>
+          </ol>
+        </aside>
+
+        <div class="doc-content">
+          <section class="doc-block" id="overview">
+            <h2>Overview</h2>
+            <div class="doc-table-wrap">
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th>Command</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>browse</code></td>
+                    <td>Pick IDE → browse categories → install assets</td>
+                  </tr>
+                  <tr>
+                    <td><code>add</code></td>
+                    <td>Install Skills, Rules, Prompts, MCP, or Presets</td>
+                  </tr>
+                  <tr>
+                    <td><code>search</code></td>
+                    <td>Search the registry</td>
+                  </tr>
+                  <tr>
+                    <td><code>list</code></td>
+                    <td>List registry or installed assets</td>
+                  </tr>
+                  <tr>
+                    <td><code>remove</code></td>
+                    <td>Uninstall an asset</td>
+                  </tr>
+                  <tr>
+                    <td><code>update</code></td>
+                    <td>Re-fetch and update installed assets</td>
+                  </tr>
+                  <tr>
+                    <td><code>doctor</code></td>
+                    <td>Diagnose environment health</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="doc-block" id="browse">
+            <h2>browse</h2>
+            <p>
+              <code>Select IDE → Select categories → Select assets → Confirm → Install</code>
+            </p>
+            <div class="terminal install-snippet" tabindex="0" role="region" aria-label="browse examples">
+              <div class="terminal-chrome" aria-hidden="true">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+                <span class="terminal-title">noah — zsh</span>
+              </div>
+              <pre class="terminal-body"><code><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">browse</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">browse</span> <span class="flag">--ide</span> <span class="string">windsurf</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">browse</span> <span class="flag">--browse-skills</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">browse</span> <span class="flag">--browse-rules</span></span></code></pre>
+            </div>
+            <div class="kbd-row" aria-label="Browse controls">
+              <span><kbd class="kbd">↑↓</kbd> navigate</span>
+              <span><kbd class="kbd">Space</kbd> select</span>
+              <span><kbd class="kbd">A</kbd> toggle all</span>
+              <span><kbd class="kbd">I</kbd> invert</span>
+              <span><kbd class="kbd">Enter</kbd> confirm</span>
+              <span><kbd class="kbd">Esc</kbd> cancel</span>
+            </div>
+          </section>
+
+          <section class="doc-block" id="add">
+            <h2>add</h2>
+            <p>Always installs from Noah’s bundled registry.</p>
+            <div class="doc-table-wrap">
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th>Flag</th>
+                    <th>Purpose</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>--skill &lt;name&gt;</code></td>
+                    <td>Install a skill</td>
+                  </tr>
+                  <tr>
+                    <td><code>--rule &lt;name&gt;</code></td>
+                    <td>Install a rule</td>
+                  </tr>
+                  <tr>
+                    <td><code>--prompt &lt;name&gt;</code></td>
+                    <td>Install a prompt</td>
+                  </tr>
+                  <tr>
+                    <td><code>--mcp &lt;name&gt;</code></td>
+                    <td>Install an MCP config</td>
+                  </tr>
+                  <tr>
+                    <td><code>--preset &lt;name&gt;</code></td>
+                    <td>Install a preset</td>
+                  </tr>
+                  <tr>
+                    <td><code>--ide &lt;name&gt;</code></td>
+                    <td>cursor (default) · windsurf · claude-code · continue · vscode · cline</td>
+                  </tr>
+                  <tr>
+                    <td><code>--all</code></td>
+                    <td>Install everything from the registry</td>
+                  </tr>
+                  <tr>
+                    <td><code>--force</code> · <code>--dry-run</code> · <code>--yes</code> · <code>--verbose</code></td>
+                    <td>Overwrite, preview, skip prompts, or log more</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="terminal install-snippet" tabindex="0" role="region" aria-label="add examples">
+              <div class="terminal-chrome" aria-hidden="true">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+                <span class="terminal-title">noah — zsh</span>
+              </div>
+              <pre class="terminal-body"><code><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">add</span> <span class="flag">--skill</span> <span class="string">commit-push</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">add</span> <span class="flag">--skill</span> <span class="string">commit-push</span> <span class="flag">--ide</span> <span class="string">claude-code</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">add</span> <span class="flag">--rule</span> <span class="string">nextjs-marketing</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">add</span> <span class="flag">--all</span></span></code></pre>
+            </div>
+          </section>
+
+          <section class="doc-block" id="manage">
+            <h2>search · list · remove · update · doctor</h2>
+            <p>Pass <code>--ide</code> when managing installs for a non-Cursor target.</p>
+            <div class="terminal install-snippet" tabindex="0" role="region" aria-label="manage examples">
+              <div class="terminal-chrome" aria-hidden="true">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+                <span class="terminal-title">noah — zsh</span>
+              </div>
+              <pre class="terminal-body"><code><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">search</span> <span class="string">doctor</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">list</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">list</span> <span class="flag">--installed</span> <span class="flag">--ide</span> <span class="string">windsurf</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">remove</span> <span class="string">skill</span> <span class="string">test</span> <span class="flag">--yes</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">update</span> <span class="flag">--yes</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">doctor</span> <span class="flag">--ide</span> <span class="string">claude-code</span></span></code></pre>
+            </div>
+            <nav class="doc-pager" aria-label="Docs pagination">
+              <a class="doc-pager-link prev" href="skills.html">
+                <span class="label">Previous</span>
+                <span class="title">Skills &amp; Rules</span>
+              </a>
+              <a class="doc-pager-link next" href="releases.html">
+                <span class="label">Next</span>
+                <span class="title">Release &amp; Notes</span>
+              </a>
+            </nav>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-brand">
+        <p class="brand">
+          <img
+            src="assets/noah-dev-cli-logo.png?v=6"
+            alt="NOAH DEV CLI"
+            width="648"
+            height="124"
+            decoding="async"
+          />
+        </p>
+        <p>MIT · Built by <a href="https://patrickpolicarpio.xyz" target="_blank" rel="noopener">Patrick Policarpio</a></p>
+      </div>
+      <div class="footer-links">
+        <a href="mailto:patrickpolicarpio08@gmail.com">Feedback</a>
+        <a href="https://www.npmjs.com/package/noah-cursor" target="_blank" rel="noopener">npm</a>
+      </div>
+      <a
+        class="bmc-support"
+        href="https://www.buymeacoffee.com/klnaufr"
+        target="_blank"
+        rel="noopener"
+      >
+        <img
+          src="assets/bmc-support.png"
+          alt="Buy me a coffee — scan to support"
+          width="253"
+          height="357"
+          decoding="async"
+        />
+      </a>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.25/dist/lenis.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

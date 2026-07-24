@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Skills &amp; Rules — Noah Cursor</title>
+    <meta
+      name="description"
+      content="Catalog of Noah Cursor Skills and Rules: commit-push, generate-readme, react-doctor-fix, Larastan, NestJS Knip, stack rules for React, Laravel, Next, and Nuxt."
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#121212" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="canonical" href="https://itsmenoahpoli.github.io/noah-cursor/skills.html" />
+    <link rel="icon" href="assets/me.jpeg" type="image/jpeg" />
+    <link rel="icon" href="assets/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" sizes="180x180" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Noah Cursor" />
+    <meta property="og:url" content="https://itsmenoahpoli.github.io/noah-cursor/skills.html" />
+    <meta property="og:title" content="Skills &amp; Rules — Noah Cursor" />
+    <meta
+      property="og:description"
+      content="Reusable agent workflows and stack rules from the Noah Cursor registry."
+    />
+    <meta
+      property="og:image"
+      content="https://itsmenoahpoli.github.io/noah-cursor/assets/noah-cursor-banner.png"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Syne:wght@600;700;800&family=Source+Sans+3:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.3.25/dist/lenis.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-header-inner">
+        <a class="brand-mark" href="./" aria-label="NOAH DEV CLI home">
+          <img
+            src="assets/noah-dev-cli-logo.png?v=6"
+            alt="NOAH DEV CLI"
+            width="648"
+            height="124"
+            decoding="async"
+          />
+        </a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="how.html">How it works</a>
+          <a href="skills.html" aria-current="page">Skills &amp; Rules</a>
+          <a href="commands.html">Commands</a>
+          <a href="releases.html">Releases</a>
+          <a href="https://www.npmjs.com/package/noah-cursor" target="_blank" rel="noopener">npm</a>
+          <a
+            class="btn-coffee"
+            href="https://www.buymeacoffee.com/klnaufr"
+            target="_blank"
+            rel="noopener"
+          >
+            <img
+              src="assets/bmc-button.png"
+              alt="Buy me a coffee"
+              width="217"
+              height="60"
+              decoding="async"
+            />
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="top">
+      <header class="page-hero">
+        <p class="eyebrow">Docs</p>
+        <h1>Skills &amp; Rules</h1>
+        <p class="lede">
+          Catalog of registry Skills and Rules. Skills are reusable agent workflows; Rules are stack
+          guidance for your IDE agent — both install from the bundled package.
+        </p>
+      </header>
+
+      <div class="doc-layout">
+        <aside class="doc-toc" aria-label="On this page">
+          <h2>On this page</h2>
+          <ol>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#rules">Rules</a></li>
+            <li><a href="#install">Install examples</a></li>
+          </ol>
+        </aside>
+
+        <div class="doc-content">
+          <section class="doc-block" id="skills">
+            <h2>Skills</h2>
+            <p>Agent workflows you can reuse across every Cursor (or other IDE) project.</p>
+            <div
+              class="catalog-list"
+              id="skills-catalog"
+              data-catalog-src="catalog.json"
+              data-catalog-kind="skills"
+            >
+              <p class="releases-status">Loading skills…</p>
+            </div>
+          </section>
+
+          <section class="doc-block" id="rules">
+            <h2>Rules</h2>
+            <p>Stack guidance so your agent stays consistent with how you actually ship.</p>
+            <div
+              class="catalog-list"
+              id="rules-catalog"
+              data-catalog-src="catalog.json"
+              data-catalog-kind="rules"
+            >
+              <p class="releases-status">Loading rules…</p>
+            </div>
+          </section>
+
+          <section class="doc-block" id="install">
+            <h2>Install examples</h2>
+            <p>Use <code>add</code> for one-liners, or <code>browse</code> to pick interactively.</p>
+            <div class="terminal install-snippet" tabindex="0" role="region" aria-label="Install examples">
+              <div class="terminal-chrome" aria-hidden="true">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+                <span class="terminal-title">noah — zsh</span>
+              </div>
+              <pre class="terminal-body"><code><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">add</span> <span class="flag">--skill</span> <span class="string">commit-push</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">add</span> <span class="flag">--skill</span> <span class="string">generate-readme</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">add</span> <span class="flag">--rule</span> <span class="string">laravel-api</span> <span class="flag">--rule</span> <span class="string">react-spa-dashboard</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">add</span> <span class="flag">--skill</span> <span class="string">react-doctor-fix</span> <span class="flag">--ide</span> <span class="string">windsurf</span></span></code></pre>
+            </div>
+            <nav class="doc-pager" aria-label="Docs pagination">
+              <a class="doc-pager-link prev" href="how.html">
+                <span class="label">Previous</span>
+                <span class="title">How it works</span>
+              </a>
+              <a class="doc-pager-link next" href="commands.html">
+                <span class="label">Next</span>
+                <span class="title">Commands</span>
+              </a>
+            </nav>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <dialog class="asset-dialog" id="asset-dialog" aria-labelledby="asset-dialog-title">
+      <div class="asset-dialog-inner">
+        <header class="asset-dialog-head">
+          <div>
+            <p class="asset-dialog-kind" id="asset-dialog-kind">Skill</p>
+            <h2 id="asset-dialog-title"></h2>
+          </div>
+          <button type="button" class="asset-dialog-close" id="asset-dialog-close" aria-label="Close details">
+            ×
+          </button>
+        </header>
+        <div class="asset-dialog-body" id="asset-dialog-body"></div>
+        <footer class="asset-dialog-foot">
+          <button type="button" class="btn-ghost" id="asset-dialog-dismiss">Close</button>
+          <button type="button" class="btn-primary linkish" id="asset-dialog-copy">
+            <span class="cmd" id="asset-dialog-cmd"></span>
+            <span class="btn-label">Copy</span>
+          </button>
+        </footer>
+      </div>
+    </dialog>
+
+    <footer class="site-footer">
+      <div class="footer-brand">
+        <p class="brand">
+          <img
+            src="assets/noah-dev-cli-logo.png?v=6"
+            alt="NOAH DEV CLI"
+            width="648"
+            height="124"
+            decoding="async"
+          />
+        </p>
+        <p>MIT · Built by <a href="https://patrickpolicarpio.xyz" target="_blank" rel="noopener">Patrick Policarpio</a></p>
+      </div>
+      <div class="footer-links">
+        <a href="mailto:patrickpolicarpio08@gmail.com">Feedback</a>
+        <a href="https://www.npmjs.com/package/noah-cursor" target="_blank" rel="noopener">npm</a>
+      </div>
+      <a
+        class="bmc-support"
+        href="https://www.buymeacoffee.com/klnaufr"
+        target="_blank"
+        rel="noopener"
+      >
+        <img
+          src="assets/bmc-support.png"
+          alt="Buy me a coffee — scan to support"
+          width="253"
+          height="357"
+          decoding="async"
+        />
+      </a>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.25/dist/lenis.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
