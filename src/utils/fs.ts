@@ -1,7 +1,12 @@
 import path from "node:path";
 import os from "node:os";
 import fs from "fs-extra";
-import { TEMP_DIR_PREFIX } from "../constants/index.js";
+import {
+  DEFAULT_IDE,
+  getIdeDefinition,
+  TEMP_DIR_PREFIX,
+  type IdeId,
+} from "../constants/index.js";
 
 export async function createTempDir(prefix = TEMP_DIR_PREFIX): Promise<string> {
   return fs.mkdtemp(path.join(os.tmpdir(), prefix));
@@ -19,8 +24,14 @@ export function resolveProjectRoot(cwd = process.cwd()): string {
   return path.resolve(cwd);
 }
 
+/** Resolve the IDE config root (e.g. `.cursor`, `.windsurf`, `.claude`). */
+export function resolveIdeDir(ide: IdeId = DEFAULT_IDE, cwd = process.cwd()): string {
+  return path.join(resolveProjectRoot(cwd), getIdeDefinition(ide).rootDir);
+}
+
+/** @deprecated Use resolveIdeDir("cursor", cwd) */
 export function resolveCursorDir(cwd = process.cwd()): string {
-  return path.join(resolveProjectRoot(cwd), ".cursor");
+  return resolveIdeDir("cursor", cwd);
 }
 
 export function normalizeGitHubUrl(input: string): string {

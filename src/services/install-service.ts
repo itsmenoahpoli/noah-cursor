@@ -1,6 +1,7 @@
 import { confirm } from "@inquirer/prompts";
 import { NotFoundError, ValidationError } from "../core/errors.js";
 import { logInfo, logSuccess, logVerbose, logWarn } from "../core/logger.js";
+import { DEFAULT_IDE, getIdeDefinition, METADATA_FILE, type IdeId } from "../constants/index.js";
 import { installAsset, removeAssetFiles } from "../installers/asset-installer.js";
 import {
   findInstalled,
@@ -127,6 +128,7 @@ export interface InstallSelectionsOptions {
   force?: boolean;
   dryRun?: boolean;
   verbose?: boolean;
+  ide?: IdeId;
   onStepStart?: (message: string) => void | Promise<void>;
   onStepDone?: (message: string) => void | Promise<void>;
 }
@@ -182,6 +184,7 @@ export async function installFromSelections(
         force: options.force,
         dryRun: options.dryRun,
         verbose: options.verbose,
+        ide: options.ide,
       },
     );
     await options.onStepDone?.(step);
@@ -214,7 +217,12 @@ export async function installFromSelections(
 
   if (!options.dryRun && installedMeta.length > 0) {
     await options.onStepStart?.("Updating noah.json");
-    await upsertInstalledAssets(toStoredRegistryUrl(registry.url), installedMeta);
+    await upsertInstalledAssets(
+      toStoredRegistryUrl(registry.url),
+      installedMeta,
+      process.cwd(),
+      options.ide,
+    );
     await options.onStepDone?.("Updating noah.json");
   }
 
@@ -257,6 +265,7 @@ export async function addFromRegistry(
       force: options.force,
       dryRun: options.dryRun,
       verbose: options.verbose,
+      ide: options.ide,
     });
 
     const installed = results.filter((r) => !r.skipped);
@@ -330,16 +339,24 @@ export async function listRegistryAssets(
 export async function removeAsset(
   type: AssetType,
   id: string,
-  options: { force?: boolean; yes?: boolean; dryRun?: boolean; verbose?: boolean } = {},
+  options: {
+    force?: boolean;
+    yes?: boolean;
+    dryRun?: boolean;
+    verbose?: boolean;
+    ide?: IdeId;
+  } = {},
 ): Promise<void> {
-  const metadata = await readMetadata();
+  const ide = options.ide ?? DEFAULT_IDE;
+  const ideRoot = getIdeDefinition(ide).rootDir;
+  const metadata = await readMetadata(process.cwd(), ide);
   if (!metadata) {
-    throw new NotFoundError("No installed assets found (.cursor/noah.json missing)");
+    throw new NotFoundError(`No installed assets found (${ideRoot}/${METADATA_FILE} missing)`);
   }
 
   const installed = findInstalled(metadata, type, id);
   if (!installed && !options.force) {
-    throw new NotFoundError(`${type} "${id}" is not recorded in .cursor/noah.json`);
+    throw new NotFoundError(`${type} "${id}" is not recorded in ${ideRoot}/${METADATA_FILE}`);
   }
 
   if (!options.yes && !options.dryRun) {
@@ -353,10 +370,10 @@ export async function removeAsset(
     }
   }
 
-  await removeAssetFiles(type, id, options);
+  await removeAssetFiles(type, id, { ...options, ide });
 
   if (!options.dryRun) {
-    await removeInstalledAsset(type, id);
+    await removeInstalledAsset(type, id, process.cwd(), ide);
     logSuccess(`Removed ${type}/${id}`);
   } else {
     logInfo(`[dry-run] Would remove ${type}/${id}`);
@@ -364,9 +381,16 @@ export async function removeAsset(
 }
 
 export async function updateAssets(
-  options: { force?: boolean; yes?: boolean; verbose?: boolean; dryRun?: boolean } = {},
+  options: {
+    force?: boolean;
+    yes?: boolean;
+    verbose?: boolean;
+    dryRun?: boolean;
+    ide?: IdeId;
+  } = {},
 ): Promise<InstallResult[]> {
-  const metadata = await readMetadata();
+  const ide = options.ide ?? DEFAULT_IDE;
+  const metadata = await readMetadata(process.cwd(), ide);
   if (!metadata || metadata.installed.length === 0) {
     throw new NotFoundError("No installed assets to update");
   }
@@ -398,6 +422,7 @@ export async function updateAssets(
       force: true,
       dryRun: options.dryRun,
       verbose: options.verbose,
+      ide,
     });
 
     logSuccess(

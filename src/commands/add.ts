@@ -1,6 +1,7 @@
 import { Command } from "commander";
 import chalk from "chalk";
 import { createSpinner, handleCommandError, logTitle } from "../core/logger.js";
+import { IDE_IDS, parseIdeId } from "../constants/index.js";
 import { addFromRegistry } from "../services/install-service.js";
 import type { AddOptions } from "../types/index.js";
 
@@ -14,13 +15,19 @@ export function registerAddCommand(program: Command): void {
     .option("--mcp <name>", "Install an MCP config by id")
     .option("--preset <name>", "Install a preset (expands to included assets)")
     .option("--all", "Install all assets from the registry", false)
+    .option(
+      "--ide <name>",
+      `Target IDE (${IDE_IDS.join("|")})`,
+      "cursor",
+    )
     .option("--force", "Overwrite existing assets", false)
     .option("--dry-run", "Show what would be installed without writing files", false)
     .option("-y, --yes", "Skip confirmation prompts", false)
     .option("-v, --verbose", "Verbose output", false)
-    .action(async (opts: AddOptions & { dryRun?: boolean }) => {
+    .action(async (opts: AddOptions & { dryRun?: boolean; ide?: string }) => {
       const spinner = createSpinner("Loading registry…");
       try {
+        const ide = parseIdeId(opts.ide);
         spinner.start();
         const options: AddOptions = {
           skill: opts.skill,
@@ -33,6 +40,7 @@ export function registerAddCommand(program: Command): void {
           dryRun: opts.dryRun,
           yes: opts.yes,
           verbose: opts.verbose,
+          ide,
         };
 
         spinner.text = "Validating and installing assets…";

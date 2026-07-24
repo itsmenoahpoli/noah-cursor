@@ -5,9 +5,21 @@ const pkg = require("../../package.json") as { version: string };
 
 export const CLI_NAME = "noah-cursor";
 export const CLI_VERSION = pkg.version;
+/** @deprecated Prefer IDE root via getIdeDefinition — kept for Cursor default. */
 export const CURSOR_DIR = ".cursor";
 export const METADATA_FILE = "noah.json";
 export const MANIFEST_FILE = "manifest.json";
+
+export {
+  DEFAULT_IDE,
+  IDE_DEFINITIONS,
+  IDE_IDS,
+  getIdeDefinition,
+  isIdeId,
+  parseIdeId,
+  type IdeDefinition,
+  type IdeId,
+} from "./ides.js";
 
 /** Official Noah asset registry (Skills, Rules, Prompts, MCP, Presets). */
 export const OFFICIAL_REGISTRY_OWNER = "itsmenoahpoli";

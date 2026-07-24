@@ -1,11 +1,13 @@
 import { Command } from "commander";
 import chalk from "chalk";
 import { handleCommandError, logWarn } from "../core/logger.js";
+import { IDE_IDS } from "../constants/index.js";
 import { installFromSelections } from "../services/install-service.js";
 import { loadRegistry } from "../services/registry-loader.js";
 import type { AssetRequest, AssetType, Manifest } from "../types/index.js";
 import { getManifestAssets } from "../utils/assets.js";
 import { resolveNoahRegistry } from "../utils/registry.js";
+import { selectIde } from "../ui/ideMenu.js";
 import { selectCategories, type BrowseCategory } from "../ui/categoryMenu.js";
 import { selectAssets } from "../ui/assetMenu.js";
 import { confirmInstallation } from "../ui/summary.js";
@@ -18,6 +20,7 @@ interface BrowseOptions {
   browsePrompts?: boolean;
   browseMcp?: boolean;
   browsePresets?: boolean;
+  ide?: string;
   force?: boolean;
   dryRun?: boolean;
   yes?: boolean;
@@ -71,6 +74,10 @@ export function registerBrowseCommand(program: Command): void {
     .option("--browse-prompts", "Browse prompts only", false)
     .option("--browse-mcp", "Browse MCP configs only", false)
     .option("--browse-presets", "Browse presets only", false)
+    .option(
+      "--ide <name>",
+      `Target IDE (${IDE_IDS.join("|")}); skips the IDE picker`,
+    )
     .option("--force", "Overwrite existing assets", false)
     .option("--dry-run", "Show what would be installed without writing files", false)
     .option("-y, --yes", "Skip final confirmation", false)
@@ -92,6 +99,13 @@ export function registerBrowseCommand(program: Command): void {
         console.log();
 
         try {
+          const ide = await selectIde(opts.ide);
+          if (!ide) {
+            logWarn("Browse cancelled.");
+            return;
+          }
+
+          console.log();
           const flagged = categoriesFromFlags(opts);
           const categories = await selectCategories(flagged.length > 0 ? flagged : undefined);
 
@@ -116,7 +130,7 @@ export function registerBrowseCommand(program: Command): void {
           const shouldInstall =
             opts.yes ||
             opts.dryRun ||
-            (await confirmInstallation(registry.url, selections));
+            (await confirmInstallation(registry.url, selections, ide));
 
           if (!shouldInstall) {
             logWarn("Installation cancelled.");
@@ -137,6 +151,7 @@ export function registerBrowseCommand(program: Command): void {
             force: opts.force,
             dryRun: opts.dryRun,
             verbose: opts.verbose,
+            ide,
             onStepStart: async (message) => {
               progress.start(formatStep(message));
             },

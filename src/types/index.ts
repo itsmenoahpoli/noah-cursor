@@ -1,6 +1,7 @@
 import { z } from "zod";
-import { ASSET_TYPES } from "../constants/index.js";
+import { ASSET_TYPES, IDE_IDS, DEFAULT_IDE, type IdeId } from "../constants/index.js";
 
+export type { IdeId };
 export type AssetType = (typeof ASSET_TYPES)[number];
 
 export const AssetEntrySchema = z.object({
@@ -53,6 +54,7 @@ export type InstalledAsset = z.infer<typeof InstalledAssetSchema>;
 
 export const NoahMetadataSchema = z.object({
   registry: z.string().min(1),
+  ide: z.enum(IDE_IDS as unknown as [IdeId, ...IdeId[]]).default(DEFAULT_IDE),
   installed: z.array(InstalledAssetSchema).default([]),
   updatedAt: z.string().optional(),
 });
@@ -70,6 +72,7 @@ export interface AddOptions {
   dryRun?: boolean;
   yes?: boolean;
   verbose?: boolean;
+  ide?: IdeId;
 }
 
 export interface GlobalOptions {

@@ -45,5 +45,15 @@ describe("NoahMetadataSchema", () => {
       installed: [{ type: "skill", id: "test", version: "1.0.0" }],
     });
     expect(result.installed).toHaveLength(1);
+    expect(result.ide).toBe("cursor");
+  });
+
+  it("accepts an explicit ide", () => {
+    const result = NoahMetadataSchema.parse({
+      registry: "https://github.com/owner/registry",
+      ide: "windsurf",
+      installed: [],
+    });
+    expect(result.ide).toBe("windsurf");
   });
 });

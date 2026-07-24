@@ -1,6 +1,7 @@
 import { Command } from "commander";
 import chalk from "chalk";
 import { createSpinner, handleCommandError, logInfo, logTitle } from "../core/logger.js";
+import { IDE_IDS, parseIdeId } from "../constants/index.js";
 import { listInstalledAssets } from "../metadata/store.js";
 import { listRegistryAssets } from "../services/install-service.js";
 import type { AssetType } from "../types/index.js";
@@ -12,17 +13,25 @@ export function registerListCommand(program: Command): void {
     .command("list")
     .description("List all Skills, Rules, Prompts, MCP configs, and Presets in Noah's registry")
     .option("--installed", "List locally installed assets only", false)
+    .option(
+      "--ide <name>",
+      `Target IDE for --installed (${IDE_IDS.join("|")})`,
+      "cursor",
+    )
     .option("-v, --verbose", "Verbose output", false)
-    .action(async (opts: { installed?: boolean; verbose?: boolean }) => {
+    .action(async (opts: { installed?: boolean; verbose?: boolean; ide?: string }) => {
       if (opts.installed) {
         try {
-          const listed = await listInstalledAssets();
+          const ide = parseIdeId(opts.ide);
+          const listed = await listInstalledAssets(process.cwd(), ide);
           if (listed.installed.length === 0) {
-            logInfo("No assets installed. Use `noah-cursor add` to install some.");
+            logInfo(
+              `No assets installed for ${ide}. Use \`noah-cursor browse\` or \`noah-cursor add\` to install some.`,
+            );
             return;
           }
 
-          logTitle(`Installed assets (${listed.installed.length})`);
+          logTitle(`Installed assets (${listed.installed.length}) · ${ide}`);
           console.log();
 
           for (const asset of listed.installed) {

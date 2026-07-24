@@ -2,6 +2,7 @@ import path from "node:path";
 import fs from "fs-extra";
 import { ConflictError, NotFoundError } from "../core/errors.js";
 import { logVerbose } from "../core/logger.js";
+import { DEFAULT_IDE, type IdeId } from "../constants/index.js";
 import type { AssetType, InstallResult, Manifest } from "../types/index.js";
 import {
   findAssetInManifest,
@@ -9,13 +10,14 @@ import {
   assetTypeToDir,
 } from "../utils/assets.js";
 import { assertAssetExists } from "../registry/validator.js";
-import { resolveCursorDir } from "../utils/fs.js";
+import { resolveIdeDir } from "../utils/fs.js";
 
 export interface InstallerOptions {
   force?: boolean;
   dryRun?: boolean;
   verbose?: boolean;
   cwd?: string;
+  ide?: IdeId;
 }
 
 export async function installAsset(
@@ -36,12 +38,13 @@ export async function installAsset(
     );
   }
 
+  const ide = options.ide ?? DEFAULT_IDE;
   const sourceRelative = resolveAssetPath(type, id, entry.path);
   await assertAssetExists(registryPath, sourceRelative);
 
   const sourcePath = path.join(registryPath, sourceRelative);
   const targetDir = path.join(
-    resolveCursorDir(options.cwd),
+    resolveIdeDir(ide, options.cwd),
     assetTypeToDir(type),
     id,
   );
@@ -79,15 +82,16 @@ export async function installAsset(
 export async function removeAssetFiles(
   type: AssetType,
   id: string,
-  options: { cwd?: string; dryRun?: boolean; verbose?: boolean } = {},
+  options: { cwd?: string; dryRun?: boolean; verbose?: boolean; ide?: IdeId } = {},
 ): Promise<string> {
   if (type === "preset") {
     // Presets don't install files directly
     return `preset:${id}`;
   }
 
+  const ide = options.ide ?? DEFAULT_IDE;
   const targetDir = path.join(
-    resolveCursorDir(options.cwd),
+    resolveIdeDir(ide, options.cwd),
     assetTypeToDir(type),
     id,
   );

@@ -40,6 +40,32 @@ describe("install flow (local registry)", () => {
     ).toBe(true);
   });
 
+  it("installs into a non-Cursor IDE root when ide is set", async () => {
+    await tempProject();
+    const manifest = await readManifest(REGISTRY_PATH);
+
+    const result = await installAsset(REGISTRY_PATH, manifest, "skill", "test", {
+      force: true,
+      ide: "windsurf",
+    });
+
+    expect(result.skipped).toBeFalsy();
+    expect(
+      await fs.pathExists(path.join(process.cwd(), ".windsurf/skills/test/SKILL.md")),
+    ).toBe(true);
+    expect(await fs.pathExists(".cursor/skills/test")).toBe(false);
+
+    await addFromRegistry(REGISTRY_PATH, {
+      skill: "test",
+      yes: true,
+      ide: "windsurf",
+      force: true,
+    });
+    const meta = await readMetadata(process.cwd(), "windsurf");
+    expect(meta?.ide).toBe("windsurf");
+    expect(meta?.installed.some((a) => a.id === "test")).toBe(true);
+  });
+
   it("skips existing assets without --force", async () => {
     await tempProject();
     const manifest = await readManifest(REGISTRY_PATH);

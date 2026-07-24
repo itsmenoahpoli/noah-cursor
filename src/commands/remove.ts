@@ -1,7 +1,7 @@
 import { Command } from "commander";
 import { createSpinner, handleCommandError } from "../core/logger.js";
 import { removeAsset } from "../services/install-service.js";
-import { ASSET_TYPES } from "../constants/index.js";
+import { ASSET_TYPES, IDE_IDS, parseIdeId } from "../constants/index.js";
 import type { AssetType } from "../types/index.js";
 import { ValidationError } from "../core/errors.js";
 
@@ -12,6 +12,11 @@ export function registerRemoveCommand(program: Command): void {
     .description("Remove an installed asset")
     .argument("<type>", `Asset type (${ASSET_TYPES.join("|")})`)
     .argument("<id>", "Asset id")
+    .option(
+      "--ide <name>",
+      `Target IDE (${IDE_IDS.join("|")})`,
+      "cursor",
+    )
     .option("--force", "Remove even if not in metadata", false)
     .option("--dry-run", "Show what would be removed", false)
     .option("-y, --yes", "Skip confirmation prompts", false)
@@ -20,7 +25,13 @@ export function registerRemoveCommand(program: Command): void {
       async (
         type: string,
         id: string,
-        opts: { force?: boolean; dryRun?: boolean; yes?: boolean; verbose?: boolean },
+        opts: {
+          force?: boolean;
+          dryRun?: boolean;
+          yes?: boolean;
+          verbose?: boolean;
+          ide?: string;
+        },
       ) => {
         const spinner = createSpinner(`Removing ${type}/${id}…`);
         try {
@@ -30,12 +41,14 @@ export function registerRemoveCommand(program: Command): void {
             );
           }
 
+          const ide = parseIdeId(opts.ide);
           spinner.start();
           await removeAsset(type as AssetType, id, {
             force: opts.force,
             dryRun: opts.dryRun,
             yes: opts.yes,
             verbose: opts.verbose,
+            ide,
           });
           spinner.stop();
         } catch (error) {

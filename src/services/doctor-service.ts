@@ -1,13 +1,22 @@
 import path from "node:path";
 import fs from "fs-extra";
-import { CURSOR_DIR, METADATA_FILE } from "../constants/index.js";
+import {
+  DEFAULT_IDE,
+  getIdeDefinition,
+  METADATA_FILE,
+  type IdeId,
+} from "../constants/index.js";
 import { readMetadata } from "../metadata/store.js";
 import type { DoctorCheck } from "../types/index.js";
 import { assetTypeToDir } from "../utils/assets.js";
-import { resolveCursorDir, resolveProjectRoot } from "../utils/fs.js";
+import { resolveIdeDir, resolveProjectRoot } from "../utils/fs.js";
 
-export async function runDoctor(cwd = process.cwd()): Promise<DoctorCheck[]> {
+export async function runDoctor(
+  cwd = process.cwd(),
+  ide: IdeId = DEFAULT_IDE,
+): Promise<DoctorCheck[]> {
   const checks: DoctorCheck[] = [];
+  const ideDef = getIdeDefinition(ide);
 
   // Node version
   const major = Number(process.versions.node.split(".")[0]);
@@ -37,20 +46,20 @@ export async function runDoctor(cwd = process.cwd()): Promise<DoctorCheck[]> {
     });
   }
 
-  // .cursor directory
-  const cursorDir = resolveCursorDir(cwd);
-  const cursorExists = await fs.pathExists(cursorDir);
+  // IDE directory
+  const ideDir = resolveIdeDir(ide, cwd);
+  const ideExists = await fs.pathExists(ideDir);
   checks.push({
-    name: `${CURSOR_DIR}/ directory`,
-    status: cursorExists ? "pass" : "warn",
-    message: cursorExists
-      ? `Found at ${cursorDir}`
+    name: `${ideDef.rootDir}/ directory (${ideDef.name})`,
+    status: ideExists ? "pass" : "warn",
+    message: ideExists
+      ? `Found at ${ideDir}`
       : `Missing — will be created on first install`,
   });
 
   // Metadata
-  const metadataPath = path.join(cursorDir, METADATA_FILE);
-  const metadata = await readMetadata(cwd).catch(() => null);
+  const metadataPath = path.join(ideDir, METADATA_FILE);
+  const metadata = await readMetadata(cwd, ide).catch(() => null);
 
   if (!(await fs.pathExists(metadataPath))) {
     checks.push({
@@ -75,7 +84,7 @@ export async function runDoctor(cwd = process.cwd()): Promise<DoctorCheck[]> {
     let missingFiles = 0;
     for (const asset of metadata.installed) {
       if (asset.type === "preset") continue;
-      const assetPath = path.join(cursorDir, assetTypeToDir(asset.type), asset.id);
+      const assetPath = path.join(ideDir, assetTypeToDir(asset.type), asset.id);
       if (!(await fs.pathExists(assetPath))) {
         missingFiles += 1;
       }

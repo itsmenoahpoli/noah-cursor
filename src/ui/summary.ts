@@ -1,6 +1,7 @@
 import boxen from "boxen";
 import chalk from "chalk";
 import { confirm } from "@inquirer/prompts";
+import { DEFAULT_IDE, getIdeDefinition, type IdeId } from "../constants/index.js";
 import type { AssetRequest, AssetType } from "../types/index.js";
 import { humanizeId } from "./format.js";
 import { toPublicRegistryLabel } from "../utils/registry.js";
@@ -24,14 +25,22 @@ function groupSelections(selections: AssetRequest[]): Partial<Record<AssetType, 
   return groups;
 }
 
-export function renderSummary(_registryUrl: string, selections: AssetRequest[]): void {
+export function renderSummary(
+  _registryUrl: string,
+  selections: AssetRequest[],
+  ide: IdeId = DEFAULT_IDE,
+): void {
   const groups = groupSelections(selections);
+  const ideDef = getIdeDefinition(ide);
   const lines: string[] = [];
 
   lines.push(chalk.bold("Installation Summary"));
   lines.push("");
   lines.push(chalk.dim("Registry"));
   lines.push(`  ${toPublicRegistryLabel()}`);
+  lines.push("");
+  lines.push(chalk.dim("IDE"));
+  lines.push(`  ${chalk.cyan(ideDef.name)} ${chalk.dim(`(${ideDef.rootDir}/)`)}`);
   lines.push("");
 
   for (const type of ["skill", "rule", "prompt", "mcp", "preset"] as const) {
@@ -45,7 +54,7 @@ export function renderSummary(_registryUrl: string, selections: AssetRequest[]):
   }
 
   lines.push(chalk.dim("Destination"));
-  lines.push(`  ${chalk.cyan("./.cursor")}`);
+  lines.push(`  ${chalk.cyan(`./${ideDef.rootDir}`)}`);
 
   console.log(
     boxen(lines.join("\n"), {
@@ -60,12 +69,13 @@ export function renderSummary(_registryUrl: string, selections: AssetRequest[]):
 export async function confirmInstallation(
   registryUrl: string,
   selections: AssetRequest[],
+  ide: IdeId = DEFAULT_IDE,
 ): Promise<boolean> {
   if (selections.length === 0) {
     return false;
   }
 
-  renderSummary(registryUrl, selections);
+  renderSummary(registryUrl, selections, ide);
 
   try {
     return await confirm({
