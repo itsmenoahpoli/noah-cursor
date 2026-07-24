@@ -1,6 +1,6 @@
 {
   "package": "noah-cursor",
-  "latest": "1.5.8",
+  "latest": "1.5.9",
   "minVersion": "1.5.7",
   "npmUrl": "https://www.npmjs.com/package/noah-cursor",
   "disclaimer": {
@@ -20,6 +20,16 @@
     ]
   },
   "releases": [
+    {
+      "version": "1.5.9",
+      "date": "2026-07-24",
+      "tag": "v1.5.9",
+      "title": "Package homepage",
+      "summary": "Point the npm package homepage at the public documentation site.",
+      "notes": [
+        "Update package homepage URL for the published CLI package"
+      ]
+    },
     {
       "version": "1.5.8",
       "date": "2026-07-24",
