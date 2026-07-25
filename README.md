@@ -386,13 +386,13 @@ If Noah saves you time, consider supporting on Ko-fi — it helps keep the CLI a
 
 <p align="center">
   <a href="https://ko-fi.com/itsmenoahpoli">
-    <img src="https://storage.ko-fi.com/cdn/kofi2.png?v=3" alt="Support me on Ko-fi" height="45" />
+    <img src="https://storage.ko-fi.com/cdn/brandasset/kofi_button_red.png" alt="Support me on Ko-fi" height="42" />
   </a>
 </p>
 
 <p align="center">
   <a href="https://ko-fi.com/itsmenoahpoli">
-    <img src="https://cdn.jsdelivr.net/npm/noah-cursor@latest/assets/qr-code.png" alt="Ko-fi QR code" width="220" />
+    <img src="https://raw.githubusercontent.com/itsmenoahpoli/noah-cursor/main/assets/qr-code.png" alt="Ko-fi QR code" width="220" />
   </a>
   <br />
   <sub>Scan to support on Ko-fi</sub>
