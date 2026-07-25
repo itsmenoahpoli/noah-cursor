@@ -262,7 +262,7 @@ html.nav-open .nav-toggle-bars::after {
   font-weight: 600;
 }
 
-.btn-coffee {
+.btn-kofi {
   display: inline-flex;
   align-items: center;
   line-height: 0;
@@ -275,17 +275,17 @@ html.nav-open .nav-toggle-bars::after {
   transition: transform 0.15s var(--ease), filter 0.15s var(--ease), box-shadow 0.15s var(--ease);
 }
 
-.btn-coffee img {
+.btn-kofi img {
   display: block;
   height: 40px;
   width: auto;
   border-radius: 10px;
 }
 
-.btn-coffee:hover {
+.btn-kofi:hover {
   transform: translateY(-1px);
   filter: brightness(1.05);
-  box-shadow: 0 8px 18px rgba(255, 221, 0, 0.28);
+  box-shadow: 0 8px 18px rgba(255, 94, 91, 0.28);
   background: transparent;
   color: inherit;
 }
@@ -296,24 +296,24 @@ html.lenis body {
   height: auto;
 }
 
-.nav-links .btn-coffee {
+.nav-links .btn-kofi {
   margin-left: 0.15rem;
   min-height: 40px;
 }
 
-.nav-links .btn-coffee:hover {
+.nav-links .btn-kofi:hover {
   color: inherit;
 }
 
-.footer-links .btn-coffee img {
+.footer-links .btn-kofi img {
   height: 48px;
 }
 
-.footer-links .btn-coffee:hover {
+.footer-links .btn-kofi:hover {
   color: inherit;
 }
 
-.bmc-support {
+.kofi-support {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -326,7 +326,7 @@ html.lenis body {
   transition: transform 0.15s var(--ease), color 0.15s var(--ease);
 }
 
-.bmc-support img {
+.kofi-support img {
   display: block;
   width: 100%;
   height: auto;
@@ -334,7 +334,7 @@ html.lenis body {
   background: #fff;
 }
 
-.bmc-support:hover {
+.kofi-support:hover {
   color: var(--g1);
   transform: translateY(-2px);
 }
@@ -1920,13 +1920,13 @@ html.modal-open .asset-dialog * {
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   }
 
-  .nav-links .btn-coffee {
+  .nav-links .btn-kofi {
     margin: 0.85rem 0 0;
     min-height: auto;
     align-self: flex-start;
   }
 
-  .nav-links .btn-coffee img {
+  .nav-links .btn-kofi img {
     height: 40px;
   }
 
@@ -1954,14 +1954,14 @@ html.modal-open .asset-dialog * {
     align-items: center;
   }
 
-  .bmc-support {
+  .kofi-support {
     align-self: center;
     width: min(11.5rem, 100%);
     max-width: 11.5rem;
     margin-inline: auto;
   }
 
-  .bmc-support img {
+  .kofi-support img {
     width: 100%;
     margin-inline: auto;
   }
