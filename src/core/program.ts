@@ -7,6 +7,24 @@ import { registerListCommand } from "../commands/list.js";
 import { registerRemoveCommand } from "../commands/remove.js";
 import { registerUpdateCommand } from "../commands/update.js";
 import { registerDoctorCommand } from "../commands/doctor.js";
+import { registerInstallCommand } from "../commands/install.js";
+import { registerUninstallCommand } from "../commands/uninstall.js";
+import { registerPreviewCommand } from "../commands/preview.js";
+import { registerRecentCommand } from "../commands/recent.js";
+import { registerFavoriteCommands } from "../commands/favorite.js";
+import { registerBootstrapCommand } from "../commands/bootstrap.js";
+import { registerWorkspaceCommand } from "../commands/workspace.js";
+import { registerExplainCommand } from "../commands/explain.js";
+import { registerAnalyzeCommand } from "../commands/analyze.js";
+import { registerWizardCommands } from "../commands/wizard.js";
+import { registerPublishCommand } from "../commands/publish.js";
+import { registerAuthCommands } from "../commands/auth.js";
+import { registerDashboardCommand } from "../commands/dashboard.js";
+import { registerPluginCommand } from "../commands/plugin.js";
+import { registerUndoCommand } from "../commands/undo.js";
+import { registerTryCommand } from "../commands/try.js";
+import { registerNewCommand } from "../commands/new.js";
+import { registerConfigCommands } from "../commands/config.js";
 import { renderBanner, shouldShowBanner } from "../ui/banner.js";
 
 export function createProgram(): Command {
@@ -15,44 +33,59 @@ export function createProgram(): Command {
   program
     .name(CLI_NAME)
     .description(
-      "Install Noah's reusable Cursor assets (Skills, Rules, Prompts, MCP, Presets)",
+      "The package manager for AI-assisted software development — Skills, Rules, Prompts, MCP, Presets",
     )
     .version(CLI_VERSION)
     .option("--no-banner", "Hide the NOAH DEV CLI banner")
     .showHelpAfterError()
     .showSuggestionAfterError();
 
-  // Show branding above help (`noah-cursor`, `noah-cursor --help`, `… help`)
   program.configureHelp({
     helpWidth: process.stdout.columns || 80,
   });
 
   program.addHelpText("beforeAll", () => {
-    // Banner for explicit --help / help command (empty argv is handled in index.ts)
     if (shouldShowBanner()) {
       renderBanner();
     }
     return "";
   });
 
-  // Show branding before every subcommand action
   program.hook("preAction", () => {
     renderBanner();
   });
 
-  // If Commander still routes to the root with no subcommand, show help (exit 0)
+  // Root action: help when routed without subcommand (TTY home is handled in index.ts)
   program.action(() => {
     renderBanner();
     program.outputHelp();
   });
 
   registerAddCommand(program);
+  registerInstallCommand(program);
   registerBrowseCommand(program);
   registerSearchCommand(program);
+  registerPreviewCommand(program);
   registerListCommand(program);
   registerRemoveCommand(program);
+  registerUninstallCommand(program);
   registerUpdateCommand(program);
   registerDoctorCommand(program);
+  registerRecentCommand(program);
+  registerFavoriteCommands(program);
+  registerBootstrapCommand(program);
+  registerWorkspaceCommand(program);
+  registerExplainCommand(program);
+  registerAnalyzeCommand(program);
+  registerWizardCommands(program);
+  registerPublishCommand(program);
+  registerAuthCommands(program);
+  registerDashboardCommand(program);
+  registerPluginCommand(program);
+  registerUndoCommand(program);
+  registerTryCommand(program);
+  registerNewCommand(program);
+  registerConfigCommands(program);
 
   return program;
 }

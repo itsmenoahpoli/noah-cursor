@@ -13,12 +13,13 @@ export function registerDoctorCommand(program: Command): void {
       `Target IDE (${IDE_IDS.join("|")})`,
       "cursor",
     )
+    .option("--target <name>", "Alias for --ide")
     .option("-v, --verbose", "Verbose output", false)
-    .action(async (opts: { verbose?: boolean; ide?: string }) => {
+    .action(async (opts: { verbose?: boolean; ide?: string; target?: string }) => {
       try {
-        const ide = parseIdeId(opts.ide);
+        const ide = parseIdeId(opts.target ?? opts.ide);
         const checks = await runDoctor(process.cwd(), ide);
-        logTitle(`Noah Cursor Doctor · ${ide}`);
+        logTitle(`Noah Doctor · ${ide}`);
 
         let failures = 0;
         for (const check of checks) {

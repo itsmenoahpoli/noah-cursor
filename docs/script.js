@@ -365,10 +365,11 @@ loadCatalogPage();
 async function loadCatalogPage() {
   const skillRoot = document.getElementById("skills-catalog");
   const ruleRoot = document.getElementById("rules-catalog");
-  if (!skillRoot && !ruleRoot) return;
+  const presetRoot = document.getElementById("presets-catalog");
+  if (!skillRoot && !ruleRoot && !presetRoot) return;
 
   const src =
-    (skillRoot || ruleRoot).dataset.catalogSrc || "catalog.json";
+    (skillRoot || ruleRoot || presetRoot).dataset.catalogSrc || "catalog.json";
 
   try {
     const response = await fetch(src, { cache: "no-cache" });
@@ -377,20 +378,27 @@ async function loadCatalogPage() {
 
     if (skillRoot) renderCatalogList(skillRoot, data.skills || [], "skill");
     if (ruleRoot) renderCatalogList(ruleRoot, data.rules || [], "rule");
+    if (presetRoot) renderCatalogList(presetRoot, data.presets || [], "preset");
     setupAssetDialog();
     observeReveals(document.getElementById("skills") || document);
     observeReveals(document.getElementById("rules") || document);
+    observeReveals(document.getElementById("presets") || document);
 
     if (window.location.hash.startsWith("#asset-")) {
       const id = window.location.hash.slice("#asset-".length);
-      const kind = id.startsWith("rule-") ? "rule" : "skill";
-      const assetId = id.replace(/^(skill|rule)-/, "");
-      const list = kind === "rule" ? data.rules : data.skills;
+      const kind = id.startsWith("rule-")
+        ? "rule"
+        : id.startsWith("preset-")
+          ? "preset"
+          : "skill";
+      const assetId = id.replace(/^(skill|rule|preset)-/, "");
+      const list =
+        kind === "rule" ? data.rules : kind === "preset" ? data.presets : data.skills;
       const asset = (list || []).find((item) => item.id === assetId);
       if (asset) openAssetDialog(asset, kind);
     }
   } catch (error) {
-    for (const root of [skillRoot, ruleRoot]) {
+    for (const root of [skillRoot, ruleRoot, presetRoot]) {
       if (!root) continue;
       root.innerHTML =
         '<p class="releases-status is-error">Could not load catalog details.</p>';
@@ -548,15 +556,14 @@ function openAssetDialog(asset, kind) {
   const dialog = document.getElementById("asset-dialog");
   if (!dialog) return;
 
-  const kindLabel = kind === "rule" ? "Rule" : "Skill";
+  const kindLabel =
+    kind === "rule" ? "Rule" : kind === "preset" ? "Preset" : "Skill";
   document.getElementById("asset-dialog-kind").textContent = kindLabel;
   document.getElementById("asset-dialog-title").textContent = asset.id;
 
   const tags = Array.isArray(asset.tags) ? asset.tags : [];
   const highlights = Array.isArray(asset.highlights) ? asset.highlights : [];
-  const install =
-    asset.install ||
-    `npx noah-cursor add --${kind} ${asset.id}`;
+  const install = asset.install || `npx noah-cursor install ${asset.id}`;
 
   document.getElementById("asset-dialog-body").innerHTML = `
     <div class="asset-dialog-meta">

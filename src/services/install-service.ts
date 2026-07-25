@@ -5,12 +5,15 @@ import { DEFAULT_IDE, getIdeDefinition, METADATA_FILE, type IdeId } from "../con
 import { installAsset, removeAssetFiles } from "../installers/asset-installer.js";
 import {
   findInstalled,
+  listInstalledAssets,
   readMetadata,
   removeInstalledAsset,
   upsertInstalledAssets,
 } from "../metadata/store.js";
+import { addRecent, appendAudit, pushUndo } from "../metadata/user-store.js";
 import type { ClonedRegistry } from "../registry/cloner.js";
 import { loadRegistry } from "./registry-loader.js";
+import { syncLockfileFromInstalled } from "./lockfile-service.js";
 import type {
   AddOptions,
   AssetRequest,
@@ -25,6 +28,8 @@ import {
   getManifestAssets,
   listAllManifestAssets,
 } from "../utils/assets.js";
+import { fuzzyFilter } from "../utils/fuzzy.js";
+import { parsePackageRef, versionMatches } from "../utils/semver.js";
 import { pluralize } from "../utils/fs.js";
 import {
   preferLocalRegistry,
@@ -32,6 +37,7 @@ import {
   toPublicRegistryLabel,
   toStoredRegistryUrl,
 } from "../utils/registry.js";
+import { ASSET_TYPES } from "../constants/index.js";
 
 function collectRequests(options: AddOptions): AssetRequest[] {
   const requests: AssetRequest[] = [];
@@ -224,6 +230,22 @@ export async function installFromSelections(
       options.ide,
     );
     await options.onStepDone?.("Updating noah.json");
+
+    const ide = options.ide ?? DEFAULT_IDE;
+    for (const meta of installedMeta) {
+      await addRecent(meta.type, meta.id, "installed");
+      await pushUndo({
+        action: "install",
+        type: meta.type,
+        id: meta.id,
+        ide,
+        at: new Date().toISOString(),
+      });
+      await appendAudit("install", `${meta.type}/${meta.id}@${meta.version}`);
+    }
+
+    const listed = await listInstalledAssets(process.cwd(), ide);
+    await syncLockfileFromInstalled(listed.installed, ide);
   }
 
   return results;
@@ -289,27 +311,196 @@ export async function addFromRegistry(
 export async function searchRegistry(
   query: string,
   repository?: string,
-  options: { verbose?: boolean } = {},
+  options: { verbose?: boolean; tag?: string; type?: AssetType } = {},
 ): Promise<SearchResult[]> {
   const source = resolveNoahRegistry(repository);
   const registry = await loadRegistry(source, options);
 
   try {
-    const needle = query.toLowerCase();
-    return listAllManifestAssets(registry.manifest).filter((asset) => {
-      const haystack = [
-        asset.id,
-        asset.description ?? "",
-        ...(asset.tags ?? []),
-        asset.type,
-      ]
-        .join(" ")
-        .toLowerCase();
-      return haystack.includes(needle);
-    });
+    let assets = listAllManifestAssets(registry.manifest);
+    if (options.type) {
+      assets = assets.filter((a) => a.type === options.type);
+    }
+    if (options.tag) {
+      const tag = options.tag.toLowerCase();
+      assets = assets.filter((a) => (a.tags ?? []).some((t) => t.toLowerCase() === tag));
+    }
+    return fuzzyFilter(assets, query, (asset) => [
+      asset.id,
+      asset.description ?? "",
+      ...(asset.tags ?? []),
+      asset.type,
+    ]);
   } finally {
     await registry.cleanup();
   }
+}
+
+/** Resolve a package ref like `laravel-api`, `rule/laravel-api`, or `laravel-api@1.0.0`. */
+export async function resolvePackageRequest(
+  input: string,
+  repository?: string,
+  options: { verbose?: boolean } = {},
+): Promise<AssetRequest> {
+  const ref = parsePackageRef(input);
+  const source = resolveNoahRegistry(repository);
+  const registry = await loadRegistry(source, options);
+
+  try {
+    const assets = listAllManifestAssets(registry.manifest);
+
+    if (ref.type) {
+      if (!ASSET_TYPES.includes(ref.type as AssetType)) {
+        throw new ValidationError(
+          `Invalid asset type "${ref.type}". Expected one of: ${ASSET_TYPES.join(", ")}`,
+        );
+      }
+      const found = findAssetInManifest(registry.manifest, ref.type as AssetType, ref.id);
+      if (!found) {
+        throw new NotFoundError(`${ref.type}/${ref.id} not found in registry`);
+      }
+      if (ref.version && !versionMatches(found.version, ref.version)) {
+        throw new NotFoundError(
+          `${ref.type}/${ref.id}@${ref.version} not found (available: ${found.version})`,
+        );
+      }
+      return { type: ref.type as AssetType, id: ref.id, version: found.version };
+    }
+
+    const exact = assets.filter((a) => a.id === ref.id);
+    if (exact.length === 1) {
+      const asset = exact[0]!;
+      if (ref.version && !versionMatches(asset.version, ref.version)) {
+        throw new NotFoundError(
+          `${asset.id}@${ref.version} not found (available: ${asset.version})`,
+        );
+      }
+      return { type: asset.type, id: asset.id, version: asset.version };
+    }
+    if (exact.length > 1) {
+      throw new ValidationError(
+        `Ambiguous package "${ref.id}". Specify type: ${exact.map((a) => `${a.type}/${a.id}`).join(", ")}`,
+      );
+    }
+
+    const fuzzy = fuzzyFilter(assets, ref.id, (a) => [a.id, ...(a.tags ?? [])], 5);
+    if (fuzzy.length === 1) {
+      const asset = fuzzy[0]!;
+      return { type: asset.type, id: asset.id, version: asset.version };
+    }
+    if (fuzzy.length > 1) {
+      throw new ValidationError(
+        `Ambiguous package "${ref.id}". Did you mean: ${fuzzy.map((a) => `${a.type}/${a.id}`).join(", ")}?`,
+      );
+    }
+
+    throw new NotFoundError(`Package "${input}" not found in registry`);
+  } finally {
+    await registry.cleanup();
+  }
+}
+
+/** Expand dependsOn strings (`type/id` or bare id) into AssetRequests. */
+export function expandDependencies(
+  manifest: Manifest,
+  requests: AssetRequest[],
+): AssetRequest[] {
+  const resolved: AssetRequest[] = [];
+  const seen = new Set<string>();
+
+  const visit = (request: AssetRequest) => {
+    const key = `${request.type}:${request.id}`;
+    if (seen.has(key)) return;
+    seen.add(key);
+
+    const entry = findAssetInManifest(manifest, request.type, request.id);
+    for (const dep of entry?.dependsOn ?? []) {
+      const ref = parsePackageRef(dep);
+      if (ref.type && ASSET_TYPES.includes(ref.type as AssetType)) {
+        visit({ type: ref.type as AssetType, id: ref.id });
+      } else {
+        const matches = listAllManifestAssets(manifest).filter((a) => a.id === ref.id);
+        if (matches[0]) {
+          visit({ type: matches[0].type, id: matches[0].id });
+        }
+      }
+    }
+
+    resolved.push(request);
+  };
+
+  for (const request of requests) visit(request);
+  return resolved;
+}
+
+export async function installByPackageNames(
+  packages: string[],
+  options: AddOptions = {},
+): Promise<InstallResult[]> {
+  if (packages.length === 0) {
+    throw new ValidationError("Specify at least one package to install");
+  }
+
+  const source = resolveNoahRegistry(undefined);
+  const registry = await loadRegistry(source, { verbose: options.verbose });
+
+  try {
+    const requests: AssetRequest[] = [];
+    for (const pkg of packages) {
+      const resolved = await resolvePackageRequest(pkg, undefined, { verbose: options.verbose });
+      requests.push(resolved);
+    }
+
+    const withDeps = expandDependencies(registry.manifest, requests);
+
+    if (!options.yes && !options.dryRun && withDeps.length > 5) {
+      const ok = await confirm({
+        message: `Install ${withDeps.length} assets from ${toPublicRegistryLabel()}?`,
+        default: true,
+      });
+      if (!ok) {
+        logWarn("Installation cancelled.");
+        return [];
+      }
+    }
+
+    const results = await installFromSelections(registry, withDeps, {
+      force: options.force,
+      dryRun: options.dryRun,
+      verbose: options.verbose,
+      ide: options.ide,
+    });
+
+    const installed = results.filter((r) => !r.skipped);
+    if (options.dryRun) {
+      logInfo(
+        `[dry-run] Would install ${installed.length} ${pluralize(installed.length, "asset")}`,
+      );
+    } else {
+      logSuccess(
+        `Installed ${installed.length} ${pluralize(installed.length, "asset")} ` +
+          `from ${toPublicRegistryLabel()}`,
+      );
+    }
+
+    return results;
+  } finally {
+    await registry.cleanup();
+  }
+}
+
+export async function getPackagePreview(
+  input: string,
+  options: { verbose?: boolean } = {},
+): Promise<SearchResult> {
+  const request = await resolvePackageRequest(input, undefined, options);
+  await addRecent(request.type, request.id, "viewed");
+  const listed = await listRegistryAssets(undefined, options);
+  const found = listed.assets.find((a) => a.type === request.type && a.id === request.id);
+  if (!found) {
+    throw new NotFoundError(`Package "${input}" not found`);
+  }
+  return found;
 }
 
 export async function listRegistryAssets(
@@ -374,6 +565,16 @@ export async function removeAsset(
 
   if (!options.dryRun) {
     await removeInstalledAsset(type, id, process.cwd(), ide);
+    await pushUndo({
+      action: "uninstall",
+      type,
+      id,
+      ide,
+      at: new Date().toISOString(),
+    });
+    await appendAudit("uninstall", `${type}/${id}`);
+    const listed = await listInstalledAssets(process.cwd(), ide);
+    await syncLockfileFromInstalled(listed.installed, ide);
     logSuccess(`Removed ${type}/${id}`);
   } else {
     logInfo(`[dry-run] Would remove ${type}/${id}`);

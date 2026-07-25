@@ -67,7 +67,15 @@ export function getBundledRegistryPath(): string {
  * Local paths (`.`, `./…`, absolute, `file://`) remain allowed for development.
  * Official remote aliases also map to the bundled registry.
  */
-export function resolveNoahRegistry(input?: string): string {
+/**
+ * Resolve the registry source for this CLI.
+ * Local paths and the official registry always work.
+ * Other remotes require `allowPrivate` (enterprise private registry).
+ */
+export function resolveNoahRegistry(
+  input?: string,
+  options: { allowPrivate?: boolean } = {},
+): string {
   if (!input || input.trim() === "") {
     return BUNDLED_REGISTRY;
   }
@@ -83,14 +91,18 @@ export function resolveNoahRegistry(input?: string): string {
   }
 
   const normalized = displayRegistryUrl(normalizeGitHubUrl(trimmed));
-  if (!isOfficialRegistryUrl(normalized)) {
-    throw new ValidationError(
-      `noah-cursor only installs Noah's official registry assets (${OFFICIAL_REGISTRY}). ` +
-        "Third-party registries are not supported.",
-    );
+  if (isOfficialRegistryUrl(normalized)) {
+    return BUNDLED_REGISTRY;
   }
 
-  return BUNDLED_REGISTRY;
+  if (options.allowPrivate) {
+    return normalizeGitHubUrl(trimmed);
+  }
+
+  throw new ValidationError(
+    `noah-cursor only installs Noah's official registry assets (${OFFICIAL_REGISTRY}) ` +
+      "unless a private registry is configured (`noah-cursor config --private-registry <url>`).",
+  );
 }
 
 /** True when cwd looks like the Noah registry checkout (manifest + asset dirs). */

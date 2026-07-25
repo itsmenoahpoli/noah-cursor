@@ -9,6 +9,10 @@ export const CLI_VERSION = pkg.version;
 export const CURSOR_DIR = ".cursor";
 export const METADATA_FILE = "noah.json";
 export const MANIFEST_FILE = "manifest.json";
+/** Project-root team workspace config (distinct from per-IDE install ledger). */
+export const WORKSPACE_FILE = "noah.config.json";
+export const LOCKFILE_NAME = "noah.lock";
+export const USER_DIR_NAME = ".noah";
 
 export {
   DEFAULT_IDE,

@@ -10,6 +10,13 @@ export const AssetEntrySchema = z.object({
   description: z.string().optional(),
   path: z.string().optional(),
   tags: z.array(z.string()).optional(),
+  author: z.string().optional(),
+  downloads: z.number().optional(),
+  rating: z.number().min(0).max(5).optional(),
+  verified: z.boolean().optional(),
+  dependsOn: z.array(z.string()).optional(),
+  changelog: z.string().optional(),
+  updatedAt: z.string().optional(),
 });
 
 export type AssetEntry = z.infer<typeof AssetEntrySchema>;
@@ -61,6 +68,92 @@ export const NoahMetadataSchema = z.object({
 
 export type NoahMetadata = z.infer<typeof NoahMetadataSchema>;
 
+export const WorkspaceConfigSchema = z.object({
+  $schema: z.string().optional(),
+  packages: z.array(z.string()).default([]),
+  ide: z.enum(IDE_IDS as unknown as [IdeId, ...IdeId[]]).optional(),
+  registry: z.string().optional(),
+  privateRegistry: z.string().optional(),
+  settings: z.record(z.unknown()).optional(),
+});
+
+export type WorkspaceConfig = z.infer<typeof WorkspaceConfigSchema>;
+
+export const LockfileSchema = z.object({
+  version: z.literal(1).default(1),
+  packages: z.array(
+    z.object({
+      type: z.enum(ASSET_TYPES),
+      id: z.string(),
+      version: z.string(),
+    }),
+  ),
+  ide: z.enum(IDE_IDS as unknown as [IdeId, ...IdeId[]]).optional(),
+  updatedAt: z.string().optional(),
+});
+
+export type Lockfile = z.infer<typeof LockfileSchema>;
+
+export const RecentEntrySchema = z.object({
+  type: z.enum(ASSET_TYPES),
+  id: z.string(),
+  action: z.enum(["installed", "viewed", "updated"]),
+  at: z.string(),
+});
+
+export type RecentEntry = z.infer<typeof RecentEntrySchema>;
+
+export const FavoriteEntrySchema = z.object({
+  type: z.enum(ASSET_TYPES),
+  id: z.string(),
+  addedAt: z.string(),
+});
+
+export type FavoriteEntry = z.infer<typeof FavoriteEntrySchema>;
+
+export const UserStoreSchema = z.object({
+  favorites: z.array(FavoriteEntrySchema).default([]),
+  recent: z.array(RecentEntrySchema).default([]),
+  settings: z
+    .object({
+      defaultIde: z.enum(IDE_IDS as unknown as [IdeId, ...IdeId[]]).optional(),
+      privateRegistry: z.string().optional(),
+      analytics: z.boolean().optional(),
+      plugins: z.array(z.string()).optional(),
+    })
+    .default({}),
+  auth: z
+    .object({
+      token: z.string().optional(),
+      username: z.string().optional(),
+      loggedInAt: z.string().optional(),
+    })
+    .optional(),
+  undoStack: z
+    .array(
+      z.object({
+        action: z.enum(["install", "uninstall"]),
+        type: z.enum(ASSET_TYPES),
+        id: z.string(),
+        ide: z.enum(IDE_IDS as unknown as [IdeId, ...IdeId[]]),
+        at: z.string(),
+        snapshotPath: z.string().optional(),
+      }),
+    )
+    .default([]),
+  auditLog: z
+    .array(
+      z.object({
+        at: z.string(),
+        action: z.string(),
+        detail: z.string().optional(),
+      }),
+    )
+    .default([]),
+});
+
+export type UserStore = z.infer<typeof UserStoreSchema>;
+
 export interface AddOptions {
   skill?: string;
   rule?: string;
@@ -83,6 +176,7 @@ export interface GlobalOptions {
 export interface AssetRequest {
   type: AssetType;
   id: string;
+  version?: string;
 }
 
 export interface InstallResult {
@@ -106,4 +200,34 @@ export interface SearchResult {
   version: string;
   description?: string;
   tags?: string[];
+  author?: string;
+  downloads?: number;
+  rating?: number;
+  verified?: boolean;
+  dependsOn?: string[];
+  changelog?: string;
+  updatedAt?: string;
+  score?: number;
+}
+
+export interface ProjectStack {
+  frameworks: string[];
+  languages: string[];
+  tools: string[];
+  packageManagers: string[];
+}
+
+export interface HealthScores {
+  architecture: number;
+  security: number;
+  documentation: number;
+  testing: number;
+  overall: number;
+}
+
+export interface ProjectAnalysis {
+  stack: ProjectStack;
+  health: HealthScores;
+  missing: string[];
+  recommendations: SearchResult[];
 }

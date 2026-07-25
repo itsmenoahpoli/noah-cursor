@@ -6,7 +6,7 @@
     <title>How it works — Noah Cursor</title>
     <meta
       name="description"
-      content="How Noah Cursor installs Skills, Rules, and workflows into .cursor/ (or Windsurf, Claude Code, and more). Browse flow, folder layout, and noah.json."
+      content="How Noah Cursor bootstraps your AI development environment: detect stack, analyse health, recommend packages, install Skills &amp; Rules, and write noah.config.json."
     />
     <meta name="robots" content="index, follow" />
     <meta name="theme-color" content="#121212" />
@@ -21,7 +21,7 @@
     <meta property="og:title" content="How it works — Noah Cursor" />
     <meta
       property="og:description"
-      content="Install flow, IDE folders, and how the registry lands in your project."
+      content="Intelligent bootstrap: detect, analyse, recommend, install — then configure your AI assistant."
     />
     <meta
       property="og:image"
@@ -86,8 +86,8 @@
         <p class="eyebrow">Docs</p>
         <h1>How it works</h1>
         <p class="lede">
-          Noah Cursor is a CLI + bundled registry. You pick an IDE, choose assets, and they install
-          into that IDE’s project folder — Cursor by default.
+          Noah is an intelligent project bootstrapper and AI workflow package manager. Start with
+          <code>bootstrap</code> — or browse and install packages by hand when you prefer.
         </p>
       </header>
 
@@ -95,38 +95,104 @@
         <aside class="doc-toc" aria-label="On this page">
           <h2>On this page</h2>
           <ol>
-            <li><a href="#flow">Install flow</a></li>
+            <li><a href="#bootstrap">Intelligent bootstrap</a></li>
+            <li><a href="#flow">Browse &amp; install</a></li>
             <li><a href="#ides">IDE folders</a></li>
             <li><a href="#layout">What lands in the project</a></li>
-            <li><a href="#noah-json">noah.json</a></li>
+            <li><a href="#config">Workspace &amp; lockfile</a></li>
             <li><a href="#quick">Quick start</a></li>
           </ol>
         </aside>
 
         <div class="doc-content">
-          <section class="doc-block" id="flow">
-            <h2>Install flow</h2>
-            <p>Interactive install is the recommended path.</p>
+          <section class="doc-block" id="bootstrap">
+            <h2>Intelligent Project Bootstrap</h2>
+            <p>
+              The recommended path for first-time users. Noah detects your stack, shows
+              recommendations, then asks before installing — confirm to proceed, or skip and pick
+              packages yourself.
+            </p>
             <ol class="flow">
               <li>
                 <span class="step">01</span>
                 <div>
-                  <h3>Select IDE</h3>
-                  <p>Defaults to Cursor. Or choose Windsurf, Claude Code, Continue, VS Code, or Cline.</p>
+                  <h3>Detect stack</h3>
+                  <p>
+                    Scans the repo for frameworks and tooling (Laravel, React, Next, NestJS, Docker,
+                    CI, and more).
+                  </p>
                 </div>
               </li>
               <li>
                 <span class="step">02</span>
                 <div>
-                  <h3>Browse categories</h3>
-                  <p>Skills, Rules, Prompts, MCP configs, and Presets — curated and versioned in the package.</p>
+                  <h3>Analyse project</h3>
+                  <p>
+                    Scores architecture, security, documentation, and testing — then surfaces what’s
+                    missing.
+                  </p>
+                </div>
+              </li>
+              <li>
+                <span class="step">03</span>
+                <div>
+                  <h3>Recommend &amp; install</h3>
+                  <p>
+                    Picks the best Skills, Rules, and Presets, installs them into your IDE folder,
+                    and writes <code>noah.config.json</code>.
+                  </p>
+                </div>
+              </li>
+            </ol>
+            <pre class="tree" aria-label="Bootstrap workflow"><span class="hi">Clone Repository</span>
+       ↓
+  <span class="hi">noah bootstrap</span>
+       ↓
+   Detect Stack → Analyse → Recommend → Install
+       ↓
+ Generate <span class="hi">noah.config.json</span>
+       ↓
+ <span class="hi">Ready to Develop</span></pre>
+            <div class="terminal install-snippet" tabindex="0" role="region" aria-label="Bootstrap example">
+              <div class="terminal-chrome" aria-hidden="true">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+                <span class="terminal-title">noah — zsh</span>
+              </div>
+              <pre class="terminal-body"><code><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">bootstrap</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">bootstrap</span> <span class="flag">--target</span> <span class="string">claude</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">bootstrap</span> <span class="flag">--all</span> <span class="flag">--dry-run</span></span></code></pre>
+            </div>
+          </section>
+
+          <section class="doc-block" id="flow">
+            <h2>Browse &amp; install</h2>
+            <p>
+              Prefer picking packages yourself? Use interactive browse (Skills, Rules, Prompts, MCP,
+              Presets) or install by name.
+            </p>
+            <ol class="flow">
+              <li>
+                <span class="step">01</span>
+                <div>
+                  <h3>Select IDE</h3>
+                  <p>Defaults to Cursor. Or pass <code>--ide</code> / <code>--target</code>.</p>
+                </div>
+              </li>
+              <li>
+                <span class="step">02</span>
+                <div>
+                  <h3>Browse or name packages</h3>
+                  <p>
+                    <code>browse</code> for the TUI, or
+                    <code>install laravel-api</code> / <code>install laravel-enterprise</code>.
+                  </p>
                 </div>
               </li>
               <li>
                 <span class="step">03</span>
                 <div>
                   <h3>Confirm &amp; install</h3>
-                  <p>Assets copy into the IDE root (e.g. <code>.cursor/</code>). No clone, no sign-in.</p>
+                  <p>Assets copy into the IDE root. Official registry ships in the package.</p>
                 </div>
               </li>
             </ol>
@@ -141,7 +207,7 @@
 
           <section class="doc-block" id="ides">
             <h2>IDE folders</h2>
-            <p>Same registry. Destination depends on what you pick (or pass with <code>--ide</code>).</p>
+            <p>Same registry. Destination depends on what you pick (or pass with <code>--ide</code> / <code>--target</code>).</p>
             <ul class="ide-list">
               <li class="primary">
                 <span class="ide-name">Cursor</span>
@@ -168,26 +234,45 @@
                 <span class="ide-name">Cline</span>
                 <code>.cline/</code>
               </li>
+              <li>
+                <span class="ide-name">Gemini CLI</span>
+                <code>.gemini/</code>
+              </li>
+              <li>
+                <span class="ide-name">Codex CLI</span>
+                <code>.codex/</code>
+              </li>
+              <li>
+                <span class="ide-name">Roo Code</span>
+                <code>.roo/</code>
+              </li>
+              <li>
+                <span class="ide-name">Aider</span>
+                <code>.aider/</code>
+              </li>
             </ul>
           </section>
 
           <section class="doc-block" id="layout">
             <h2>What lands in the project</h2>
-            <p>Inside the IDE root (example for Cursor):</p>
+            <p>After bootstrap or install (example for Cursor):</p>
             <pre class="tree" aria-label="Project layout"><span class="hi">.cursor/</span>
   <span class="hi">skills/</span>commit-push/
   <span class="hi">rules/</span>laravel-api/
   <span class="hi">prompts/</span>
   <span class="hi">mcp/</span>
-  <span class="hi">noah.json</span>   <span class="dim"># tracks installs + ide</span></pre>
+  <span class="hi">noah.json</span>          <span class="dim"># per-IDE install ledger</span>
+<span class="hi">noah.config.json</span>     <span class="dim"># team workspace package list</span>
+<span class="hi">noah.lock</span>            <span class="dim"># pinned versions</span></pre>
           </section>
 
-          <section class="doc-block" id="noah-json">
-            <h2>noah.json</h2>
+          <section class="doc-block" id="config">
+            <h2>Workspace &amp; lockfile</h2>
             <p>
-              After install, <code>noah.json</code> records versions, the target IDE, and registry
-              metadata so <code>update</code> and <code>remove</code> stay reliable across machines
-              and teammates.
+              <code>noah.config.json</code> is the team workspace — a list of packages to keep in
+              sync with <code>noah sync</code>. <code>noah.lock</code> pins installed versions after
+              install/update/remove. Per-IDE metadata still lives in
+              <code>.cursor/noah.json</code> (or the matching IDE root).
             </p>
           </section>
 
@@ -201,7 +286,7 @@
                 <span class="dot green"></span>
                 <span class="terminal-title">noah — zsh</span>
               </div>
-              <pre class="terminal-body"><code><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">browse</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">add</span> <span class="flag">--skill</span> <span class="string">commit-push</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">browse</span> <span class="flag">--ide</span> <span class="string">windsurf</span></span></code></pre>
+              <pre class="terminal-body"><code><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">bootstrap</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">browse</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">install</span> <span class="string">commit-push</span></span></code></pre>
             </div>
             <nav class="doc-pager" aria-label="Docs pagination">
               <a class="doc-pager-link prev" href="./">
@@ -229,7 +314,12 @@
             decoding="async"
           />
         </p>
-        <p>MIT · Built by <a href="https://patrickpolicarpio.xyz" target="_blank" rel="noopener">Patrick Policarpio</a></p>
+        <p>
+          MIT · Built by
+          <a href="https://patrickpolicarpio.xyz" target="_blank" rel="noopener"
+            >Patrick Policarpio</a
+          >
+        </p>
       </div>
       <div class="footer-links">
         <a href="mailto:patrickpolicarpio08@gmail.com">Feedback</a>

@@ -110,7 +110,8 @@ describe("install flow (local registry)", () => {
     await tempProject();
     const results = await searchRegistry("test", REGISTRY_PATH);
     expect(results.length).toBeGreaterThan(0);
-    expect(results.every((r) => JSON.stringify(r).toLowerCase().includes("test"))).toBe(true);
+    expect(results.some((r) => r.id === "test")).toBe(true);
+    expect(results.every((r) => (r.score ?? 0) > 0)).toBe(true);
   });
 
   it("lists all assets from the local registry manifest", async () => {
@@ -118,7 +119,7 @@ describe("install flow (local registry)", () => {
     const listed = await listRegistryAssets(REGISTRY_PATH);
     expect(listed.assets.some((a) => a.type === "skill" && a.id === "commit-push")).toBe(true);
     expect(listed.assets.some((a) => a.type === "rule" && a.id === "laravel-api")).toBe(true);
-    expect(listed.assets.every((a) => a.type !== "preset")).toBe(true);
+    expect(listed.assets.some((a) => a.type === "preset")).toBe(true);
     expect(listed.assets.length).toBeGreaterThanOrEqual(8);
   });
 

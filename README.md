@@ -3,9 +3,11 @@
 </p>
 
 <p align="center">
-  <strong>The CLI for shipping Cursor setups that actually work.</strong><br />
-  Install battle-tested Skills, Rules, and workflows into any project — also works with Windsurf, Claude Code, and more.
+  <strong>The package manager and intelligent project bootstrapper for AI-assisted software development.</strong><br />
+  Bootstrap your AI development environment in one command — Noah understands your project and configures the best Skills, Rules, and workflows for Cursor, Claude Code, Windsurf, and more.
 </p>
+
+> **Continuous improvement.** Noah is under active development. The CLI, registry, and DX keep evolving — expect frequent updates, new packages, and polish as the roadmap ships.
 
 <p align="center">
   <a href="https://www.npmjs.com/package/noah-cursor"><img src="https://img.shields.io/npm/v/noah-cursor.svg" alt="npm version" /></a>
@@ -16,36 +18,166 @@
 </p>
 
 ```bash
-npx noah-cursor browse
+npx noah-cursor bootstrap
+# or: npx noah bootstrap
 ```
 
-Stop copy-pasting Cursor prompts between repos. **Noah Cursor** is a developer CLI + curated registry: reusable Skills, Rules, Prompts, MCP configs, and Presets that drop straight into `.cursor/` — no clone, no sign-in, no friction.
+**Recommended for first-time users.** Clone a repo, run bootstrap, and Noah detects your stack, scores project health, and shows recommended packages — then asks before installing. Confirm to install and write `noah.config.json`, or skip and choose packages yourself.
 
-Also supports **Windsurf**, **Claude Code**, **Continue**, **VS Code**, and **Cline** — pick your IDE at install time and assets land in the right folder.
+---
 
-## Works with your IDE
+## Intelligent Project Bootstrap
 
-Built for **Cursor** first. At install time you can also target other AI IDEs — same registry, different project folder.
-
-**Install flow:** select IDE (default: Cursor) → browse → install
-
-| IDE | Flag | Project folder |
-| --- | ---- | -------------- |
-| **Cursor** | `--ide cursor` **(default)** | `.cursor/` |
-| Windsurf | `--ide windsurf` | `.windsurf/` |
-| Claude Code | `--ide claude-code` | `.claude/` |
-| Continue | `--ide continue` | `.continue/` |
-| VS Code | `--ide vscode` | `.vscode/` |
-| Cline | `--ide cline` | `.cline/` |
+One command prepares your entire AI development environment.
 
 ```bash
-# Cursor (default) — IDE picker defaults here
+noah bootstrap
+```
+
+Noah automatically:
+
+- ✓ Detects your framework and tooling
+- ✓ Analyses project architecture
+- ✓ Scores project health
+- ✓ Recommends the best Rules and Skills
+- ✓ Installs AI workflow packages
+- ✓ Generates `noah.config.json`
+- ✓ Configures your AI assistant
+
+No searching. No manual configuration. Just clone your project and bootstrap.
+
+### Example
+
+```text
+$ noah bootstrap
+
+────────────────────────────
+Scanning repository...
+
+✓ Laravel 12
+✓ Vue 3
+✓ PostgreSQL
+✓ Docker
+✓ GitHub Actions
+
+Project Health
+  Architecture   92%
+  Security       88%
+  Testing        34%
+  Documentation  26%
+
+Recommended Packages
+  ✓ Laravel Enterprise
+  ✓ Testing Workflow
+  ✓ Security Standards
+  ✓ Docker Optimisation
+
+? Install 4 recommended package(s)? (Y/n)
+
+Installing...
+Done.
+Workspace ready.
+```
+
+### How it works
+
+```text
+Clone Repository
+       ↓
+  noah bootstrap
+       ↓
+   Detect Stack
+       ↓
+ Analyse Project
+       ↓
+Recommend Packages
+       ↓
+Install AI Workflows
+       ↓
+Generate noah.config.json
+       ↓
+ Ready to Develop
+```
+
+---
+
+## Why Noah Cursor?
+
+Unlike traditional prompt registries, Noah understands your project before installing anything.
+
+With a single command, Noah can:
+
+- Detect your technology stack
+- Analyse project health
+- Recommend the best AI workflow packages
+- Configure your AI coding assistant
+- Generate a reproducible workspace configuration
+
+### Why it's different
+
+| Traditional Registry | Noah Cursor |
+| -------------------- | ----------- |
+| Browse packages manually | Automatically understands your project |
+| Search for prompts | Recommends the right packages |
+| Install one resource at a time | Bootstraps the entire AI development environment |
+| Static downloads | Intelligent project analysis |
+| Manual configuration | Zero-configuration onboarding |
+
+---
+
+## Features
+
+1. **Intelligent Project Bootstrap** — detect, recommend, install, ready
+2. **Interactive Terminal UI** — browse Skills, Rules, Prompts, MCP, Presets
+3. **Project Detection** — frameworks, tooling, CI, Docker, AI config
+4. **AI Workflow Package Manager** — install / update / uninstall / lockfile
+5. **Smart Recommendations** — stack-aware package suggestions
+6. **Multi-AI Assistant Support** — Cursor, Claude Code, Windsurf, and more
+7. **Registry Browser** — fuzzy search, preview, trending
+8. **Skills & Rules Installation** — battle-tested agent workflows
+9. **Team Workspace Configuration** — `noah.config.json` + `sync`
+10. **Versioned AI Packages** — pins, presets, dependencies
+
+---
+
+## Quick start
+
+Requires **Node.js 20+**.
+
+```bash
+# Recommended — bootstrap your AI environment from the project
+npx noah-cursor bootstrap
+
+# Or install globally
+npm install -g noah-cursor
+noah bootstrap
+```
+
+The registry ships inside the package. Nothing to clone for official assets.
+
+### Other ways to install packages
+
+```bash
+# Interactive browse (Skills / Rules / Prompts / MCP / Presets)
 npx noah-cursor browse
 
-# Other IDEs when you need them
-npx noah-cursor browse --ide windsurf
-npx noah-cursor add --skill commit-push --ide claude-code
+# Install by package name
+npx noah-cursor install commit-push
+npx noah-cursor install laravel-api --target claude
+npx noah-cursor install laravel-enterprise
 ```
+
+---
+
+## Demo
+
+<p align="center">
+  <img src="https://cdn.jsdelivr.net/npm/noah-cursor@latest/assets/noah-cursor-demo.gif" alt="Noah Cursor CLI demo" width="100%" />
+</p>
+
+Marketing site: [GitHub Pages](https://itsmenoahpoli.github.io/noah-cursor/)
+
+---
 
 ## Built for your stack
 
@@ -64,60 +196,33 @@ npx noah-cursor add --skill commit-push --ide claude-code
   <img src="https://img.shields.io/badge/Laravel-FF2D20?style=flat-square&logo=laravel&logoColor=white" alt="Laravel" />
 </p>
 
-Curated Skills & Rules for the stacks you already ship — React dashboards, Laravel APIs, Next/Nuxt marketing sites, NestJS, and Node.
+Curated Skills & Rules for React dashboards, Laravel APIs, Next/Nuxt marketing sites, NestJS, and Node — selected automatically when you bootstrap, or installed by name when you prefer.
 
-## Why developers use it
+---
 
-| Pain | Noah Cursor |
-| ---- | ----------- |
-| Rebuilding the same Cursor setup on every project | One command installs a full workflow into `.cursor/` |
-| Vague AI prompts that drift between teammates | Versioned Skills & Rules from a real registry |
-| Hunting docs every time you switch stacks | Stack-specific rules for React, Laravel, Next, Nuxt |
-| Manual QA loops with lint/doctor tools | Fix Skills that run → fix → verify |
+## Works with your IDE
 
-Built for people who live in the terminal and want Cursor to feel like a product, not a blank slate.
+Built for **Cursor** first. Same registry, different project folder via `--ide` or `--target`.
 
-## Demo
-
-<p align="center">
-  <img src="https://cdn.jsdelivr.net/npm/noah-cursor@latest/assets/noah-cursor-demo.gif" alt="Noah Cursor CLI demo" width="100%" />
-</p>
-
-Marketing site: [GitHub Pages](https://itsmenoahpoli.github.io/noah-cursor/) (enable Pages → GitHub Actions after first deploy).
-
-## Quick start
-
-Requires **Node.js 20+**.
+| IDE | Flag | Project folder |
+| --- | ---- | -------------- |
+| **Cursor** | `--ide cursor` **(default)** | `.cursor/` |
+| Windsurf | `--ide windsurf` | `.windsurf/` |
+| Claude Code | `--ide claude-code` / `--target claude` | `.claude/` |
+| Continue | `--ide continue` | `.continue/` |
+| VS Code | `--ide vscode` | `.vscode/` |
+| Cline | `--ide cline` | `.cline/` |
+| Gemini CLI | `--ide gemini` | `.gemini/` |
+| Codex CLI | `--ide codex` | `.codex/` |
+| Roo Code | `--ide roo` | `.roo/` |
+| Aider | `--ide aider` | `.aider/` |
 
 ```bash
-# Interactive install (recommended)
-npx noah-cursor browse
-
-# Or install globally
-npm install -g noah-cursor
-noah-cursor browse
+noah bootstrap --target claude
+noah install commit-push --ide windsurf
 ```
 
-The registry ships inside the package. Nothing to clone. Nothing to authenticate.
-
-### 30-second wins
-
-```bash
-# Cursor (default) — cleaner commits
-npx noah-cursor add --skill commit-push
-
-# Same skill into Windsurf
-npx noah-cursor add --skill commit-push --ide windsurf
-
-# Auto-generate a solid project README
-npx noah-cursor add --skill generate-readme
-
-# React health pass: run doctor → fix → verify
-npx noah-cursor add --skill react-doctor-fix
-
-# Stack rules for a Laravel API + React dashboard
-npx noah-cursor add --rule laravel-api --rule react-spa-dashboard
-```
+---
 
 ## What you get
 
@@ -142,149 +247,103 @@ npx noah-cursor add --rule laravel-api --rule react-spa-dashboard
 | `nextjs-marketing` | Next.js | Next.js App Router marketing / branding sites |
 | `nuxt-marketing` | Nuxt | Nuxt 3+ marketing / branding sites |
 
-Prompts, MCP configs, and Presets are supported by the CLI — more shipping soon.
+### Presets — one install, many packages
+
+| Preset | Includes |
+| ------ | -------- |
+| `laravel-enterprise` | Laravel API + Larastan + README + git + architecture |
+| `react-performance` | React SPA rules + react-doctor + git + architecture |
+
+Prompts and MCP configs are supported by the CLI — more shipping as the registry grows.
+
+---
 
 ## Commands
 
 | Command | Description |
 | ------- | ----------- |
-| `browse` | Pick IDE → browse categories → install assets |
-| `add` | Install Skills, Rules, Prompts, MCP, or Presets |
-| `search` | Search the registry |
-| `list` | List registry or installed assets |
-| `remove` | Uninstall an asset |
-| `update` | Re-fetch and update installed assets |
-| `doctor` | Diagnose environment health |
+| **`bootstrap`** | **Detect stack → recommend → confirm → install → write workspace (flagship)** |
+| `analyze` / `doctor` | Project analysis and health scores |
+| `wizard` | Interactive “what are you building?” setup |
+| `browse` | Interactive Skills / Rules / Prompts / MCP / Presets |
+| `install` / `i` | Install by package name (`id`, `type/id`, `@version`) |
+| `add` | Install via `--skill` / `--rule` / … flags |
+| `search` / `preview` | Fuzzy search and package preview |
+| `list` / `update` / `uninstall` | Manage installed packages |
+| `workspace` / `sync` | Team `noah.config.json` + sync |
+| `explain` / `upgrade` | Package explain + upgrade assistant |
+| `publish` / `trending` | Scaffold packages / trending list |
+| `dashboard` / `diff` / `try` / `undo` / `new` | DX extras |
+| `login` / `config` / `audit` | Auth, settings, audit log |
 
-### browse
+Use `--ide` or `--target` on install / bootstrap / doctor. Default: `cursor`.
 
-```text
-Select IDE  →  Select categories  →  Select assets  →  Confirm  →  Install
-```
-
-```bash
-noah-cursor browse
-noah-cursor browse --ide windsurf
-noah-cursor browse --browse-skills
-noah-cursor browse --browse-rules
-noah-cursor browse --browse-prompts
-noah-cursor browse --browse-mcp
-noah-cursor browse --browse-presets
-```
-
-Controls: ↑↓ navigate · Space select · A toggle all · I invert · Enter confirm · Esc cancel
-
-### add
+### Bootstrap & project-aware flow
 
 ```bash
-noah-cursor add
-  --skill <name>
-  --rule <name>
-  --prompt <name>
-  --mcp <name>
-  --preset <name>
-  --ide <name>   # cursor (default) | windsurf | claude-code | continue | vscode | cline
-  --all
-  --force
-  --dry-run
-  --yes
-  --verbose
+noah bootstrap          # recommended entrypoint (asks before install)
+noah bootstrap -y       # skip confirmation and install
+noah bootstrap --all    # recommend all matches (not just top 5)
+noah bootstrap --dry-run
+noah analyze
+noah doctor
+noah wizard
 ```
 
-Always installs from **Noah's bundled registry**.
+### Browse & install
 
 ```bash
-npx noah-cursor add --skill commit-push
-npx noah-cursor add --skill commit-push --ide claude-code
-npx noah-cursor add --rule nextjs-marketing
-npx noah-cursor add --all
+noah browse
+noah browse --browse-skills
+noah install laravel-api
+noah install rule/laravel-api@1.0.0 --target claude
+noah install laravel-enterprise
 ```
 
-### search / list / remove / update / doctor
-
-Pass `--ide` when managing installs for a non-Cursor target (default: `cursor`).
+### Team sync
 
 ```bash
-noah-cursor search doctor
-noah-cursor list
-noah-cursor list --installed
-noah-cursor list --installed --ide windsurf
-noah-cursor remove skill test --yes
-noah-cursor remove skill test --ide windsurf --yes
-noah-cursor update --yes
-noah-cursor doctor
-noah-cursor doctor --ide claude-code
+noah workspace init
+noah workspace add rule/laravel-api
+noah sync -y
+# noah.config.json + noah.lock stay in sync on install
 ```
 
-## How it works
+---
 
-By default, assets install under **`.cursor/`**. Choose another IDE and the folder follows:
+## Project layout after bootstrap
 
 ```
 your-project/
-  .cursor/          # Cursor (default) ← primary target
-  .windsurf/        # --ide windsurf
-  .claude/          # --ide claude-code
-  .continue/        # --ide continue
-  .vscode/          # --ide vscode
-  .cline/           # --ide cline
+  .cursor/                 # AI assets (or .claude/, .windsurf/, …)
+    skills/
+    rules/
+    noah.json              # per-IDE install ledger
+  noah.config.json         # team workspace package list
+  noah.lock                # pinned versions
 ```
 
-Inside the IDE root (e.g. `.cursor/`):
+User preferences (favorites, recent, auth) live in `~/.noah/`.
 
-```
-skills/
-rules/
-prompts/
-mcp/
-noah.json           # tracks installed assets + ide
-```
-
-Example after a default browse install:
-
-```
-.cursor/
-  skills/commit-push/
-  rules/laravel-api/
-  noah.json
-```
-
-`noah.json` keeps versions, IDE, and registry metadata so `update` and `remove` stay reliable across machines and teammates.
+---
 
 ## Build your own registry assets
 
-This repo is both the **CLI** and the **registry**. At the project root:
+This repo is both the **CLI** and the **registry**:
 
 ```
 manifest.json
-skills/
-rules/
-prompts/
-mcp/
-presets/
+skills/  rules/  prompts/  mcp/  presets/
 ```
 
-Add an asset folder, register it in `manifest.json`, ship. Each `id` maps to a folder under the matching directory (or set an explicit `path`).
-
-```json
-{
-  "name": "noah-registry",
-  "version": "1.0.0",
-  "description": "My AI IDE assets",
-  "skills": [
-    {
-      "id": "my-workflow",
-      "version": "1.0.0",
-      "description": "What this skill does",
-      "tags": ["git"]
-    }
-  ],
-  "rules": [],
-  "prompts": [],
-  "mcp": [],
-  "presets": []
-}
+```bash
+noah login
+noah publish
 ```
+
+Manifest entries can include `tags`, `downloads`, `rating`, `verified`, `dependsOn`, and `changelog`.
+
+---
 
 ## Development
 
@@ -292,26 +351,38 @@ Add an asset folder, register it in `manifest.json`, ship. Each `id` maps to a f
 npm install
 npm run build   # TypeScript + bundle registry → dist
 npm test
-npm run dev -- doctor
+npm run dev -- bootstrap
 ```
 
-`npm run build` copies `manifest.json` plus `skills/`, `rules/`, `prompts/`, `mcp/`, and `presets/` into `dist/noah-registry/` so published installs never need GitHub access.
+`npm run build` copies the registry into `dist/noah-registry/` so published installs never need GitHub access for official assets.
+
+---
+
+## Vision
+
+> Noah Cursor isn't just a package installer.
+>
+> It is an intelligent developer experience platform that understands your project, recommends best practices, and prepares your AI coding assistant automatically.
+
+The long-term vision is to become **the package manager for AI-assisted software development** — project-aware, workflow-focused, and zero-config for teams who ship with AI every day.
+
+---
 
 ## Contributing
 
-Ideas for Skills, Rules, or MCP configs? Open an issue or PR. The best assets are ones you already use on real projects — share them so other developers can install them in one command.
+Ideas for Skills, Rules, or MCP configs? Open an issue or PR. The best assets are ones you already use on real projects.
+
+Noah is continuously improved; feedback and PRs shape what ships next.
 
 ## Feedback & requests
 
-Have feedback, suggestions, or feature requests? I'd love to hear from you.
-
 📧 **Email:** [patrickpolicarpio08@gmail.com](mailto:patrickpolicarpio08@gmail.com)
 
-Whether it's a Skill you want added, a Rule for your stack, a bug report, or an idea to improve the CLI — send a note. Every message helps shape the product.
+Whether it's a Skill you want added, a Rule for your stack, a bug report, or an idea to improve bootstrap — send a note.
 
 ## Support
 
-If Noah Cursor saves you time, consider buying me a coffee — it helps keep the CLI and registry maintained.
+If Noah saves you time, consider buying me a coffee — it helps keep the CLI and registry maintained.
 
 <p align="center">
   <a href="https://www.buymeacoffee.com/klnaufr">

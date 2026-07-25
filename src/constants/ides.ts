@@ -5,6 +5,10 @@ export const IDE_IDS = [
   "continue",
   "vscode",
   "cline",
+  "gemini",
+  "codex",
+  "roo",
+  "aider",
 ] as const;
 
 export type IdeId = (typeof IDE_IDS)[number];
@@ -19,7 +23,7 @@ export interface IdeDefinition {
   hint: string;
 }
 
-/** Supported IDE install targets. Assets land under `{rootDir}/{skills,rules,...}`. */
+/** Supported IDE / AI assistant install targets. */
 export const IDE_DEFINITIONS: readonly IdeDefinition[] = [
   {
     id: "cursor",
@@ -57,6 +61,30 @@ export const IDE_DEFINITIONS: readonly IdeDefinition[] = [
     rootDir: ".cline",
     hint: "Cline rules and prompts under .cline/",
   },
+  {
+    id: "gemini",
+    name: "Gemini CLI",
+    rootDir: ".gemini",
+    hint: "Gemini CLI assets under .gemini/",
+  },
+  {
+    id: "codex",
+    name: "Codex CLI",
+    rootDir: ".codex",
+    hint: "Codex CLI assets under .codex/",
+  },
+  {
+    id: "roo",
+    name: "Roo Code",
+    rootDir: ".roo",
+    hint: "Roo Code assets under .roo/",
+  },
+  {
+    id: "aider",
+    name: "Aider",
+    rootDir: ".aider",
+    hint: "Aider conventions under .aider/",
+  },
 ] as const;
 
 export function isIdeId(value: string): value is IdeId {
@@ -76,10 +104,24 @@ export function parseIdeId(value: string | undefined, fallback: IdeId = DEFAULT_
     return fallback;
   }
   const normalized = value.trim().toLowerCase();
-  if (!isIdeId(normalized)) {
-    throw new Error(
-      `Unknown IDE "${value}". Supported: ${IDE_IDS.join(", ")}`,
-    );
+  // Aliases from roadmap --target names
+  const aliases: Record<string, IdeId> = {
+    claude: "claude-code",
+    "claude-code": "claude-code",
+    gemini: "gemini",
+    codex: "codex",
+    continue: "continue",
+    windsurf: "windsurf",
+    cline: "cline",
+    roo: "roo",
+    "roo-code": "roo",
+    aider: "aider",
+    cursor: "cursor",
+    vscode: "vscode",
+  };
+  const mapped = aliases[normalized] ?? normalized;
+  if (!isIdeId(mapped)) {
+    throw new Error(`Unknown IDE "${value}". Supported: ${IDE_IDS.join(", ")}`);
   }
-  return normalized;
+  return mapped;
 }

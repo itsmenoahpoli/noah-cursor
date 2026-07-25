@@ -1,10 +1,11 @@
 {
   "name": "noah-cursor",
   "version": "1.5.9",
-  "description": "The CLI for shipping Cursor setups — install battle-tested Skills, Rules, Prompts, MCP configs, and Presets",
+  "description": "The package manager for AI-assisted software development — Skills, Rules, Prompts, MCP configs, and Presets",
   "type": "module",
   "bin": {
-    "noah-cursor": "dist/index.js"
+    "noah-cursor": "dist/index.js",
+    "noah": "dist/index.js"
   },
   "files": [
     "dist",
@@ -25,7 +26,8 @@
     "format:check": "prettier --check \"src/**/*.ts\"",
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "npm run build && npm test",
-    "docs:sync-release": "node scripts/sync-docs-release.mjs"
+    "docs:sync-release": "node scripts/sync-docs-release.mjs",
+    "demo": "bash scripts/demo-cli.sh"
   },
   "keywords": [
     "cursor",

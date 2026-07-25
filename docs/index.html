@@ -3,14 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Noah Cursor — CLI for Cursor Skills, Rules &amp; AI IDE setups</title>
+    <title>Noah Cursor — Intelligent AI project bootstrapper &amp; package manager</title>
     <meta
       name="description"
-      content="Noah Cursor is a developer CLI to install battle-tested Cursor Skills, Rules, Prompts, MCP configs, and Presets into any project. Defaults to .cursor/ — also supports Windsurf, Claude Code, Continue, VS Code, and Cline."
+      content="Noah Cursor is the package manager and intelligent project bootstrapper for AI-assisted software development. Detect your stack, score health, recommend Skills &amp; Rules, and configure Cursor, Claude Code, Windsurf, and more — one command."
     />
     <meta
       name="keywords"
-      content="Noah Cursor, Cursor CLI, Cursor skills, Cursor rules, AI IDE, MCP, Windsurf, Claude Code, npm, developer tools"
+      content="Noah Cursor, bootstrap, AI IDE, Cursor CLI, Claude Code, package manager, Skills, Rules, MCP, Windsurf"
     />
     <meta name="author" content="Patrick Policarpio" />
     <meta name="robots" content="index, follow, max-image-preview:large" />
@@ -30,10 +30,13 @@
     <meta property="og:site_name" content="Noah Cursor" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:url" content="https://itsmenoahpoli.github.io/noah-cursor/" />
-    <meta property="og:title" content="Noah Cursor — CLI for Cursor setups that work" />
+    <meta
+      property="og:title"
+      content="Noah Cursor — Bootstrap your AI development environment"
+    />
     <meta
       property="og:description"
-      content="Install battle-tested Skills, Rules, and workflows into .cursor/ in one command. Also works with Windsurf, Claude Code, and more."
+      content="One command detects your stack, recommends AI workflow packages, and configures Cursor, Claude Code, Windsurf, and more."
     />
     <meta
       property="og:image"
@@ -44,10 +47,13 @@
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Noah Cursor — CLI for Cursor setups that work" />
+    <meta
+      name="twitter:title"
+      content="Noah Cursor — Bootstrap your AI development environment"
+    />
     <meta
       name="twitter:description"
-      content="Install battle-tested Skills, Rules, and workflows into .cursor/ in one command."
+      content="Intelligent project bootstrap for AI-assisted development. Detect, recommend, install — one command."
     />
     <meta
       name="twitter:image"
@@ -71,7 +77,7 @@
         "name": "Noah Cursor",
         "applicationCategory": "DeveloperApplication",
         "operatingSystem": "macOS, Linux, Windows",
-        "description": "Developer CLI to install Cursor Skills, Rules, Prompts, MCP configs, and Presets into any project. Also supports Windsurf, Claude Code, Continue, VS Code, and Cline.",
+        "description": "Package manager and intelligent project bootstrapper for AI-assisted software development. Detects your stack, recommends Skills and Rules, and configures Cursor, Claude Code, Windsurf, and more.",
         "url": "https://itsmenoahpoli.github.io/noah-cursor/",
         "downloadUrl": "https://www.npmjs.com/package/noah-cursor",
         "softwareVersion": "1.5.9",
@@ -91,10 +97,12 @@
         "keywords": [
           "Cursor",
           "CLI",
+          "bootstrap",
           "Skills",
           "Rules",
           "MCP",
           "AI IDE",
+          "package manager",
           "Windsurf",
           "Claude Code"
         ]
@@ -149,7 +157,7 @@
     <main id="top">
       <section class="hero" aria-label="Hero">
         <div class="hero-copy">
-          <p class="hero-meta"><span class="dot"></span> CLI · Cursor-first</p>
+          <p class="hero-meta"><span class="dot"></span> CLI · Intelligent bootstrap</p>
           <h1 class="brand">
             <img
               src="assets/noah-dev-cli-logo.png?v=6"
@@ -160,13 +168,20 @@
               fetchpriority="high"
             />
           </h1>
-          <p class="tagline">Cursor setups that actually ship.</p>
+          <p class="tagline">Bootstrap your AI development environment in one command.</p>
           <p class="lede">
-            Skills, Rules, and workflows into <code>.cursor/</code> — one command.
+            The package manager and intelligent project bootstrapper for AI-assisted software
+            development — Noah understands your project, then configures Cursor, Claude Code,
+            Windsurf, and more.
           </p>
           <div class="cta-row">
-            <button type="button" class="btn-primary" id="copy-cmd" data-cmd="npx noah-cursor browse">
-              <span class="cmd">npx noah-cursor browse</span>
+            <button
+              type="button"
+              class="btn-primary"
+              id="copy-cmd"
+              data-cmd="npx noah-cursor bootstrap"
+            >
+              <span class="cmd">npx noah-cursor bootstrap</span>
               <span class="btn-label">Copy</span>
             </button>
             <a
@@ -200,41 +215,83 @@
         </div>
       </section>
 
-      <section class="section" id="how">
+      <section class="section" id="bootstrap">
         <div class="section-head">
-          <h2>Install in three moves</h2>
-          <p>Built for Cursor first. Pick another IDE when you need it.</p>
-          <a class="more" href="how.html">Full guide →</a>
+          <h2>Intelligent Project Bootstrap</h2>
+          <p>One command prepares your entire AI development environment.</p>
+          <a class="more" href="how.html">How it works →</a>
         </div>
         <ol class="flow">
           <li>
             <span class="step">01</span>
             <div>
-              <h3>Select IDE</h3>
-              <p>Defaults to Cursor. Or choose Windsurf, Claude Code, Continue, VS Code, or Cline.</p>
+              <h3>Detect your stack</h3>
+              <p>Frameworks, tooling, Docker, CI, and existing AI config — scanned from the repo.</p>
             </div>
           </li>
           <li>
             <span class="step">02</span>
             <div>
-              <h3>Browse the registry</h3>
-              <p>Skills, Rules, Prompts, MCP configs, and Presets — curated and versioned.</p>
+              <h3>Analyse &amp; recommend</h3>
+              <p>Health scores plus the best Skills, Rules, and Presets for what you’re building.</p>
             </div>
           </li>
           <li>
             <span class="step">03</span>
             <div>
-              <h3>Land in the right folder</h3>
-              <p>Assets install under <code>.cursor/</code> by default — or that IDE’s project root.</p>
+              <h3>Install &amp; configure</h3>
+              <p>
+                Packages land in <code>.cursor/</code> (or another IDE). Writes
+                <code>noah.config.json</code> for the team.
+              </p>
             </div>
           </li>
         </ol>
       </section>
 
+      <section class="section" id="why">
+        <div class="section-head">
+          <h2>Why Noah Cursor?</h2>
+          <p>Unlike traditional prompt registries, Noah understands your project first.</p>
+        </div>
+        <div class="doc-table-wrap">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th>Traditional registry</th>
+                <th>Noah Cursor</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Browse packages manually</td>
+                <td>Automatically understands your project</td>
+              </tr>
+              <tr>
+                <td>Search for prompts</td>
+                <td>Recommends the right packages</td>
+              </tr>
+              <tr>
+                <td>Install one resource at a time</td>
+                <td>Bootstraps the entire AI development environment</td>
+              </tr>
+              <tr>
+                <td>Static downloads</td>
+                <td>Intelligent project analysis</td>
+              </tr>
+              <tr>
+                <td>Manual configuration</td>
+                <td>Zero-configuration onboarding</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       <section class="section ide-map" id="ides">
         <div class="section-head">
-          <h2>Folder follows your IDE</h2>
-          <p>Same registry. Destination depends on what you pick.</p>
+          <h2>Works with your AI assistant</h2>
+          <p>Same registry. Destination depends on <code>--ide</code> or <code>--target</code>.</p>
         </div>
         <ul class="ide-list">
           <li class="primary">
@@ -262,13 +319,29 @@
             <span class="ide-name">Cline</span>
             <code>.cline/</code>
           </li>
+          <li>
+            <span class="ide-name">Gemini CLI</span>
+            <code>.gemini/</code>
+          </li>
+          <li>
+            <span class="ide-name">Codex CLI</span>
+            <code>.codex/</code>
+          </li>
+          <li>
+            <span class="ide-name">Roo Code</span>
+            <code>.roo/</code>
+          </li>
+          <li>
+            <span class="ide-name">Aider</span>
+            <code>.aider/</code>
+          </li>
         </ul>
       </section>
 
       <section class="section" id="skills">
         <div class="section-head">
           <h2>Skills &amp; Rules</h2>
-          <p>Workflows and stack guidance you reuse across every Cursor project.</p>
+          <p>Bootstrap recommends these — or install by name when you prefer.</p>
           <a class="more" href="skills.html">Skills &amp; Rules catalog →</a>
         </div>
         <ul class="skill-list">
@@ -302,7 +375,7 @@
       <section class="section cta-band" id="install">
         <div class="section-head">
           <h2>Try it in your terminal</h2>
-          <p>Node.js 20+. Registry ships in the package.</p>
+          <p>Node.js 20+. Registry ships in the package. Bootstrap is the recommended entrypoint.</p>
         </div>
         <div class="terminal" tabindex="0" role="region" aria-label="Terminal sample">
           <div class="terminal-chrome" aria-hidden="true">
@@ -311,7 +384,7 @@
             <span class="dot green"></span>
             <span class="terminal-title">noah — zsh</span>
           </div>
-          <pre class="terminal-body"><code><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">browse</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">add</span> <span class="flag">--skill</span> <span class="string">commit-push</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">add</span> <span class="flag">--skill</span> <span class="string">commit-push</span> <span class="flag">--ide</span> <span class="string">windsurf</span></span></code></pre>
+          <pre class="terminal-body"><code><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">bootstrap</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">browse</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">install</span> <span class="string">commit-push</span> <span class="flag">--target</span> <span class="string">claude</span></span></code></pre>
         </div>
         <div class="cta-row center">
           <a
@@ -343,7 +416,12 @@
             decoding="async"
           />
         </p>
-        <p>MIT · Built by <a href="https://patrickpolicarpio.xyz" target="_blank" rel="noopener">Patrick Policarpio</a></p>
+        <p>
+          MIT · Built by
+          <a href="https://patrickpolicarpio.xyz" target="_blank" rel="noopener"
+            >Patrick Policarpio</a
+          >
+        </p>
       </div>
       <div class="footer-links">
         <a href="how.html">Docs</a>

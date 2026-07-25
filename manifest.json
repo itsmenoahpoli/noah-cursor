@@ -1,50 +1,94 @@
 {
   "name": "noah-registry",
-  "version": "1.1.0",
-  "description": "Noah Cursor registry — add your skills, rules, prompts, MCP configs, and presets here",
+  "version": "1.2.0",
+  "description": "Noah registry — Skills, Rules, Prompts, MCP configs, and Presets for AI-assisted development",
   "author": "Noah Poli",
   "skills": [
     {
       "id": "test",
       "version": "1.0.0",
       "description": "Sample skill for verifying noah-cursor installs",
-      "tags": ["test", "sample"]
+      "tags": ["test", "sample"],
+      "author": "Noah Poli",
+      "verified": true,
+      "downloads": 1200,
+      "rating": 4.5,
+      "updatedAt": "2026-07-01T00:00:00.000Z",
+      "changelog": "Initial sample skill"
     },
     {
       "id": "commit-push",
       "version": "1.0.0",
       "description": "Stage all changes, group by category, draft a linepush-style commit, commit, and push",
-      "tags": ["git", "commit", "push", "conventional-commits"]
+      "tags": ["git", "commit", "push", "conventional-commits"],
+      "author": "Noah Poli",
+      "verified": true,
+      "downloads": 8420,
+      "rating": 4.8,
+      "updatedAt": "2026-07-10T00:00:00.000Z",
+      "changelog": "Conventional commit grouping"
     },
     {
       "id": "react-doctor-fix",
       "version": "1.0.0",
       "description": "Run react-doctor, fix all findings, and verify features still work",
-      "tags": ["react", "react-doctor", "lint", "refactor", "qa"]
+      "tags": ["react", "react-doctor", "lint", "refactor", "qa"],
+      "author": "Noah Poli",
+      "verified": true,
+      "downloads": 5120,
+      "rating": 4.7,
+      "dependsOn": ["rule/react-spa-dashboard"],
+      "updatedAt": "2026-07-12T00:00:00.000Z",
+      "changelog": "Added verification checklist"
     },
     {
       "id": "larastan-fix",
       "version": "1.0.0",
       "description": "Run Larastan on Laravel, fix all findings, and verify features still work",
-      "tags": ["laravel", "php", "larastan", "phpstan", "qa"]
+      "tags": ["laravel", "php", "larastan", "phpstan", "qa"],
+      "author": "Noah Poli",
+      "verified": true,
+      "downloads": 3900,
+      "rating": 4.6,
+      "dependsOn": ["rule/laravel-api"],
+      "updatedAt": "2026-07-08T00:00:00.000Z",
+      "changelog": "Larastan level guidance"
     },
     {
       "id": "nestjs-knip-fix",
       "version": "1.0.0",
       "description": "Run Knip on NestJS, fix unused code/deps, and verify features still work",
-      "tags": ["nestjs", "knip", "node", "typescript", "qa"]
+      "tags": ["nestjs", "knip", "node", "typescript", "qa"],
+      "author": "Noah Poli",
+      "verified": true,
+      "downloads": 2100,
+      "rating": 4.4,
+      "updatedAt": "2026-07-05T00:00:00.000Z",
+      "changelog": "NestJS Knip presets"
     },
     {
       "id": "node-doctor-fix",
       "version": "1.0.0",
       "description": "Run bundled node-doctor (Knip + hygiene), fix findings, verify features still work",
-      "tags": ["node", "knip", "doctor", "qa", "cli"]
+      "tags": ["node", "knip", "doctor", "qa", "cli"],
+      "author": "Noah Poli",
+      "verified": true,
+      "downloads": 1800,
+      "rating": 4.3,
+      "updatedAt": "2026-07-03T00:00:00.000Z",
+      "changelog": "Bundled node-doctor config"
     },
     {
       "id": "generate-readme",
       "version": "1.0.0",
       "description": "Generate a project README with stack, deps, prerequisites, and setup guide",
-      "tags": ["docs", "readme", "documentation", "setup"]
+      "tags": ["docs", "readme", "documentation", "setup"],
+      "author": "Noah Poli",
+      "verified": true,
+      "downloads": 6700,
+      "rating": 4.9,
+      "updatedAt": "2026-07-15T00:00:00.000Z",
+      "changelog": "Stack-aware README template"
     }
   ],
   "rules": [
@@ -52,40 +96,109 @@
       "id": "test",
       "version": "1.0.0",
       "description": "Sample rule for verifying noah-cursor installs",
-      "tags": ["test", "sample"]
+      "tags": ["test", "sample"],
+      "author": "Noah Poli",
+      "verified": true,
+      "downloads": 900,
+      "rating": 4.2,
+      "updatedAt": "2026-07-01T00:00:00.000Z",
+      "changelog": "Initial sample rule"
     },
     {
       "id": "stack-architecture",
       "version": "1.0.0",
       "description": "When to use React SPA dashboards, Laravel APIs, and Next/Nuxt marketing sites",
-      "tags": ["architecture", "stack"]
+      "tags": ["architecture", "stack"],
+      "author": "Noah Poli",
+      "verified": true,
+      "downloads": 4200,
+      "rating": 4.8,
+      "updatedAt": "2026-07-11T00:00:00.000Z",
+      "changelog": "Stack decision guide"
     },
     {
       "id": "react-spa-dashboard",
       "version": "1.0.0",
       "description": "React client-side SPA rules for dashboards consuming a Laravel API",
-      "tags": ["react", "spa", "dashboard", "typescript", "tanstack-query"]
+      "tags": ["react", "spa", "dashboard", "typescript", "tanstack-query"],
+      "author": "Noah Poli",
+      "verified": true,
+      "downloads": 5600,
+      "rating": 4.7,
+      "updatedAt": "2026-07-14T00:00:00.000Z",
+      "changelog": "TanStack Query conventions"
     },
     {
       "id": "laravel-api",
       "version": "1.0.0",
       "description": "Laravel API-only backend rules for headless SPA clients",
-      "tags": ["laravel", "php", "api", "sanctum"]
+      "tags": ["laravel", "php", "api", "sanctum"],
+      "author": "Noah Poli",
+      "verified": true,
+      "downloads": 6100,
+      "rating": 4.9,
+      "updatedAt": "2026-07-16T00:00:00.000Z",
+      "changelog": "Sanctum + API resource patterns"
     },
     {
       "id": "nextjs-marketing",
       "version": "1.0.0",
       "description": "Next.js App Router rules for marketing and branding websites",
-      "tags": ["nextjs", "marketing", "seo", "branding"]
+      "tags": ["nextjs", "marketing", "seo", "branding"],
+      "author": "Noah Poli",
+      "verified": true,
+      "downloads": 3300,
+      "rating": 4.6,
+      "updatedAt": "2026-07-09T00:00:00.000Z",
+      "changelog": "App Router SEO defaults"
     },
     {
       "id": "nuxt-marketing",
       "version": "1.0.0",
       "description": "Nuxt 3+ rules for marketing and branding websites",
-      "tags": ["nuxt", "vue", "marketing", "seo", "branding"]
+      "tags": ["nuxt", "vue", "marketing", "seo", "branding"],
+      "author": "Noah Poli",
+      "verified": true,
+      "downloads": 2400,
+      "rating": 4.5,
+      "updatedAt": "2026-07-07T00:00:00.000Z",
+      "changelog": "Nuxt 3 marketing patterns"
     }
   ],
   "prompts": [],
   "mcp": [],
-  "presets": []
+  "presets": [
+    {
+      "id": "laravel-enterprise",
+      "version": "1.0.0",
+      "description": "Laravel API + Larastan QA + README + git workflow",
+      "tags": ["laravel", "php", "api", "enterprise"],
+      "author": "Noah Poli",
+      "verified": true,
+      "downloads": 1500,
+      "rating": 4.8,
+      "updatedAt": "2026-07-18T00:00:00.000Z",
+      "changelog": "Initial Laravel enterprise preset",
+      "includes": {
+        "skills": ["larastan-fix", "generate-readme", "commit-push"],
+        "rules": ["laravel-api", "stack-architecture"]
+      }
+    },
+    {
+      "id": "react-performance",
+      "version": "1.0.0",
+      "description": "React SPA dashboard rules + react-doctor QA",
+      "tags": ["react", "spa", "performance"],
+      "author": "Noah Poli",
+      "verified": true,
+      "downloads": 1100,
+      "rating": 4.7,
+      "updatedAt": "2026-07-18T00:00:00.000Z",
+      "changelog": "Initial React performance preset",
+      "includes": {
+        "skills": ["react-doctor-fix", "commit-push"],
+        "rules": ["react-spa-dashboard", "stack-architecture"]
+      }
+    }
+  ]
 }

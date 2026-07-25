@@ -35,9 +35,11 @@ describe("banner", () => {
       renderBanner(true);
       renderBanner();
       const joined = logs.join("\n");
-      expect(joined).toContain("Noah's Skills, Rules, Prompts, MCP configs & Presets");
-      expect(joined).toContain("Disclaimer");
-      expect(joined.split("Noah's Skills, Rules, Prompts, MCP configs & Presets").length - 1).toBe(1);
+      expect(joined).toContain("The package manager for AI-assisted software development");
+      expect(joined).toContain("Skills · Rules · Prompts · MCP · Presets");
+      expect(
+        joined.split("The package manager for AI-assisted software development").length - 1,
+      ).toBe(1);
     } finally {
       console.log = original;
     }

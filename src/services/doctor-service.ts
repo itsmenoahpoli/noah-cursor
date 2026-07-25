@@ -4,12 +4,16 @@ import {
   DEFAULT_IDE,
   getIdeDefinition,
   METADATA_FILE,
+  WORKSPACE_FILE,
+  LOCKFILE_NAME,
   type IdeId,
 } from "../constants/index.js";
 import { readMetadata } from "../metadata/store.js";
 import type { DoctorCheck } from "../types/index.js";
 import { assetTypeToDir } from "../utils/assets.js";
 import { resolveIdeDir, resolveProjectRoot } from "../utils/fs.js";
+import { computeHealthScores, detectProjectStack } from "./project-awareness.js";
+import { getSettings } from "../metadata/user-store.js";
 
 export async function runDoctor(
   cwd = process.cwd(),
@@ -18,7 +22,6 @@ export async function runDoctor(
   const checks: DoctorCheck[] = [];
   const ideDef = getIdeDefinition(ide);
 
-  // Node version
   const major = Number(process.versions.node.split(".")[0]);
   checks.push({
     name: "Node.js version",
@@ -29,7 +32,6 @@ export async function runDoctor(
         : `Node.js ${process.versions.node} (requires >= 20)`,
   });
 
-  // Project writable
   const root = resolveProjectRoot(cwd);
   try {
     await fs.access(root, fs.constants.W_OK);
@@ -46,7 +48,6 @@ export async function runDoctor(
     });
   }
 
-  // IDE directory
   const ideDir = resolveIdeDir(ide, cwd);
   const ideExists = await fs.pathExists(ideDir);
   checks.push({
@@ -57,7 +58,6 @@ export async function runDoctor(
       : `Missing — will be created on first install`,
   });
 
-  // Metadata
   const metadataPath = path.join(ideDir, METADATA_FILE);
   const metadata = await readMetadata(cwd, ide).catch(() => null);
 
@@ -80,7 +80,6 @@ export async function runDoctor(
       message: `${metadata.installed.length} installed asset(s) from ${metadata.registry}`,
     });
 
-    // Orphan / missing file checks
     let missingFiles = 0;
     for (const asset of metadata.installed) {
       if (asset.type === "preset") continue;
@@ -100,7 +99,6 @@ export async function runDoctor(
     });
   }
 
-  // Git availability (optional; registry ships bundled with the package)
   try {
     const { execa } = await import("execa");
     const result = await execa("git", ["--version"]);
@@ -114,6 +112,87 @@ export async function runDoctor(
       name: "Git",
       status: "warn",
       message: "Git not found (optional — registry is bundled with the package)",
+    });
+  }
+
+  // Project awareness
+  const stack = await detectProjectStack(cwd);
+  checks.push({
+    name: "Framework detection",
+    status: stack.frameworks.length > 0 ? "pass" : "warn",
+    message:
+      stack.frameworks.length > 0
+        ? stack.frameworks.join(", ")
+        : "No framework detected",
+  });
+
+  const health = await computeHealthScores(cwd, ide);
+  checks.push({
+    name: "Architecture score",
+    status: health.architecture >= 5 ? "pass" : "warn",
+    message: String(health.architecture),
+  });
+  checks.push({
+    name: "Security score",
+    status: health.security >= 5 ? "pass" : "warn",
+    message: String(health.security),
+  });
+  checks.push({
+    name: "Documentation score",
+    status: health.documentation >= 5 ? "pass" : "warn",
+    message: String(health.documentation),
+  });
+  checks.push({
+    name: "Testing score",
+    status: health.testing >= 5 ? "pass" : "warn",
+    message: String(health.testing),
+  });
+  checks.push({
+    name: "Overall health",
+    status: health.overall >= 5 ? "pass" : "warn",
+    message: `${health.overall} (${Math.round(health.overall * 10)}%)`,
+  });
+
+  const hasDocker =
+    (await fs.pathExists(path.join(cwd, "Dockerfile"))) ||
+    (await fs.pathExists(path.join(cwd, "docker-compose.yml")));
+  checks.push({
+    name: "Docker",
+    status: hasDocker ? "pass" : "warn",
+    message: hasDocker ? "Dockerfile or compose present" : "No Docker config detected",
+  });
+
+  const hasCi =
+    (await fs.pathExists(path.join(cwd, ".github/workflows"))) ||
+    (await fs.pathExists(path.join(cwd, ".gitlab-ci.yml")));
+  checks.push({
+    name: "CI",
+    status: hasCi ? "pass" : "warn",
+    message: hasCi ? "CI config found" : "No CI config detected",
+  });
+
+  checks.push({
+    name: WORKSPACE_FILE,
+    status: (await fs.pathExists(path.join(cwd, WORKSPACE_FILE))) ? "pass" : "warn",
+    message: (await fs.pathExists(path.join(cwd, WORKSPACE_FILE)))
+      ? "Team workspace configured"
+      : "Missing — run `noah-cursor workspace init` or `bootstrap`",
+  });
+
+  checks.push({
+    name: LOCKFILE_NAME,
+    status: (await fs.pathExists(path.join(cwd, LOCKFILE_NAME))) ? "pass" : "warn",
+    message: (await fs.pathExists(path.join(cwd, LOCKFILE_NAME)))
+      ? "Lockfile present"
+      : "Missing — generated on install",
+  });
+
+  const settings = await getSettings();
+  if (settings.privateRegistry) {
+    checks.push({
+      name: "Private registry",
+      status: "pass",
+      message: settings.privateRegistry,
     });
   }
 

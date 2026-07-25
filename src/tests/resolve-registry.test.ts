@@ -37,11 +37,17 @@ describe("resolveNoahRegistry", () => {
     expect(resolveNoahRegistry("file:///tmp/noah-registry")).toBe("file:///tmp/noah-registry");
   });
 
-  it("rejects third-party registries", () => {
+  it("rejects third-party registries by default", () => {
     expect(() => resolveNoahRegistry("someone/other-registry")).toThrow(ValidationError);
     expect(() =>
       resolveNoahRegistry("https://github.com/someone/other-registry"),
     ).toThrow(/official registry/);
+  });
+
+  it("allows private registries when opted in", () => {
+    expect(
+      resolveNoahRegistry("https://github.com/acme/private-noah", { allowPrivate: true }),
+    ).toMatch(/acme\/private-noah/);
   });
 });
 
@@ -72,7 +78,7 @@ describe("bundled registry", () => {
       const assets = listAllManifestAssets(registry.manifest);
       expect(assets.some((a) => a.type === "skill")).toBe(true);
       expect(assets.some((a) => a.type === "rule")).toBe(true);
-      expect(assets.every((a) => a.type !== "preset")).toBe(true);
+      expect(assets.some((a) => a.type === "preset")).toBe(true);
       expect(assets.length).toBeGreaterThanOrEqual(8);
     } finally {
       await registry.cleanup();

@@ -57,9 +57,8 @@ export function renderBanner(force = false): void {
 
   console.log();
   console.log(brandGradient.multiline(ascii));
-  console.log(chalk.dim("  Noah's Skills, Rules, Prompts, MCP configs & Presets"));
-  console.log(chalk.dim("  Disclaimer: Not limited to Cursor — works with any IDE that supports"));
-  console.log(chalk.dim("  skills, rules, prompts, MCP configs, and similar assets."));
+  console.log(chalk.dim("  The package manager for AI-assisted software development"));
+  console.log(chalk.dim("  Skills · Rules · Prompts · MCP · Presets — Cursor & beyond"));
   console.log();
 }
 

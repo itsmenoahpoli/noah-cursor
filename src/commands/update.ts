@@ -13,14 +13,21 @@ export function registerUpdateCommand(program: Command): void {
       `Target IDE (${IDE_IDS.join("|")})`,
       "cursor",
     )
+    .option("--target <name>", "Alias for --ide")
     .option("--dry-run", "Show what would be updated", false)
     .option("-y, --yes", "Skip confirmation prompts", false)
     .option("-v, --verbose", "Verbose output", false)
     .action(
-      async (opts: { dryRun?: boolean; yes?: boolean; verbose?: boolean; ide?: string }) => {
+      async (opts: {
+        dryRun?: boolean;
+        yes?: boolean;
+        verbose?: boolean;
+        ide?: string;
+        target?: string;
+      }) => {
         const spinner = createSpinner("Updating installed assets…");
         try {
-          const ide = parseIdeId(opts.ide);
+          const ide = parseIdeId(opts.target ?? opts.ide);
           spinner.start();
           const results = await updateAssets({
             dryRun: opts.dryRun,

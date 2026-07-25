@@ -86,8 +86,9 @@
         <p class="eyebrow">Docs</p>
         <h1>Skills &amp; Rules</h1>
         <p class="lede">
-          Catalog of registry Skills and Rules. Skills are reusable agent workflows; Rules are stack
-          guidance for your IDE agent — both install from the bundled package.
+          Catalog of registry Skills and Rules. Bootstrap recommends these from your stack — or
+          install by name. Skills are reusable agent workflows; Rules are stack guidance for your
+          AI assistant.
         </p>
       </header>
 
@@ -97,6 +98,7 @@
           <ol>
             <li><a href="#skills">Skills</a></li>
             <li><a href="#rules">Rules</a></li>
+            <li><a href="#presets">Presets</a></li>
             <li><a href="#install">Install examples</a></li>
           </ol>
         </aside>
@@ -128,9 +130,25 @@
             </div>
           </section>
 
+          <section class="doc-block" id="presets">
+            <h2>Presets</h2>
+            <p>One install, many packages — useful when bootstrap recommends a full stack pack.</p>
+            <div
+              class="catalog-list"
+              id="presets-catalog"
+              data-catalog-src="catalog.json"
+              data-catalog-kind="presets"
+            >
+              <p class="releases-status">Loading presets…</p>
+            </div>
+          </section>
+
           <section class="doc-block" id="install">
             <h2>Install examples</h2>
-            <p>Use <code>add</code> for one-liners, or <code>browse</code> to pick interactively.</p>
+            <p>
+              Prefer <code>bootstrap</code> for stack-aware setup. Or use
+              <code>install</code> / <code>browse</code> for specific packages.
+            </p>
             <div class="terminal install-snippet" tabindex="0" role="region" aria-label="Install examples">
               <div class="terminal-chrome" aria-hidden="true">
                 <span class="dot red"></span>
@@ -138,7 +156,7 @@
                 <span class="dot green"></span>
                 <span class="terminal-title">noah — zsh</span>
               </div>
-              <pre class="terminal-body"><code><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">add</span> <span class="flag">--skill</span> <span class="string">commit-push</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">add</span> <span class="flag">--skill</span> <span class="string">generate-readme</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">add</span> <span class="flag">--rule</span> <span class="string">laravel-api</span> <span class="flag">--rule</span> <span class="string">react-spa-dashboard</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">add</span> <span class="flag">--skill</span> <span class="string">react-doctor-fix</span> <span class="flag">--ide</span> <span class="string">windsurf</span></span></code></pre>
+              <pre class="terminal-body"><code><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">bootstrap</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">install</span> <span class="string">commit-push</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">install</span> <span class="string">laravel-api</span> <span class="string">react-spa-dashboard</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">install</span> <span class="string">react-doctor-fix</span> <span class="flag">--ide</span> <span class="string">windsurf</span></span></code></pre>
             </div>
             <nav class="doc-pager" aria-label="Docs pagination">
               <a class="doc-pager-link prev" href="how.html">

@@ -8,12 +8,39 @@ describe("CLI program", () => {
     expect(names).toEqual(
       expect.arrayContaining([
         "add",
+        "install",
         "browse",
         "search",
+        "preview",
         "list",
         "remove",
+        "uninstall",
         "update",
         "doctor",
+        "recent",
+        "favorite",
+        "favorites",
+        "bootstrap",
+        "workspace",
+        "sync",
+        "explain",
+        "analyze",
+        "wizard",
+        "upgrade",
+        "publish",
+        "login",
+        "logout",
+        "whoami",
+        "analytics",
+        "dashboard",
+        "plugin",
+        "undo",
+        "try",
+        "new",
+        "config",
+        "diff",
+        "trending",
+        "audit",
       ]),
     );
   });
@@ -25,7 +52,6 @@ describe("CLI program", () => {
 
   it("has a default action for no-subcommand usage", () => {
     const program = createProgram();
-    // Root action is registered so bare invocation is not treated as an error
     expect(typeof (program as unknown as { _actionHandler?: unknown })._actionHandler).not.toBe(
       "undefined",
     );

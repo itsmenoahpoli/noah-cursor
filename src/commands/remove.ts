@@ -17,6 +17,7 @@ export function registerRemoveCommand(program: Command): void {
       `Target IDE (${IDE_IDS.join("|")})`,
       "cursor",
     )
+    .option("--target <name>", "Alias for --ide")
     .option("--force", "Remove even if not in metadata", false)
     .option("--dry-run", "Show what would be removed", false)
     .option("-y, --yes", "Skip confirmation prompts", false)
@@ -31,6 +32,7 @@ export function registerRemoveCommand(program: Command): void {
           yes?: boolean;
           verbose?: boolean;
           ide?: string;
+          target?: string;
         },
       ) => {
         const spinner = createSpinner(`Removing ${type}/${id}…`);
@@ -41,7 +43,7 @@ export function registerRemoveCommand(program: Command): void {
             );
           }
 
-          const ide = parseIdeId(opts.ide);
+          const ide = parseIdeId(opts.target ?? opts.ide);
           spinner.start();
           await removeAsset(type as AssetType, id, {
             force: opts.force,

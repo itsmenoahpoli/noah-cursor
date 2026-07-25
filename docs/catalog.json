@@ -13,8 +13,13 @@
         "Drafts a linepush-style conventional commit",
         "Commits and pushes to the tracked remote branch"
       ],
-      "tags": ["git", "commit", "push", "conventional-commits"],
-      "install": "npx noah-cursor add --skill commit-push"
+      "tags": [
+        "git",
+        "commit",
+        "push",
+        "conventional-commits"
+      ],
+      "install": "npx noah-cursor install commit-push"
     },
     {
       "id": "generate-readme",
@@ -29,8 +34,13 @@
         "Preserves intentional extras like badges when rewriting",
         "Sanity-checks commands before finishing"
       ],
-      "tags": ["docs", "readme", "documentation", "setup"],
-      "install": "npx noah-cursor add --skill generate-readme"
+      "tags": [
+        "docs",
+        "readme",
+        "documentation",
+        "setup"
+      ],
+      "install": "npx noah-cursor install generate-readme"
     },
     {
       "id": "react-doctor-fix",
@@ -45,8 +55,14 @@
         "Fixes findings in prioritized batches",
         "Re-scans and runs project verification until clean"
       ],
-      "tags": ["react", "react-doctor", "lint", "refactor", "qa"],
-      "install": "npx noah-cursor add --skill react-doctor-fix"
+      "tags": [
+        "react",
+        "react-doctor",
+        "lint",
+        "refactor",
+        "qa"
+      ],
+      "install": "npx noah-cursor install react-doctor-fix"
     },
     {
       "id": "larastan-fix",
@@ -61,8 +77,14 @@
         "Fix in explain → edit → verify batches",
         "Re-analyse until clean and report leftovers if any"
       ],
-      "tags": ["laravel", "php", "larastan", "phpstan", "qa"],
-      "install": "npx noah-cursor add --skill larastan-fix"
+      "tags": [
+        "laravel",
+        "php",
+        "larastan",
+        "phpstan",
+        "qa"
+      ],
+      "install": "npx noah-cursor install larastan-fix"
     },
     {
       "id": "nestjs-knip-fix",
@@ -77,8 +99,14 @@
         "Baseline scan and prioritized triage",
         "Re-scan until clean with verification between batches"
       ],
-      "tags": ["nestjs", "knip", "node", "typescript", "qa"],
-      "install": "npx noah-cursor add --skill nestjs-knip-fix"
+      "tags": [
+        "nestjs",
+        "knip",
+        "node",
+        "typescript",
+        "qa"
+      ],
+      "install": "npx noah-cursor install nestjs-knip-fix"
     },
     {
       "id": "node-doctor-fix",
@@ -93,8 +121,14 @@
         "Package hygiene checks for entrypoints and engines",
         "Batch fixes with re-scan and final verification"
       ],
-      "tags": ["node", "knip", "doctor", "qa", "cli"],
-      "install": "npx noah-cursor add --skill node-doctor-fix"
+      "tags": [
+        "node",
+        "knip",
+        "doctor",
+        "qa",
+        "cli"
+      ],
+      "install": "npx noah-cursor install node-doctor-fix"
     }
   ],
   "rules": [
@@ -111,8 +145,11 @@
         "Marketing/content → Next.js or Nuxt",
         "Clear boundaries between SEO sites and authenticated SPAs"
       ],
-      "tags": ["architecture", "stack"],
-      "install": "npx noah-cursor add --rule stack-architecture"
+      "tags": [
+        "architecture",
+        "stack"
+      ],
+      "install": "npx noah-cursor install stack-architecture"
     },
     {
       "id": "react-spa-dashboard",
@@ -127,8 +164,14 @@
         "Strict TypeScript and focused components",
         "Typed API client toward Laravel JSON endpoints"
       ],
-      "tags": ["react", "spa", "dashboard", "typescript", "tanstack-query"],
-      "install": "npx noah-cursor add --rule react-spa-dashboard"
+      "tags": [
+        "react",
+        "spa",
+        "dashboard",
+        "typescript",
+        "tanstack-query"
+      ],
+      "install": "npx noah-cursor install react-spa-dashboard"
     },
     {
       "id": "laravel-api",
@@ -143,8 +186,13 @@
         "Sanctum for SPA or token auth",
         "Consistent error JSON shapes"
       ],
-      "tags": ["laravel", "php", "api", "sanctum"],
-      "install": "npx noah-cursor add --rule laravel-api"
+      "tags": [
+        "laravel",
+        "php",
+        "api",
+        "sanctum"
+      ],
+      "install": "npx noah-cursor install laravel-api"
     },
     {
       "id": "nextjs-marketing",
@@ -159,8 +207,13 @@
         "Semantic HTML and strong SEO defaults",
         "Keep client bundles lean on marketing pages"
       ],
-      "tags": ["nextjs", "marketing", "seo", "branding"],
-      "install": "npx noah-cursor add --rule nextjs-marketing"
+      "tags": [
+        "nextjs",
+        "marketing",
+        "seo",
+        "branding"
+      ],
+      "install": "npx noah-cursor install nextjs-marketing"
     },
     {
       "id": "nuxt-marketing",
@@ -175,8 +228,55 @@
         "SSG/SSR-friendly data fetching",
         "Runtime config for env — never hardcode secrets"
       ],
-      "tags": ["nuxt", "vue", "marketing", "seo", "branding"],
-      "install": "npx noah-cursor add --rule nuxt-marketing"
+      "tags": [
+        "nuxt",
+        "vue",
+        "marketing",
+        "seo",
+        "branding"
+      ],
+      "install": "npx noah-cursor install nuxt-marketing"
+    }
+  ],
+  "presets": [
+    {
+      "id": "laravel-enterprise",
+      "stack": "Laravel",
+      "version": "1.0.0",
+      "summary": "Laravel API + Larastan + README + git + architecture",
+      "description": "Preset pack for Laravel API backends.",
+      "whenToUse": "Use when bootstrapping a Laravel API project.",
+      "highlights": [
+        "laravel-api",
+        "larastan-fix",
+        "generate-readme",
+        "commit-push",
+        "stack-architecture"
+      ],
+      "tags": [
+        "laravel",
+        "enterprise"
+      ],
+      "install": "npx noah-cursor install laravel-enterprise"
+    },
+    {
+      "id": "react-performance",
+      "stack": "React",
+      "version": "1.0.0",
+      "summary": "React SPA rules + react-doctor + git + architecture",
+      "description": "Preset pack for React SPA dashboards.",
+      "whenToUse": "Use when bootstrapping a React dashboard.",
+      "highlights": [
+        "react-spa-dashboard",
+        "react-doctor-fix",
+        "commit-push",
+        "stack-architecture"
+      ],
+      "tags": [
+        "react",
+        "performance"
+      ],
+      "install": "npx noah-cursor install react-performance"
     }
   ]
 }
