@@ -86,9 +86,9 @@
         <p class="eyebrow">Docs</p>
         <h1>Commands</h1>
         <p class="lede">
-          CLI reference. Start with <code>bootstrap</code>. Default IDE is Cursor
-          (<code>(--ide cursor)</code>. Use <code>--ide</code> or <code>--target</code> for Claude
-          Code, Windsurf, and others. Bins: <code>noah-cursor</code> and <code>noah</code>.
+          CLI reference. Start with <code>bootstrap</code> (asks before install). Default IDE is
+          Cursor. Use <code>--ide</code> or <code>--target</code> for Claude Code, Windsurf, and
+          others. Bins: <code>noah-cursor</code> and <code>noah</code>.
         </p>
       </header>
 
@@ -97,12 +97,14 @@
           <h2>On this page</h2>
           <ol>
             <li><a href="#overview">Overview</a></li>
+            <li><a href="#home">Home menu</a></li>
             <li><a href="#bootstrap">bootstrap</a></li>
             <li><a href="#install">install · add</a></li>
             <li><a href="#browse">browse</a></li>
             <li><a href="#project">analyze · doctor · wizard</a></li>
             <li><a href="#team">workspace · sync</a></li>
             <li><a href="#manage">search · list · update · more</a></li>
+            <li><a href="#demo">CLI demo</a></li>
           </ol>
         </aside>
 
@@ -119,8 +121,15 @@
                 </thead>
                 <tbody>
                   <tr>
+                    <td><em>(no args)</em></td>
+                    <td>Interactive home — Bootstrap first, then Skills / Rules / Presets…</td>
+                  </tr>
+                  <tr>
                     <td><code>bootstrap</code></td>
-                    <td><strong>Flagship</strong> — detect stack → recommend → install → workspace</td>
+                    <td>
+                      <strong>Flagship</strong> — detect → recommend → <strong>confirm</strong> →
+                      install → workspace
+                    </td>
                   </tr>
                   <tr>
                     <td><code>analyze</code> · <code>doctor</code></td>
@@ -143,8 +152,8 @@
                     <td>Install via <code>--skill</code> / <code>--rule</code> / … flags</td>
                   </tr>
                   <tr>
-                    <td><code>search</code> · <code>preview</code></td>
-                    <td>Fuzzy search and package preview</td>
+                    <td><code>search</code> · <code>preview</code> · <code>explain</code></td>
+                    <td>Fuzzy search, preview, and package explain</td>
                   </tr>
                   <tr>
                     <td><code>list</code> · <code>update</code> · <code>uninstall</code></td>
@@ -155,19 +164,41 @@
                     <td>Team <code>noah.config.json</code> + sync</td>
                   </tr>
                   <tr>
-                    <td><code>explain</code> · <code>upgrade</code></td>
-                    <td>Package explain + upgrade assistant</td>
+                    <td><code>favorite(s)</code> · <code>recent</code> · <code>trending</code></td>
+                    <td>Personal discovery and rankings</td>
                   </tr>
                   <tr>
-                    <td><code>publish</code> · <code>trending</code></td>
-                    <td>Scaffold packages / trending list</td>
+                    <td><code>login</code> · <code>config</code> · <code>audit</code> · <code>plugin</code></td>
+                    <td>Auth, settings, audit log, plugins</td>
                   </tr>
                   <tr>
                     <td><code>dashboard</code> · <code>diff</code> · <code>try</code> · <code>undo</code> · <code>new</code></td>
                     <td>DX extras</td>
                   </tr>
+                  <tr>
+                    <td><code>publish</code> · <code>upgrade</code></td>
+                    <td>Scaffold packages / upgrade assistant</td>
+                  </tr>
                 </tbody>
               </table>
+            </div>
+          </section>
+
+          <section class="doc-block" id="home">
+            <h2>Home menu</h2>
+            <p>
+              With no arguments in a TTY, Noah opens an interactive menu. Leading option is
+              <strong>Bootstrap project</strong>; other entries browse registry categories that
+              have packages (Skills, Rules, Presets, …).
+            </p>
+            <div class="terminal install-snippet" tabindex="0" role="region" aria-label="home menu">
+              <div class="terminal-chrome" aria-hidden="true">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+                <span class="terminal-title">noah — zsh</span>
+              </div>
+              <pre class="terminal-body"><code><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span></span><span class="line"><span class="dim"># or: npx noah</span></span></code></pre>
             </div>
           </section>
 
@@ -193,15 +224,15 @@
                   </tr>
                   <tr>
                     <td><code>--all</code></td>
-                    <td>Install all recommendations (not just top 5)</td>
+                    <td>Recommend all matches (not just top 5)</td>
                   </tr>
                   <tr>
                     <td><code>--dry-run</code></td>
-                    <td>Analyse without installing</td>
+                    <td>Show plan without installing</td>
                   </tr>
                   <tr>
                     <td><code>-y</code> · <code>--verbose</code></td>
-                    <td>Skip prompts / verbose logs</td>
+                    <td>Skip confirm prompt / verbose logs</td>
                   </tr>
                 </tbody>
               </table>
@@ -213,7 +244,7 @@
                 <span class="dot green"></span>
                 <span class="terminal-title">noah — zsh</span>
               </div>
-              <pre class="terminal-body"><code><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">bootstrap</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">bootstrap</span> <span class="flag">--target</span> <span class="string">claude</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">bootstrap</span> <span class="flag">--all</span> <span class="flag">--dry-run</span></span></code></pre>
+              <pre class="terminal-body"><code><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">bootstrap</span></span><span class="line"><span class="dim">? Install 5 recommended package(s)? (Y/n)</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">bootstrap</span> <span class="flag">-y</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">bootstrap</span> <span class="flag">--target</span> <span class="string">claude</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">bootstrap</span> <span class="flag">--dry-run</span></span></code></pre>
             </div>
           </section>
 
@@ -301,6 +332,14 @@
               </div>
               <pre class="terminal-body"><code><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">search</span> <span class="string">laravel</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">preview</span> <span class="string">laravel-api</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">list</span> <span class="flag">--installed</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">uninstall</span> <span class="string">skill/test</span> <span class="flag">--yes</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">update</span> <span class="flag">--yes</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">explain</span> <span class="string">laravel-api</span></span></code></pre>
             </div>
+          </section>
+
+          <section class="doc-block" id="demo">
+            <h2>CLI demo</h2>
+            <p>
+              In a clone of the repo, <code>npm run demo</code> walks through the main non-interactive
+              commands in a temp project (bootstrap, analyze, install, workspace, multi-target, …).
+            </p>
             <nav class="doc-pager" aria-label="Docs pagination">
               <a class="doc-pager-link prev" href="skills.html">
                 <span class="label">Previous</span>

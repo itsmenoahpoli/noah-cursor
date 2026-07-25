@@ -174,6 +174,9 @@
             development — Noah understands your project, then configures Cursor, Claude Code,
             Windsurf, and more.
           </p>
+          <p class="hero-note">
+            Continuous improvement — the CLI, registry, and DX keep evolving as the roadmap ships.
+          </p>
           <div class="cta-row">
             <button
               type="button"
@@ -233,7 +236,10 @@
             <span class="step">02</span>
             <div>
               <h3>Analyse &amp; recommend</h3>
-              <p>Health scores plus the best Skills, Rules, and Presets for what you’re building.</p>
+              <p>
+                Health scores plus the best Skills, Rules, and Presets — then Noah asks before
+                installing so you can confirm or skip.
+              </p>
             </div>
           </li>
           <li>
@@ -241,8 +247,9 @@
             <div>
               <h3>Install &amp; configure</h3>
               <p>
-                Packages land in <code>.cursor/</code> (or another IDE). Writes
-                <code>noah.config.json</code> for the team.
+                On confirm, packages land in <code>.cursor/</code> (or another IDE) and
+                <code>noah.config.json</code> is written for the team. Use <code>-y</code> to skip
+                the prompt.
               </p>
             </div>
           </li>
@@ -384,7 +391,7 @@
             <span class="dot green"></span>
             <span class="terminal-title">noah — zsh</span>
           </div>
-          <pre class="terminal-body"><code><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">bootstrap</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">browse</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">install</span> <span class="string">commit-push</span> <span class="flag">--target</span> <span class="string">claude</span></span></code></pre>
+          <pre class="terminal-body"><code><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">bootstrap</span></span><span class="line"><span class="dim">? Install 5 recommended package(s)? (Y/n)</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span></span><span class="line"><span class="dim"># home: Bootstrap · Skills · Rules · Presets</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">install</span> <span class="string">commit-push</span> <span class="flag">--target</span> <span class="string">claude</span></span></code></pre>
         </div>
         <div class="cta-row center">
           <a

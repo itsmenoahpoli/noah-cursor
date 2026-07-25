@@ -6,20 +6,42 @@
   "disclaimer": {
     "id": "disclaimer",
     "label": "Disclaimer",
-    "title": "Still in development",
-    "body": "Noah Cursor is an early, actively developed CLI. Features, registry assets, and IDE support will keep expanding over time. Expect iteration — APIs, commands, and packaged Skills/Rules may change as the tool matures. Feedback is welcome while it grows."
+    "title": "Continuous improvement",
+    "body": "Noah Cursor is under active development as an intelligent project bootstrapper and AI workflow package manager. Features, registry assets, and IDE support keep expanding. Expect iteration — APIs, commands, and packaged Skills/Rules may change as the tool matures. Feedback is welcome while it grows."
   },
   "roadmap": {
     "id": "roadmap",
     "title": "Growing next",
-    "summary": "Planned direction as the project continues — not a hard schedule.",
+    "summary": "Direction as the project continues — not a hard schedule.",
     "items": [
+      "Richer project detection and smarter bootstrap recommendations",
       "More Skills, Rules, Prompts, MCP configs, and Presets in the registry",
-      "Deeper IDE coverage and smoother browse/add UX",
-      "Clearer docs and release notes as each version ships"
+      "Deeper multi-assistant packaging and team workspace sync",
+      "Clearer docs, demos, and release notes as each version ships"
     ]
   },
   "releases": [
+    {
+      "version": "1.6.0",
+      "date": "2026-07-25",
+      "tag": "enhancements/init-v2",
+      "unreleased": true,
+      "title": "Intelligent bootstrap platform",
+      "summary": "Noah becomes an intelligent project bootstrapper and AI package manager — detect, recommend, confirm, install.",
+      "labels": [
+        {
+          "text": "Unreleased",
+          "tone": "default"
+        }
+      ],
+      "notes": [
+        "Flagship bootstrap: stack detect, health scores, confirm-before-install, noah.config.json",
+        "Package manager commands: install/uninstall, lockfile, favorites, preview, trending",
+        "Multi-assistant targets (Cursor, Claude Code, Windsurf, Gemini, Codex, and more)",
+        "Interactive home menu leads with Bootstrap, then Skills / Rules / Presets",
+        "Docs site repositioned around intelligent bootstrap; npm run demo for CLI walkthrough"
+      ]
+    },
     {
       "version": "1.5.9",
       "date": "2026-07-24",

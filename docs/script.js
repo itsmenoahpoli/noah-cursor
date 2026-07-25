@@ -225,7 +225,8 @@ async function loadReleasesPage() {
 
     const minVersion = data.minVersion || "1.5.7";
     const releases = (Array.isArray(data.releases) ? data.releases : []).filter(
-      (release) => compareSemver(release.version, minVersion) >= 0,
+      (release) =>
+        release.unreleased === true || compareSemver(release.version, minVersion) >= 0,
     );
     const fragments = [];
 
@@ -244,12 +245,15 @@ async function loadReleasesPage() {
 
     for (const release of releases) {
       const id = versionAnchor(release.version);
-      const isLatest = release.version === data.latest;
+      const isLatest = !release.unreleased && release.version === data.latest;
       const notes = Array.isArray(release.notes) ? release.notes : [];
       const labels = Array.isArray(release.labels) ? release.labels : [];
       const npmUrl =
         release.npm ||
         `${data.npmUrl || "https://www.npmjs.com/package/noah-cursor"}/v/${encodeURIComponent(release.version)}`;
+      const versionHeading = release.unreleased
+        ? `${escapeHtml(release.version)} (upcoming)`
+        : `v${escapeHtml(release.version)}`;
 
       const labelHtml = labels
         .map((label) => {
@@ -260,10 +264,21 @@ async function loadReleasesPage() {
         })
         .join("");
 
+      const linksHtml = release.unreleased
+        ? `<p class="release-links"><span class="muted">Not on npm yet — shipping from mainline</span></p>`
+        : `<p class="release-links">
+            <a href="${escapeHtml(npmUrl)}" target="_blank" rel="noopener">npm v${escapeHtml(release.version)} ↗</a>
+            ${
+              release.tag
+                ? ` · <a href="https://github.com/itsmenoahpoli/noah-cursor/releases/tag/${escapeHtml(release.tag)}" target="_blank" rel="noopener">${escapeHtml(release.tag)} ↗</a>`
+                : ""
+            }
+          </p>`;
+
       fragments.push(`
         <section class="doc-block" id="${id}">
           <div class="release-meta">
-            <h2>v${escapeHtml(release.version)}</h2>
+            <h2>${versionHeading}</h2>
             ${isLatest ? '<span class="release-tag">latest</span>' : ""}
             ${labelHtml}
             ${
@@ -281,14 +296,7 @@ async function loadReleasesPage() {
                   .join("")}</ul>`
               : ""
           }
-          <p class="release-links">
-            <a href="${escapeHtml(npmUrl)}" target="_blank" rel="noopener">npm v${escapeHtml(release.version)} ↗</a>
-            ${
-              release.tag
-                ? ` · <a href="https://github.com/itsmenoahpoli/noah-cursor/releases/tag/${escapeHtml(release.tag)}" target="_blank" rel="noopener">${escapeHtml(release.tag)} ↗</a>`
-                : ""
-            }
-          </p>
+          ${linksHtml}
         </section>
       `);
     }
@@ -326,8 +334,11 @@ async function loadReleasesPage() {
         );
       }
       for (const release of releases) {
+        const label = release.unreleased
+          ? `${escapeHtml(release.version)} (upcoming)`
+          : `v${escapeHtml(release.version)}`;
         tocItems.push(
-          `<li><a href="#${versionAnchor(release.version)}">v${escapeHtml(release.version)}</a></li>`,
+          `<li><a href="#${versionAnchor(release.version)}">${label}</a></li>`,
         );
       }
       if (data.roadmap) {

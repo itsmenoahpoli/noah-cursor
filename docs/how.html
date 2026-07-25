@@ -94,12 +94,14 @@
       <div class="doc-layout">
         <aside class="doc-toc" aria-label="On this page">
           <h2>On this page</h2>
-          <ol>
+            <ol>
             <li><a href="#bootstrap">Intelligent bootstrap</a></li>
+            <li><a href="#home">Interactive home</a></li>
             <li><a href="#flow">Browse &amp; install</a></li>
             <li><a href="#ides">IDE folders</a></li>
             <li><a href="#layout">What lands in the project</a></li>
             <li><a href="#config">Workspace &amp; lockfile</a></li>
+            <li><a href="#demo">CLI demo</a></li>
             <li><a href="#quick">Quick start</a></li>
           </ol>
         </aside>
@@ -136,10 +138,21 @@
               <li>
                 <span class="step">03</span>
                 <div>
-                  <h3>Recommend &amp; install</h3>
+                  <h3>Recommend &amp; confirm</h3>
                   <p>
-                    Picks the best Skills, Rules, and Presets, installs them into your IDE folder,
-                    and writes <code>noah.config.json</code>.
+                    Shows the best Skills, Rules, and Presets, then asks
+                    <code>Install N recommended package(s)?</code> — confirm, skip, or use
+                    <code>-y</code> to auto-accept.
+                  </p>
+                </div>
+              </li>
+              <li>
+                <span class="step">04</span>
+                <div>
+                  <h3>Install &amp; configure</h3>
+                  <p>
+                    On yes, installs into your IDE folder and writes
+                    <code>noah.config.json</code> + <code>noah.lock</code>.
                   </p>
                 </div>
               </li>
@@ -148,7 +161,7 @@
        ↓
   <span class="hi">noah bootstrap</span>
        ↓
-   Detect Stack → Analyse → Recommend → Install
+ Detect → Analyse → Recommend → <span class="hi">Confirm</span> → Install
        ↓
  Generate <span class="hi">noah.config.json</span>
        ↓
@@ -160,8 +173,17 @@
                 <span class="dot green"></span>
                 <span class="terminal-title">noah — zsh</span>
               </div>
-              <pre class="terminal-body"><code><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">bootstrap</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">bootstrap</span> <span class="flag">--target</span> <span class="string">claude</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">bootstrap</span> <span class="flag">--all</span> <span class="flag">--dry-run</span></span></code></pre>
+              <pre class="terminal-body"><code><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">bootstrap</span></span><span class="line"><span class="dim">? Install 5 recommended package(s)? (Y/n)</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">bootstrap</span> <span class="flag">-y</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">bootstrap</span> <span class="flag">--target</span> <span class="string">claude</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">bootstrap</span> <span class="flag">--dry-run</span></span></code></pre>
             </div>
+          </section>
+
+          <section class="doc-block" id="home">
+            <h2>Interactive home</h2>
+            <p>
+              Run <code>noah</code> / <code>noah-cursor</code> with no arguments in a TTY to open
+              the home menu. First option is <strong>Bootstrap project</strong>, then browse
+              Skills, Rules, Prompts, MCP, or Presets (only categories that exist in the registry).
+            </p>
           </section>
 
           <section class="doc-block" id="flow">
@@ -276,6 +298,23 @@
             </p>
           </section>
 
+          <section class="doc-block" id="demo">
+            <h2>CLI demo</h2>
+            <p>
+              From a clone of this repo, run a non-interactive walkthrough of the main commands
+              (search, analyze, bootstrap, install, workspace, multi-target, and more):
+            </p>
+            <div class="terminal install-snippet" tabindex="0" role="region" aria-label="Demo command">
+              <div class="terminal-chrome" aria-hidden="true">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+                <span class="terminal-title">noah — zsh</span>
+              </div>
+              <pre class="terminal-body"><code><span class="line"><span class="prompt">$</span> <span class="cmd">npm</span> <span class="flag">run</span> <span class="string">demo</span></span></code></pre>
+            </div>
+          </section>
+
           <section class="doc-block" id="quick">
             <h2>Quick start</h2>
             <p>Requires Node.js 20+. Registry ships inside the package.</p>
@@ -286,7 +325,7 @@
                 <span class="dot green"></span>
                 <span class="terminal-title">noah — zsh</span>
               </div>
-              <pre class="terminal-body"><code><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">bootstrap</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">browse</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">install</span> <span class="string">commit-push</span></span></code></pre>
+              <pre class="terminal-body"><code><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">bootstrap</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">browse</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">install</span> <span class="string">commit-push</span></span></code></pre>
             </div>
             <nav class="doc-pager" aria-label="Docs pagination">
               <a class="doc-pager-link prev" href="./">

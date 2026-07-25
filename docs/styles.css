@@ -495,6 +495,7 @@ html.lenis body {
   font-weight: 500;
 }
 
+.muted,
 .doc-table .muted {
   color: var(--muted);
 }
@@ -1281,11 +1282,21 @@ html.modal-open .asset-dialog * {
 }
 
 .lede {
-  margin: 0 0 1.75rem;
+  margin: 0 0 0.85rem;
   color: var(--muted);
   max-width: 36ch;
   font-size: 1.02rem;
   line-height: 1.55;
+}
+
+.hero-note {
+  margin: 0 0 1.75rem;
+  max-width: 40ch;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: var(--ink-soft);
+  border-left: 2px solid var(--accent-deep);
+  padding-left: 0.75rem;
 }
 
 .cta-row {
@@ -1737,6 +1748,11 @@ html.modal-open .asset-dialog * {
 
 .terminal .string {
   color: #a5b4fc;
+}
+
+.terminal .dim {
+  color: var(--muted);
+  opacity: 0.85;
 }
 
 .site-footer {
