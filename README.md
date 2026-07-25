@@ -272,9 +272,8 @@ Prompts and MCP configs are supported by the CLI — more shipping as the regist
 | `list` / `update` / `uninstall` | Manage installed packages |
 | `workspace` / `sync` | Team `noah.config.json` + sync |
 | `explain` / `upgrade` | Package explain + upgrade assistant |
-| `publish` / `trending` | Scaffold packages / trending list |
+| `trending` | Trending packages by downloads / rating |
 | `dashboard` / `diff` / `try` / `undo` / `new` | DX extras |
-| `login` / `config` / `audit` | Auth, settings, audit log |
 
 Use `--ide` or `--target` on install / bootstrap / doctor. Default: `cursor`.
 
@@ -336,12 +335,7 @@ manifest.json
 skills/  rules/  prompts/  mcp/  presets/
 ```
 
-```bash
-noah login
-noah publish
-```
-
-Manifest entries can include `tags`, `downloads`, `rating`, `verified`, `dependsOn`, and `changelog`.
+Add a package folder + `manifest.json` entry, then open a PR. Manifest fields can include `tags`, `downloads`, `rating`, `verified`, `dependsOn`, and `changelog`.
 
 ---
 

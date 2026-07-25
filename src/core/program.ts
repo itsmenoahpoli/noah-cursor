@@ -17,8 +17,6 @@ import { registerWorkspaceCommand } from "../commands/workspace.js";
 import { registerExplainCommand } from "../commands/explain.js";
 import { registerAnalyzeCommand } from "../commands/analyze.js";
 import { registerWizardCommands } from "../commands/wizard.js";
-import { registerPublishCommand } from "../commands/publish.js";
-import { registerAuthCommands } from "../commands/auth.js";
 import { registerDashboardCommand } from "../commands/dashboard.js";
 import { registerPluginCommand } from "../commands/plugin.js";
 import { registerUndoCommand } from "../commands/undo.js";
@@ -78,8 +76,6 @@ export function createProgram(): Command {
   registerExplainCommand(program);
   registerAnalyzeCommand(program);
   registerWizardCommands(program);
-  registerPublishCommand(program);
-  registerAuthCommands(program);
   registerDashboardCommand(program);
   registerPluginCommand(program);
   registerUndoCommand(program);

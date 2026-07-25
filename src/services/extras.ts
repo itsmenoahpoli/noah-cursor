@@ -101,7 +101,6 @@ export async function showDashboard(ide: IdeId = DEFAULT_IDE): Promise<void> {
   console.log(`  Workspace:     ${workspace ? `${workspace.packages.length} packages` : "none"}`);
   console.log(`  Favorites:     ${analytics.favorites}`);
   console.log(`  Recent:        ${analytics.recent}`);
-  console.log(`  Logged in:     ${analytics.loggedIn ? "yes" : "no"}`);
   console.log();
   console.log("  Trending");
   for (const t of trending.slice(0, 5)) {

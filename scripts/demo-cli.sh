@@ -149,34 +149,18 @@ section "6 · Favorites / recent / dashboard / config"
   echo
   "${NOAH[@]}" dashboard || true
   echo
-  echo "› ${NOAH[*]} config"
+  echo "› ${NOAH[*]} trending"
   echo
-  "${NOAH[@]}" config || true
+  "${NOAH[@]}" trending || true
   echo
 )
 
-section "7 · Workspace / sync / auth / analytics / audit"
+section "7 · Workspace / sync"
 (
   cd "$DEMO_DIR"
   echo "› ${NOAH[*]} workspace show"
   echo
   "${NOAH[@]}" workspace show || true
-  echo
-  echo "› ${NOAH[*]} login demo-user"
-  echo
-  "${NOAH[@]}" login demo-user || true
-  echo
-  echo "› ${NOAH[*]} whoami"
-  echo
-  "${NOAH[@]}" whoami || true
-  echo
-  echo "› ${NOAH[*]} analytics"
-  echo
-  "${NOAH[@]}" analytics || true
-  echo
-  echo "› ${NOAH[*]} audit --limit 8"
-  echo
-  "${NOAH[@]}" audit --limit 8 || true
   echo
 )
 
@@ -226,6 +210,6 @@ section "Demo complete"
 echo "Demo project left at: $DEMO_DIR"
 echo "User store left at:    $NOAH_HOME"
 echo
-echo "Skipped (interactive only): browse, wizard, publish, home menu"
+echo "Skipped (interactive only): browse, wizard, home menu"
 echo "Re-run with:  npm run demo"
 echo
