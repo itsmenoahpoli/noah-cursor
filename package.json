@@ -1,6 +1,6 @@
 {
   "name": "noah-cursor",
-  "version": "1.5.11",
+  "version": "1.5.12",
   "description": "The package manager for AI-assisted software development — Skills, Rules, Prompts, MCP configs, and Presets",
   "type": "module",
   "bin": {
