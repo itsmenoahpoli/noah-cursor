@@ -1,3 +1,36 @@
+function setupMobileNav() {
+  const toggle = document.querySelector(".nav-toggle");
+  const nav = document.getElementById("site-nav");
+  if (!toggle || !nav) return;
+
+  const setOpen = (open) => {
+    toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    document.documentElement.classList.toggle("nav-open", open);
+  };
+
+  const close = () => setOpen(false);
+
+  toggle.addEventListener("click", () => {
+    const open = toggle.getAttribute("aria-expanded") === "true";
+    setOpen(!open);
+  });
+
+  nav.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", close);
+  });
+
+  window.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") close();
+  });
+
+  window.addEventListener("resize", () => {
+    if (window.matchMedia("(min-width: 821px)").matches) close();
+  });
+}
+
+setupMobileNav();
+
 const copyBtn = document.getElementById("copy-cmd");
 
 if (copyBtn) {
