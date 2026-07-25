@@ -390,6 +390,7 @@ async function loadCatalogPage() {
     if (skillRoot) renderCatalogList(skillRoot, data.skills || [], "skill");
     if (ruleRoot) renderCatalogList(ruleRoot, data.rules || [], "rule");
     if (presetRoot) renderCatalogList(presetRoot, data.presets || [], "preset");
+    setupCatalogSearch();
     setupAssetDialog();
     observeReveals(document.getElementById("skills") || document);
     observeReveals(document.getElementById("rules") || document);
@@ -446,6 +447,14 @@ function renderStackBadge(stack) {
   return `<span class="${stackBadgeClass(stack)}">${escapeHtml(stack)}</span>`;
 }
 
+function catalogSearchText(item) {
+  const tags = Array.isArray(item.tags) ? item.tags.join(" ") : "";
+  return [item.id, item.stack, item.summary, item.description, tags]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+}
+
 function renderCatalogList(root, items, kind) {
   if (!items.length) {
     root.innerHTML = `<p class="releases-status">No ${kind}s published yet.</p>`;
@@ -460,6 +469,7 @@ function renderCatalogList(root, items, kind) {
         class="catalog-item"
         data-asset-kind="${escapeHtml(kind)}"
         data-asset-id="${escapeHtml(item.id)}"
+        data-search="${escapeHtml(catalogSearchText(item))}"
         aria-haspopup="dialog"
       >
         <code>${escapeHtml(item.id)}</code>
@@ -477,6 +487,63 @@ function renderCatalogList(root, items, kind) {
       if (asset) openAssetDialog(asset, kind);
     });
   }
+}
+
+function setupCatalogSearch() {
+  const input = document.getElementById("catalog-search");
+  const hint = document.getElementById("catalog-search-hint");
+  if (!input) return;
+
+  const sections = [
+    ["skills", "skills-catalog"],
+    ["rules", "rules-catalog"],
+    ["presets", "presets-catalog"],
+  ];
+
+  const applyFilter = () => {
+    const query = input.value.trim().toLowerCase();
+    let visibleTotal = 0;
+
+    for (const [sectionId, catalogId] of sections) {
+      const section = document.getElementById(sectionId);
+      const root = document.getElementById(catalogId);
+      if (!section || !root) continue;
+
+      const items = root.querySelectorAll(".catalog-item");
+      let visibleInSection = 0;
+
+      for (const item of items) {
+        const haystack = item.dataset.search || "";
+        const match = !query || haystack.includes(query);
+        item.classList.toggle("is-filtered-out", !match);
+        if (match) visibleInSection += 1;
+      }
+
+      section.classList.toggle("is-catalog-hidden", Boolean(query) && visibleInSection === 0);
+      visibleTotal += visibleInSection;
+    }
+
+    if (!hint) return;
+
+    if (!query) {
+      hint.hidden = true;
+      hint.textContent = "";
+      hint.classList.remove("is-empty");
+      return;
+    }
+
+    hint.hidden = false;
+    if (visibleTotal === 0) {
+      hint.textContent = "No matches";
+      hint.classList.add("is-empty");
+    } else {
+      hint.textContent = `${visibleTotal} match${visibleTotal === 1 ? "" : "es"}`;
+      hint.classList.remove("is-empty");
+    }
+  };
+
+  input.addEventListener("input", applyFilter);
+  input.addEventListener("search", applyFilter);
 }
 
 function setupAssetDialog() {

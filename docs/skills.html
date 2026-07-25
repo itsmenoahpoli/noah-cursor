@@ -93,17 +93,48 @@
       </header>
 
       <div class="doc-layout">
-        <aside class="doc-toc" aria-label="On this page">
-          <h2>On this page</h2>
-          <ol>
-            <li><a href="#skills">Skills</a></li>
-            <li><a href="#rules">Rules</a></li>
-            <li><a href="#presets">Presets</a></li>
-            <li><a href="#install">Install examples</a></li>
-          </ol>
+        <aside class="doc-toc catalog-toc" aria-label="On this page">
+          <div class="doc-toc-main">
+            <h2>On this page</h2>
+            <ol>
+              <li><a href="#install">Install examples</a></li>
+              <li><a href="#skills">Skills</a></li>
+              <li><a href="#rules">Rules</a></li>
+              <li><a href="#presets">Presets</a></li>
+            </ol>
+          </div>
+          <div class="doc-toc-search">
+            <label class="doc-toc-search-label" for="catalog-search">Search catalog</label>
+            <input
+              type="search"
+              id="catalog-search"
+              class="doc-toc-search-input"
+              placeholder="Filter by name, stack…"
+              autocomplete="off"
+              spellcheck="false"
+            />
+            <p class="doc-toc-search-hint" id="catalog-search-hint" hidden></p>
+          </div>
         </aside>
 
         <div class="doc-content">
+          <section class="doc-block" id="install">
+            <h2>Install examples</h2>
+            <p>
+              Prefer <code>bootstrap</code> for stack-aware setup. Or use
+              <code>install</code> / <code>browse</code> for specific packages.
+            </p>
+            <div class="terminal install-snippet" tabindex="0" role="region" aria-label="Install examples">
+              <div class="terminal-chrome" aria-hidden="true">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+                <span class="terminal-title">noah — zsh</span>
+              </div>
+              <pre class="terminal-body"><code><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">bootstrap</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">install</span> <span class="string">commit-push</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">install</span> <span class="string">laravel-api</span> <span class="string">react-spa-dashboard</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">install</span> <span class="string">react-doctor-fix</span> <span class="flag">--ide</span> <span class="string">windsurf</span></span></code></pre>
+            </div>
+          </section>
+
           <section class="doc-block" id="skills">
             <h2>Skills</h2>
             <p>Agent workflows you can reuse across every Cursor (or other IDE) project.</p>
@@ -140,23 +171,6 @@
               data-catalog-kind="presets"
             >
               <p class="releases-status">Loading presets…</p>
-            </div>
-          </section>
-
-          <section class="doc-block" id="install">
-            <h2>Install examples</h2>
-            <p>
-              Prefer <code>bootstrap</code> for stack-aware setup. Or use
-              <code>install</code> / <code>browse</code> for specific packages.
-            </p>
-            <div class="terminal install-snippet" tabindex="0" role="region" aria-label="Install examples">
-              <div class="terminal-chrome" aria-hidden="true">
-                <span class="dot red"></span>
-                <span class="dot yellow"></span>
-                <span class="dot green"></span>
-                <span class="terminal-title">noah — zsh</span>
-              </div>
-              <pre class="terminal-body"><code><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">bootstrap</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">install</span> <span class="string">commit-push</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">install</span> <span class="string">laravel-api</span> <span class="string">react-spa-dashboard</span></span><span class="line"><span class="prompt">$</span> <span class="cmd">npx</span> <span class="arg">noah-cursor</span> <span class="flag">install</span> <span class="string">react-doctor-fix</span> <span class="flag">--ide</span> <span class="string">windsurf</span></span></code></pre>
             </div>
             <nav class="doc-pager" aria-label="Docs pagination">
               <a class="doc-pager-link prev" href="how.html">
