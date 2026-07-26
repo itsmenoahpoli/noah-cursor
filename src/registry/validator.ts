@@ -3,6 +3,7 @@ import fs from "fs-extra";
 import { MANIFEST_FILE, REGISTRY_REQUIRED_DIRS } from "../constants/index.js";
 import { RegistryError, ValidationError } from "../core/errors.js";
 import { ManifestSchema, type Manifest } from "../types/index.js";
+import { assertPathInside, assertSafeRelativePath } from "../utils/paths.js";
 
 export async function readManifest(registryPath: string): Promise<Manifest> {
   const manifestPath = path.join(registryPath, MANIFEST_FILE);
@@ -55,8 +56,13 @@ export async function assertAssetExists(
   registryPath: string,
   relativePath: string,
 ): Promise<void> {
-  const fullPath = path.join(registryPath, relativePath);
+  const safeRelative = assertSafeRelativePath(relativePath);
+  const fullPath = assertPathInside(
+    registryPath,
+    path.join(registryPath, safeRelative),
+    "Asset source",
+  );
   if (!(await fs.pathExists(fullPath))) {
-    throw new RegistryError(`Asset path not found in registry: ${relativePath}`);
+    throw new RegistryError(`Asset path not found in registry: ${safeRelative}`);
   }
 }

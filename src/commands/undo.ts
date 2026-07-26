@@ -8,7 +8,7 @@ export function registerUndoCommand(program: Command): void {
     .command("undo")
     .description("Rollback the last install or uninstall")
     .option("--dry-run", "Show what would be undone", false)
-    .option("-y, --yes", "Skip confirmation", true)
+    .option("-y, --yes", "Skip confirmation", false)
     .option("-v, --verbose", "Verbose output", false)
     .action(async (opts: { dryRun?: boolean; yes?: boolean; verbose?: boolean }) => {
       try {

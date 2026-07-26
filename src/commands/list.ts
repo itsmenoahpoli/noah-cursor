@@ -56,7 +56,14 @@ export function registerListCommand(program: Command): void {
           return;
         }
 
-        logTitle(`Registry assets (${listed.assets.length})`);
+        logTitle(
+          `Registry assets (${listed.assets.length}) · ${listed.registry}`,
+        );
+        if (listed.local) {
+          logInfo(
+            "Showing a local development checkout. Install/add still use the bundled Noah registry.",
+          );
+        }
         console.log();
 
         for (const type of TYPE_ORDER) {

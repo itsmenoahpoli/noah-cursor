@@ -27,6 +27,12 @@ describe("normalizeGitHubUrl", () => {
       "git@github.com:owner/repo.git",
     );
   });
+
+  it("rejects insecure http URLs", () => {
+    expect(() => normalizeGitHubUrl("http://github.com/owner/repo")).toThrow(
+      /http:\/\//,
+    );
+  });
 });
 
 describe("displayRegistryUrl", () => {

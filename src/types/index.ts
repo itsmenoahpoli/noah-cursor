@@ -1,14 +1,33 @@
 import { z } from "zod";
 import { ASSET_TYPES, IDE_IDS, DEFAULT_IDE, type IdeId } from "../constants/index.js";
+import {
+  ASSET_ID_PATTERN,
+  RELATIVE_ASSET_PATH_PATTERN,
+} from "../utils/paths.js";
 
 export type { IdeId };
 export type AssetType = (typeof ASSET_TYPES)[number];
 
+const AssetIdSchema = z
+  .string()
+  .min(1)
+  .regex(
+    ASSET_ID_PATTERN,
+    "Asset id must use only letters, numbers, dots, underscores, and hyphens",
+  );
+
+const AssetRelativePathSchema = z
+  .string()
+  .regex(
+    RELATIVE_ASSET_PATH_PATTERN,
+    "Asset path must be a relative registry path without '..' or absolute segments",
+  );
+
 export const AssetEntrySchema = z.object({
-  id: z.string().min(1),
+  id: AssetIdSchema,
   version: z.string().default("1.0.0"),
   description: z.string().optional(),
-  path: z.string().optional(),
+  path: AssetRelativePathSchema.optional(),
   tags: z.array(z.string()).optional(),
   author: z.string().optional(),
   downloads: z.number().optional(),
@@ -51,7 +70,7 @@ export type Manifest = z.infer<typeof ManifestSchema>;
 
 export const InstalledAssetSchema = z.object({
   type: z.enum(ASSET_TYPES),
-  id: z.string().min(1),
+  id: AssetIdSchema,
   version: z.string().min(1),
   installedAt: z.string().optional(),
   path: z.string().optional(),

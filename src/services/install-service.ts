@@ -1,7 +1,13 @@
 import { confirm } from "@inquirer/prompts";
 import { NotFoundError, ValidationError } from "../core/errors.js";
 import { logInfo, logSuccess, logVerbose, logWarn } from "../core/logger.js";
-import { DEFAULT_IDE, getIdeDefinition, METADATA_FILE, type IdeId } from "../constants/index.js";
+import {
+  BUNDLED_REGISTRY,
+  DEFAULT_IDE,
+  getIdeDefinition,
+  METADATA_FILE,
+  type IdeId,
+} from "../constants/index.js";
 import { installAsset, removeAssetFiles } from "../installers/asset-installer.js";
 import {
   findInstalled,
@@ -32,12 +38,14 @@ import { fuzzyFilter } from "../utils/fuzzy.js";
 import { parsePackageRef, versionMatches } from "../utils/semver.js";
 import { pluralize } from "../utils/fs.js";
 import {
+  isOfficialRegistryUrl,
   preferLocalRegistry,
   resolveNoahRegistry,
   toPublicRegistryLabel,
   toStoredRegistryUrl,
 } from "../utils/registry.js";
 import { ASSET_TYPES } from "../constants/index.js";
+import { assertSafeAssetId } from "../utils/paths.js";
 
 function collectRequests(options: AddOptions): AssetRequest[] {
   const requests: AssetRequest[] = [];
@@ -511,16 +519,26 @@ export async function listRegistryAssets(
   name: string;
   version: string;
   assets: SearchResult[];
+  local?: boolean;
 }> {
-  const source = resolveNoahRegistry(repository ?? (await preferLocalRegistry()));
+  const preferredLocal = repository ?? (await preferLocalRegistry());
+  const source = resolveNoahRegistry(preferredLocal);
   const registry = await loadRegistry(source, options);
+  const usingLocal =
+    source !== BUNDLED_REGISTRY &&
+    !isOfficialRegistryUrl(source) &&
+    !source.includes("github.com") &&
+    !source.startsWith("git@");
 
   try {
     return {
-      registry: toPublicRegistryLabel(),
+      registry: usingLocal
+        ? "Local registry (development checkout)"
+        : toPublicRegistryLabel(),
       name: registry.manifest.name,
       version: registry.manifest.version,
       assets: listAllManifestAssets(registry.manifest),
+      local: usingLocal,
     };
   } finally {
     await registry.cleanup();
@@ -538,6 +556,7 @@ export async function removeAsset(
     ide?: IdeId;
   } = {},
 ): Promise<void> {
+  const safeId = assertSafeAssetId(id);
   const ide = options.ide ?? DEFAULT_IDE;
   const ideRoot = getIdeDefinition(ide).rootDir;
   const metadata = await readMetadata(process.cwd(), ide);
@@ -545,14 +564,16 @@ export async function removeAsset(
     throw new NotFoundError(`No installed assets found (${ideRoot}/${METADATA_FILE} missing)`);
   }
 
-  const installed = findInstalled(metadata, type, id);
+  const installed = findInstalled(metadata, type, safeId);
   if (!installed && !options.force) {
-    throw new NotFoundError(`${type} "${id}" is not recorded in ${ideRoot}/${METADATA_FILE}`);
+    throw new NotFoundError(
+      `${type} "${safeId}" is not recorded in ${ideRoot}/${METADATA_FILE}`,
+    );
   }
 
   if (!options.yes && !options.dryRun) {
     const ok = await confirm({
-      message: `Remove ${type}/${id}?`,
+      message: `Remove ${type}/${safeId}?`,
       default: false,
     });
     if (!ok) {
@@ -561,23 +582,23 @@ export async function removeAsset(
     }
   }
 
-  await removeAssetFiles(type, id, { ...options, ide });
+  await removeAssetFiles(type, safeId, { ...options, ide });
 
   if (!options.dryRun) {
-    await removeInstalledAsset(type, id, process.cwd(), ide);
+    await removeInstalledAsset(type, safeId, process.cwd(), ide);
     await pushUndo({
       action: "uninstall",
       type,
-      id,
+      id: safeId,
       ide,
       at: new Date().toISOString(),
     });
-    await appendAudit("uninstall", `${type}/${id}`);
+    await appendAudit("uninstall", `${type}/${safeId}`);
     const listed = await listInstalledAssets(process.cwd(), ide);
     await syncLockfileFromInstalled(listed.installed, ide);
-    logSuccess(`Removed ${type}/${id}`);
+    logSuccess(`Removed ${type}/${safeId}`);
   } else {
-    logInfo(`[dry-run] Would remove ${type}/${id}`);
+    logInfo(`[dry-run] Would remove ${type}/${safeId}`);
   }
 }
 

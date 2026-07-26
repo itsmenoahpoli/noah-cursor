@@ -38,7 +38,7 @@ export async function runUndo(
 
   if (entry.action === "install") {
     await removeAsset(entry.type, entry.id, {
-      yes: options.yes ?? true,
+      yes: options.yes,
       dryRun: options.dryRun,
       verbose: options.verbose,
       ide: entry.ide,
@@ -48,7 +48,7 @@ export async function runUndo(
   } else {
     await installByPackageNames([`${entry.type}/${entry.id}`], {
       ide: entry.ide,
-      yes: true,
+      yes: options.yes ?? true,
       dryRun: options.dryRun,
       verbose: options.verbose,
     });

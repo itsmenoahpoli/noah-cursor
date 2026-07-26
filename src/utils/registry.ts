@@ -17,8 +17,8 @@ function looksLikeGitHubRemote(input: string): boolean {
   return (
     input.includes("github.com") ||
     input.startsWith("git@") ||
-    input.startsWith("http://") ||
     input.startsWith("https://") ||
+    input.startsWith("http://") ||
     /^[\w.-]+\/[\w.-]+$/.test(input)
   );
 }

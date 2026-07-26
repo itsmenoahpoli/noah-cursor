@@ -7,6 +7,7 @@ import {
   TEMP_DIR_PREFIX,
   type IdeId,
 } from "../constants/index.js";
+import { ValidationError } from "../core/errors.js";
 
 export async function createTempDir(prefix = TEMP_DIR_PREFIX): Promise<string> {
   return fs.mkdtemp(path.join(os.tmpdir(), prefix));
@@ -41,7 +42,13 @@ export function normalizeGitHubUrl(input: string): string {
     return trimmed.endsWith(".git") ? trimmed : `${trimmed}.git`;
   }
 
-  if (trimmed.startsWith("https://") || trimmed.startsWith("http://")) {
+  if (trimmed.startsWith("http://")) {
+    throw new ValidationError(
+      "Insecure http:// registry URLs are not allowed. Use https:// or git@ SSH URLs.",
+    );
+  }
+
+  if (trimmed.startsWith("https://")) {
     return trimmed.endsWith(".git") ? trimmed : `${trimmed}.git`;
   }
 

@@ -11,6 +11,11 @@ import {
 } from "../utils/assets.js";
 import { assertAssetExists } from "../registry/validator.js";
 import { resolveIdeDir } from "../utils/fs.js";
+import {
+  assertPathInside,
+  assertSafeAssetId,
+  assertSafeRelativePath,
+} from "../utils/paths.js";
 
 export interface InstallerOptions {
   force?: boolean;
@@ -18,6 +23,36 @@ export interface InstallerOptions {
   verbose?: boolean;
   cwd?: string;
   ide?: IdeId;
+}
+
+function resolveInstallPaths(
+  registryPath: string,
+  type: AssetType,
+  id: string,
+  entryPath: string | undefined,
+  options: InstallerOptions,
+): { sourcePath: string; targetDir: string; sourceRelative: string } {
+  const safeId = assertSafeAssetId(id);
+  const sourceRelative = assertSafeRelativePath(
+    resolveAssetPath(type, safeId, entryPath),
+  );
+  const ide = options.ide ?? DEFAULT_IDE;
+  const cwd = options.cwd ?? process.cwd();
+  const ideRoot = resolveIdeDir(ide, cwd);
+  const typeRoot = path.join(ideRoot, assetTypeToDir(type));
+
+  const sourcePath = assertPathInside(
+    registryPath,
+    path.join(registryPath, sourceRelative),
+    "Asset source",
+  );
+  const targetDir = assertPathInside(
+    typeRoot,
+    path.join(typeRoot, safeId),
+    "Asset install target",
+  );
+
+  return { sourcePath, targetDir, sourceRelative };
 }
 
 export async function installAsset(
@@ -38,16 +73,14 @@ export async function installAsset(
     );
   }
 
-  const ide = options.ide ?? DEFAULT_IDE;
-  const sourceRelative = resolveAssetPath(type, id, entry.path);
-  await assertAssetExists(registryPath, sourceRelative);
-
-  const sourcePath = path.join(registryPath, sourceRelative);
-  const targetDir = path.join(
-    resolveIdeDir(ide, options.cwd),
-    assetTypeToDir(type),
+  const { sourcePath, targetDir, sourceRelative } = resolveInstallPaths(
+    registryPath,
+    type,
     id,
+    entry.path,
+    options,
   );
+  await assertAssetExists(registryPath, sourceRelative);
 
   if ((await fs.pathExists(targetDir)) && !options.force) {
     return {
@@ -71,11 +104,12 @@ export async function installAsset(
     await fs.copy(sourcePath, targetDir);
   }
 
+  const safeId = assertSafeAssetId(id);
   return {
     type,
-    id,
+    id: safeId,
     version: entry.version,
-    path: path.join(assetTypeToDir(type), id),
+    path: path.join(assetTypeToDir(type), safeId),
   };
 }
 
@@ -89,11 +123,15 @@ export async function removeAssetFiles(
     return `preset:${id}`;
   }
 
+  const safeId = assertSafeAssetId(id);
   const ide = options.ide ?? DEFAULT_IDE;
-  const targetDir = path.join(
-    resolveIdeDir(ide, options.cwd),
-    assetTypeToDir(type),
-    id,
+  const cwd = options.cwd ?? process.cwd();
+  const ideRoot = resolveIdeDir(ide, cwd);
+  const typeRoot = path.join(ideRoot, assetTypeToDir(type));
+  const targetDir = assertPathInside(
+    typeRoot,
+    path.join(typeRoot, safeId),
+    "Asset remove target",
   );
 
   logVerbose(
@@ -105,5 +143,5 @@ export async function removeAssetFiles(
     await fs.remove(targetDir);
   }
 
-  return path.join(assetTypeToDir(type), id);
+  return path.join(assetTypeToDir(type), safeId);
 }

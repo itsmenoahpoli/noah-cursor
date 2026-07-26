@@ -219,7 +219,8 @@ function runKnip(dir) {
       }
     })();
 
-  const args = ["knip", "--no-progress", "--reporter", "json"];
+  // Pin major to avoid surprise supply-chain pulls from floating `knip`.
+  const args = ["knip@5", "--no-progress", "--reporter", "json"];
   if (!hasProjectConfig) {
     args.push("--config", DEFAULT_KNIP_CONFIG);
   }
